@@ -42,10 +42,14 @@ function main() {
         // console.log("run");
         const v1_x = document.getElementById("v1_x");
         const v1_y = document.getElementById("v1_y");
+        const v2_x = document.getElementById("v2_x");
+        const v2_y = document.getElementById("v2_y");
         // console.log(v1_x.value);
         // console.log(v1_y.value);
         let v1 = new Vector3([v1_x.value,v1_y.value,0]);
+        let v2 = new Vector3([v2_x.value,v2_y.value,0]);
         drawVector(v1,'red');
+        drawVector(v2,'blue');
         // https://stackoverflow.com/questions/71569705/why-eventlistener-reloads-the-page-and-onclick-does-not
         // event.preventDefault();
     }
