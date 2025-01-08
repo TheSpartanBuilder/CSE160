@@ -25,7 +25,20 @@
         <input type="text" id="v2_y">
         <br>
         <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/button -->
-        <input type = "button" id="v1_button" value = "Draw">
+        <input type="button" id="v1_button" value="Draw">
+        <br>
+        <br>
+        <label for="operations">Operation: </label>
+        <select name="Operations" id="operations">
+            <option value="add">Add</option>
+            <option value="sub">Subtraction</option>
+            <option value="mul">Multiply</option>
+            <option value="div">Divide</option>
+        </select>
+        <label for="scalar">Scalar:</label>
+        <input type="text" id="scalar">
+        <br>
+        <input type="button" id="operation_button" value = "Draw">
     </form>
 </body>
 </html> 

@@ -46,7 +46,10 @@ class Vector3 {
     add(other) {
         // Insert your code here.
         // This function should change this vector (this.elements) and not create a new vector.
-
+        for(let i = 0; i < 3; ++i)
+        {
+          this.elements[i] = this.elements[i] + other.elements[i];
+        }
         // Don't delete the return statement.
         return this;
     };
@@ -58,7 +61,10 @@ class Vector3 {
     sub(other) {
         // Insert your code here.
         // This function should change this vector (this.elements) and not create a new vector.
-
+        for(let i = 0; i < 3; ++i)
+          {
+            this.elements[i] = this.elements[i] - other.elements[i];
+          }
         // Don't delete the return statement.
         return this;
     };
@@ -70,7 +76,10 @@ class Vector3 {
     div(scalar) {
         // Insert your code here.
         // This function should change this vector (this.elements) and not create a new vector.
-
+        for(let i = 0; i < 3; ++i)
+          {
+            this.elements[i] = this.elements[i]/scalar;
+          }
         // Don't delete the return statement.
         return this;
     };
@@ -82,7 +91,10 @@ class Vector3 {
     mul(scalar) {
         // Insert your code here.
         // This function should change this vector (this.elements) and not create a new vector.
-
+        for(let i = 0; i < 3; ++i)
+          {
+            this.elements[i] = this.elements[i]*scalar;
+          }
         // Don't delete the return statement.
         return this;
     };

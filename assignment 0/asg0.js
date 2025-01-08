@@ -35,6 +35,9 @@ function main() {
     v1_button.addEventListener( "click" ,handleDrawEvent);
     //v1_button.onclick(doDraw);
 
+    let operation_button = document.getElementById("operation_button");
+    operation_button.addEventListener( "click" ,handleDrawOperationEvent);
+
     function handleDrawEvent() {
         // Clear the canvas
         ctx.fillStyle = 'rgba(0, 0, 0, 1.0)'; // Set a black color
@@ -52,5 +55,35 @@ function main() {
         drawVector(v2,'blue');
         // https://stackoverflow.com/questions/71569705/why-eventlistener-reloads-the-page-and-onclick-does-not
         // event.preventDefault();
+    }
+
+    function handleDrawOperationEvent() {
+        handleDrawEvent();
+        const operation = document.getElementById("operations");
+        const scalar = document.getElementById("scalar");
+        let v3 = new Vector3([v1_x.value,v1_y.value,0]);
+        let v4 = new Vector3([v2_x.value,v2_y.value,0]);
+        switch(operation.value){
+            case "add":
+                v3.add(v4);
+                drawVector(v3,'green');
+                break;
+            case "sub":
+                v3.sub(v4);
+                drawVector(v3,'green');
+                break;
+            case "mul":
+                v3.mul(scalar.value);
+                v4.mul(scalar.value);
+                drawVector(v3,'green');
+                drawVector(v4,'green');
+                break;
+            case "div":
+                v3.div(scalar.value);
+                v4.div(scalar.value);
+                drawVector(v3,'green');
+                drawVector(v4,'green');
+                break;
+        }
     }
 } 
