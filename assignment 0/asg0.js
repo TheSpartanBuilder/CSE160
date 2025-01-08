@@ -98,6 +98,14 @@ function main() {
                 drawVector(v3.normalize(),'green');
                 drawVector(v4.normalize(),'green');
                 break;
+            case"angleBetween":
+                console.log("Angle: " + angleBetween(v3,v4));
+                break;
         }
+    }
+
+    function angleBetween(v1,v2)
+    {
+        return Math.acos(Vector3.dot(v1,v2)/(v1.magnitude()*v2.magnitude())) * 180 / Math.PI;
     }
 } 
