@@ -1,4 +1,10 @@
 // DrawRectangle.js
+// Question for this assignment
+/*
+1. For the dot and cross function does other1 and other2 mean vector1 and vector2?
+2. How do you do cos-1 in js?
+3. Do we just assume that all the vector that we will see is 1x3?
+*/
 function main() {
     // Retrieve <canvas> element
     var canvas = document.getElementById('example');
@@ -83,6 +89,14 @@ function main() {
                 v4.div(scalar.value);
                 drawVector(v3,'green');
                 drawVector(v4,'green');
+                break;
+            case "mag":
+                console.log("Magnitude v1: " + v3.magnitude());
+                console.log("Magnitude v2: " + v4.magnitude());
+                break;
+            case "nor":
+                drawVector(v3.normalize(),'green');
+                drawVector(v4.normalize(),'green');
                 break;
         }
     }
