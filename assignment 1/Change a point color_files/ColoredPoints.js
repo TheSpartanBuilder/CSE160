@@ -20,11 +20,15 @@ var FSHADER_SOURCE =
 // Visit when free
 // https://stackoverflow.com/questions/14226803/wait-5-seconds-before-executing-next-line
 
+// Constants
+const explosion_sound = new Audio("../Audio/explosion-42132.mp3");
+const target_neutralized_sound = new Audio("../Audio/target-neutralized-sound-effect-for-editing-made-with-Voicemod.mp3");
+const POINT = 0;
+const TRIANGLE = 1;
+const CIRCLE = 2;
   
 // Global Variables
 // https://dev.to/shantanu_jana/how-to-play-sound-on-button-click-in-javascript-3m48
-const explosion_sound = new Audio("../Audio/explosion-42132.mp3");
-const target_neutralized_sound = new Audio("../Audio/target-neutralized-sound-effect-for-editing-made-with-Voicemod.mp3");
 let canvas;
 let gl;
 let a_Position;
@@ -33,6 +37,8 @@ let u_Size;
 
 let g_selectedColor=[1.0,1.0,1.0,1.0];
 let g_selectedSize= 5.0;
+let g_selectedType=POINT;
+let g_segments = 10;
 
 // Set up actions for the HTML UI elements
 function addActionsForHtmlUI()
@@ -40,12 +46,18 @@ function addActionsForHtmlUI()
   // Button Events (Shape Type)
   document.getElementById('green').onclick = function() { g_selectedColor = [0.0,1.0,0.0,1.0];};
   document.getElementById('red').onclick = function() { g_selectedColor = [1.0,0.0,0.0,1.0];};
+  document.getElementById('blue').onclick = function() { g_selectedColor = [0.0,0.0,1.0,1.0];};
   document.getElementById('clearButton').onclick = function() { g_shapeList = []; renderAllShapes(); explosion_sound.play(); setTimeout( () => target_neutralized_sound.play(),1200);};
+
+  document.getElementById('pointButton').onclick = function() { g_selectedType=POINT; };
+  document.getElementById('triangleButton').onclick = function() { g_selectedType=TRIANGLE; };
+  document.getElementById('circleButton').onclick = function() { g_selectedType=CIRCLE; };
 
   // Slider Events
   document.getElementById('redSlide').addEventListener("mouseup", function() { g_selectedColor[0] = this.value/100; });
   document.getElementById('greenSlide').addEventListener("mouseup", function() { g_selectedColor[1] = this.value/100; });
   document.getElementById('blueSlide').addEventListener("mouseup", function() { g_selectedColor[2] = this.value/100; });
+  document.getElementById('segmentSlide').addEventListener("mouseup", function() { g_segments = this.value; });
 
   // Size Slider Events
   document.getElementById('sizeSlide').addEventListener('mouseup', function() { g_selectedSize = this.value; });
@@ -151,11 +163,26 @@ function click(ev) {
     */
   // g_colors.push(g_selectedColor.slice());
 
-  let newPoint = new Point();
-  newPoint.position=[x,y];
-  newPoint.color=g_selectedColor.slice();
-  newPoint.size=g_selectedSize;
-  g_shapeList.push(newPoint);
+  let newShape;
+
+  switch(g_selectedType)
+  {
+    case POINT:
+      newShape = new Point();
+      break;
+    case TRIANGLE:
+      newShape = new Triangle();
+      break;
+    case CIRCLE:
+      newShape = new Circle();
+      newShape.segments = g_segments;
+      break;
+  }
+
+  newShape.position=[x,y];
+  newShape.color=g_selectedColor.slice();
+  newShape.size=g_selectedSize;
+  g_shapeList.push(newShape);
 
   //Draw every shape that is supposed to be in the canvas
   renderAllShapes();

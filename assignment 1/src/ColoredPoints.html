@@ -11,9 +11,16 @@
     </canvas>
     <p id="textBox"> XXX </p>
 
-    <button type="button" id="green">Green</button>
     <button type="button" id="red">Red</button>
+    <button type="button" id="green">Green</button>
+    <button type="button" id="blue">Blue</button>
     <button type="button" id="clearButton">Clear</button>
+
+    <br>
+    <br>
+    <button type="button" id="pointButton">Point</button>
+    <button type="button" id="triangleButton">Triangle</button>
+    <button type="button" id="circleButton">Circle</button>
 
     <br>
     Red   <input type="range" min="0" max="100" value="100" class="slider" id="redSlide">
@@ -26,6 +33,9 @@
     Size <input type = "range" min="5.0" max="40.0" value="0" class="slider" id="sizeSlide">
 
     <br>
+    Circle Segments <input type = "range" min="10" max="100" value="0" class="slider" id="segmentSlide">
+
+    <br>
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/color -->
     Color Select: <input type="color" value="#FFFFFF">
 
@@ -33,6 +43,8 @@
     <script src="../Change a point color_files/webgl-debug.js"></script>
     <script src="../Change a point color_files/cuon-utils.js"></script>
     <script src="../Change a point color_files/Points.js"></script>
+    <script src="../Change a point color_files/Triangle.js"></script>
+    <script src="../Change a point color_files/Circle.js"></script>
     <script src="../Change a point color_files/ColoredPoints.js"></script>
   
 
