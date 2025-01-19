@@ -57,13 +57,3 @@ function drawPentagon(x,y,n,size,array)
     drawTriangle([array[0][0],array[0][1],  array[len-1][0],array[len-1][1],  x,y]);
 
 }
-
-function the270DegreeRotationArray(array)
-{
-    let return_array = [];
-    for(let i = 0; i < array.length; i++)
-    {
-        return_array.push(the270DegreeRotation(array[i]));
-    }
-    return return_array;
-}

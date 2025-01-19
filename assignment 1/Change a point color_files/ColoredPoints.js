@@ -27,6 +27,7 @@ const POINT = 0;
 const TRIANGLE = 1;
 const CIRCLE = 2;
 const TAGON = 3;
+const STAR = 4;
   
 // Global Variables
 // https://dev.to/shantanu_jana/how-to-play-sound-on-button-click-in-javascript-3m48
@@ -56,6 +57,7 @@ function addActionsForHtmlUI()
   document.getElementById('triangleButton').onclick = function() { g_selectedType=TRIANGLE; };
   document.getElementById('circleButton').onclick = function() { g_selectedType=CIRCLE; };
   document.getElementById('tagonButton').onclick = function() { g_selectedType=TAGON; };
+  document.getElementById('starButton').onclick = function() { g_selectedType=STAR; };
 
   // Slider Events
   document.getElementById('redSlide').addEventListener("mouseup", function() { g_selectedColor[0] = this.value/100; });
@@ -192,6 +194,11 @@ function click(ev) {
     case TAGON:
       newShape = new N_tagon();
       newShape.numSide = g_numSide;
+      break;
+    case STAR:
+      newShape = new Star();
+      newShape.numSide = 5;
+      break;
   }
 
   newShape.position=[x,y];
