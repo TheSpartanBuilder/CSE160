@@ -5,12 +5,12 @@ class Star{
     this.color = [1.0,1.0,1.0,1.0];
     this.size = 5.0;
     this.numSide = 5;
-    this.array = new generatePentagonVertices(this.position[0],this.position[1],this.numSide,this.size);
+    this.array = new generatestarVertices(this.position[0],this.position[1],this.numSide,this.size);
     //console.log(generatePentagonVertices(this.position[0],this.position[1],this.numSide,this.size));
     }
 
     update(){
-        this.array = new generatePentagonVertices(this.position[0],this.position[1],this.numSide,this.size);
+        this.array = new generatestarVertices(this.position[0],this.position[1],this.numSide,this.size);
         //console.log(generatePentagonVertices(this.position[0],this.position[1],this.numSide,this.size));
     }
 
@@ -26,7 +26,8 @@ class Star{
 
 function drawStar(x,y,n,size,array)
 {
-  let new_array = the270DegreeRotationArray(array,[x,y]);
+  //let new_array = the270DegreeRotationArray(array,[x,y]);
+  let new_array = array;
   for(let i = 0; i < n-1; i++)
   {
     let middle = [(new_array[i][0]+new_array[i+1][0])/2,(new_array[i][1]+new_array[i+1][1])/2];
@@ -49,6 +50,11 @@ function the270DegreeRotationArray(array,point)
         return_array.push(the270DegreeRotation(array[i],point));
     }
     return return_array;
+}
+
+function generatestarVertices(x,y,n,size)
+{
+  return the270DegreeRotationArray(generatePentagonVertices(x,y,n,size),[x,y]);
 }
 
 /*
