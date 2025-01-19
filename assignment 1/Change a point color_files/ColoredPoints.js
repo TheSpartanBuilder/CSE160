@@ -42,6 +42,7 @@ let g_selectedSize= 5.0;
 let g_selectedType=POINT;
 let g_segments = 10;
 let g_numSide = 5;
+let g_point = 5;
 
 // Set up actions for the HTML UI elements
 function addActionsForHtmlUI()
@@ -70,6 +71,7 @@ function addActionsForHtmlUI()
 
   //Options
   document.getElementById("numSideSelect").addEventListener( "change" ,function() { g_numSide = this.value; });
+  document.getElementById("numPointSelect").addEventListener( "change" ,function() { g_point = this.value; });
 }
 
 
@@ -197,7 +199,7 @@ function click(ev) {
       break;
     case STAR:
       newShape = new Star();
-      newShape.numSide = 5;
+      newShape.numSide = g_point;
       break;
   }
 
