@@ -11,6 +11,8 @@
     </canvas>
     <p id="textBox"> XXX </p>
 
+    <p>For the best experiance please trun on the speaker!</p>
+
     <h3>Drawings:</h3>
     <button onclick="japanFlag()">Japan</button>
     <button onclick="usa()">USA</button>
@@ -91,9 +93,39 @@
       <br>
       <a href="https://en.m.wikipedia.org/wiki/File:Construction_sheet_of_the_Japanese_flag.svg">Source of the image</a>
     </p>
-    <h4>Draw:</h4>
+    <h4>USA:</h4>
     <p>
-
+      USA is much harder to make since I need to find ways to create rectangle and star in open gl.<br>
+      For the rectangle I have made a class that utilize 2 triangle to make a rectangle.<br>
+      For the star I have made 2 class. The first class is some_tagon class that can create a pentagon for the base of the star. The pentagon is created by sticking triangle together. So for a pentagon I have used 5 triangle to create the 5 side.
+      Then I have made a star class that is base on the pentagon class. Where it will draw the 5 point to create a star. 
+      <br>
+      <h5>In total:</h5>
+      Each stripes are made from a rectangle and each rectangle is created by putting 2 triangle together.
+      <br>
+      Each star are mode from 5 point and a pentagon. Then each pentagon is made out of 5 triangle as well. So each 5 point star in the US flag is made of 10 triangle.
+      <br><br>
+      <h5>List of triangles:</h5>
+      Stripes * 13 = Rectangle * 13 = 2 Triangle * 13 = 26 Triangles<br>
+      Star * 50 = (5 Triangle + Pantagon) * 50 = (5 Triangle + 5 Triangle) * 50 = 10 Triangle * 50 = 500 Triangles<br>
+      Blue Square * 1 = 2 Triangle<br>
+      Total Triangle used to make the US flag = 528 Triangles
+      <br><br><br>
+      <img src="../Image/=-07.jpg" alt="Japan Flag detail" width="800"height="auto">
+      <br>
+      <img src="../Image/=-08.jpg" alt="Japan Flag detail" width="800"height="auto">
+      <br>
+      <img src="../Image/=-09.jpg" alt="Japan Flag detail" width="800"height="auto">
+      <br>
+      <img src="../Image/=-10.jpg" alt="Japan Flag detail" width="800"height="auto">
+      <br>
+      <img src="../Image/=-11.jpg" alt="Japan Flag detail" width="800"height="auto">
+      <br>
+      <img src="../Image/=-12.jpg" alt="Japan Flag detail" width="800"height="auto">
+      <br>
+      <br>
+      <a href="https://en.wikipedia.org/wiki/File:Flag_of_the_United_States_(Pantone).svg">Source of the first image</a><br>
+      <a href="https://flag-post.com/wp-content/uploads/2013/12/Proportions-Measured-in-Stripes.bmp">Source of the second image</a>
     </p>
 
     <script src="../Change a point color_files/webgl-utils.js"></script>
