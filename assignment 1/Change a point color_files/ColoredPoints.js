@@ -28,6 +28,7 @@ const TRIANGLE = 1;
 const CIRCLE = 2;
 const TAGON = 3;
 const STAR = 4;
+const RACTANGLE = 5;
   
 // Global Variables
 // https://dev.to/shantanu_jana/how-to-play-sound-on-button-click-in-javascript-3m48
@@ -43,6 +44,8 @@ let g_selectedType=POINT;
 let g_segments = 10;
 let g_numSide = 5;
 let g_point = 5;
+let g_width = 30.0;
+let g_height = 18.0;
 
 // Set up actions for the HTML UI elements
 function addActionsForHtmlUI()
@@ -59,6 +62,7 @@ function addActionsForHtmlUI()
   document.getElementById('circleButton').onclick = function() { g_selectedType=CIRCLE; };
   document.getElementById('tagonButton').onclick = function() { g_selectedType=TAGON; };
   document.getElementById('starButton').onclick = function() { g_selectedType=STAR; };
+  document.getElementById('ractangleButton').onclick = function() { g_selectedType=RACTANGLE; };
 
   // Slider Events
   document.getElementById('redSlide').addEventListener("mouseup", function() { g_selectedColor[0] = this.value/100; });
@@ -68,6 +72,8 @@ function addActionsForHtmlUI()
 
   // Size Slider Events
   document.getElementById('sizeSlide').addEventListener('mouseup', function() { g_selectedSize = this.value; });
+  document.getElementById('widthSlide').addEventListener('mouseup', function() { g_width = this.value; });
+  document.getElementById('heightSlide').addEventListener('mouseup', function() { g_height = this.value; });
 
   //Options
   document.getElementById("numSideSelect").addEventListener( "change" ,function() { g_numSide = this.value; });
@@ -144,6 +150,8 @@ function main() {
 
   // test();
   // drawPentagon();
+  // let test = new Ractangle();
+  // test.render();
 
   // console.log(myGeneratePentagonVertices(0,0,5,2));
 }
@@ -201,6 +209,10 @@ function click(ev) {
       newShape = new Star();
       newShape.numSide = g_point;
       break;
+    case RACTANGLE:
+      newShape = new Ractangle();
+      newShape.width = g_width;
+      newShape.height = g_height;
   }
 
   newShape.position=[x,y];

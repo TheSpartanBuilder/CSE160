@@ -5,13 +5,13 @@ class Star{
     this.color = [1.0,1.0,1.0,1.0];
     this.size = 5.0;
     this.numSide = 5;
-    this.array = generatestarVertices(this.position[0],this.position[1],this.numSide,this.size);
+    this.array = generateStarVertices(this.position[0],this.position[1],this.numSide,this.size);
     this.arrayPoint = generatePointStarVertices(this.position[0],this.position[1],this.numSide,this.array);
     //console.log(generatePentagonVertices(this.position[0],this.position[1],this.numSide,this.size));
     }
 
     update(){
-        this.array = generatestarVertices(this.position[0],this.position[1],this.numSide,this.size);
+        this.array = generateStarVertices(this.position[0],this.position[1],this.numSide,this.size);
         this.arrayPoint = generatePointStarVertices(this.position[0],this.position[1],this.numSide,this.array);
         //console.log(generatePentagonVertices(this.position[0],this.position[1],this.numSide,this.size));
     }
@@ -47,7 +47,7 @@ function the270DegreeRotationArray(array,point)
     return return_array;
 }
 
-function generatestarVertices(x,y,n,size)
+function generateStarVertices(x,y,n,size)
 {
   return the270DegreeRotationArray(generatePentagonVertices(x,y,n,size),[x,y]);
 }
