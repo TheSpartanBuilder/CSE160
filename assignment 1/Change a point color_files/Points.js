@@ -13,6 +13,10 @@ class Point{
       this.color = [1.0,1.0,1.0,1.0];
       this.size = 5.0;
     }
+
+    update(){
+      
+    }
   
     render(){
 

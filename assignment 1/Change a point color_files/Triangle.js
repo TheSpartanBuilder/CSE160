@@ -6,6 +6,11 @@ class Triangle
         this.color = [1.0,1.0,1.0,1.0];
         this.size = 5.0;
       }
+
+      update()
+      {
+        
+      }
     
       render(){
         // Pass the size of a point to u_Size variable

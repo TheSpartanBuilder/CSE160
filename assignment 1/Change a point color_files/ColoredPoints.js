@@ -26,6 +26,7 @@ const target_neutralized_sound = new Audio("../Audio/target-neutralized-sound-ef
 const POINT = 0;
 const TRIANGLE = 1;
 const CIRCLE = 2;
+const TAGON = 3;
   
 // Global Variables
 // https://dev.to/shantanu_jana/how-to-play-sound-on-button-click-in-javascript-3m48
@@ -39,6 +40,7 @@ let g_selectedColor=[1.0,1.0,1.0,1.0];
 let g_selectedSize= 5.0;
 let g_selectedType=POINT;
 let g_segments = 10;
+let g_numSide = 5;
 
 // Set up actions for the HTML UI elements
 function addActionsForHtmlUI()
@@ -47,11 +49,13 @@ function addActionsForHtmlUI()
   document.getElementById('green').onclick = function() { g_selectedColor = [0.0,1.0,0.0,1.0];};
   document.getElementById('red').onclick = function() { g_selectedColor = [1.0,0.0,0.0,1.0];};
   document.getElementById('blue').onclick = function() { g_selectedColor = [0.0,0.0,1.0,1.0];};
-  document.getElementById('clearButton').onclick = function() { g_shapeList = []; renderAllShapes(); explosion_sound.play(); setTimeout( () => target_neutralized_sound.play(),1200);};
+  document.getElementById('clearButton').onclick = function() { g_shapeList = []; renderAllShapes(); };
+  document.getElementById('extreamButton').onclick = function() { g_shapeList = []; renderAllShapes(); explosion_sound.play(); setTimeout( () => target_neutralized_sound.play(),1200);};
 
   document.getElementById('pointButton').onclick = function() { g_selectedType=POINT; };
   document.getElementById('triangleButton').onclick = function() { g_selectedType=TRIANGLE; };
   document.getElementById('circleButton').onclick = function() { g_selectedType=CIRCLE; };
+  document.getElementById('tagonButton').onclick = function() { g_selectedType=TAGON; };
 
   // Slider Events
   document.getElementById('redSlide').addEventListener("mouseup", function() { g_selectedColor[0] = this.value/100; });
@@ -61,6 +65,9 @@ function addActionsForHtmlUI()
 
   // Size Slider Events
   document.getElementById('sizeSlide').addEventListener('mouseup', function() { g_selectedSize = this.value; });
+
+  //Options
+  document.getElementById("numSideSelect").addEventListener( "change" ,function() { g_numSide = this.value; });
 }
 
 
@@ -130,6 +137,11 @@ function main() {
 
   // Clear <canvas>
   gl.clear(gl.COLOR_BUFFER_BIT);
+
+  // test();
+  // drawPentagon();
+
+  // console.log(myGeneratePentagonVertices(0,0,5,2));
 }
 
 /*
@@ -177,11 +189,15 @@ function click(ev) {
       newShape = new Circle();
       newShape.segments = g_segments;
       break;
+    case TAGON:
+      newShape = new N_tagon();
+      newShape.numSide = g_numSide;
   }
 
   newShape.position=[x,y];
   newShape.color=g_selectedColor.slice();
   newShape.size=g_selectedSize;
+  newShape.update();
   g_shapeList.push(newShape);
 
   //Draw every shape that is supposed to be in the canvas

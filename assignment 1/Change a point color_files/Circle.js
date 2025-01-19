@@ -15,6 +15,10 @@ class Circle{
       this.size = 5.0;
       this.segments = 10;
     }
+
+    update(){
+      
+    }
   
     render(){
 
