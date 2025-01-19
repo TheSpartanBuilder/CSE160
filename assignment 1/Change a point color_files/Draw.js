@@ -1,6 +1,7 @@
-function draw()
+function usa()
 {
     //g_shapeList.push();
+    let sound = new Audio("../Audio/eagle-281163.mp3");
 
     g_shapeList = []; 
     renderAllShapes();
@@ -259,6 +260,7 @@ function draw()
 
 
     renderAllShapes();
+    sound.play();
 }
 
 
@@ -484,4 +486,14 @@ function drawStarByLine(){
     tempStar.numSide = 5;
     tempStar.update();
     g_shapeList.push(tempStar);
+}
+
+function windowXP()
+{
+    let sound = new Audio("../Audio/windows-xp-startup.mp3");
+
+
+    
+    renderAllShapes();
+    sound.play();
 }
