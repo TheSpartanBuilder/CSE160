@@ -29,7 +29,7 @@ class N_tagon
 function generatePentagonVertices(x,y,n,size)
 {
     let vertexs = [];
-    let r = size/30;
+    let r = size/200;
     // https://stackoverflow.com/questions/3436453/calculate-coordinates-of-a-regular-polygons-vertices
     // The formular is from this website
     for(let i = 0; i < n; i++)
