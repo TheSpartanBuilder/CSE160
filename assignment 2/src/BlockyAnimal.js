@@ -57,6 +57,18 @@ let g_magentaAngle = 0;
 let g_yellowAnimation = false;
 let g_magenteAnimation = false;
 
+function g_yellowAnimationState(input)
+{
+  // console.log(input);
+  g_yellowAnimation = input;
+}
+
+function g_magenteAnimationState(input)
+{
+  // console.log(input);
+  g_magenteAnimation = input;
+}
+
 // Set up actions for the HTML UI elements
 function addActionsForHtmlUI()
 {
@@ -79,9 +91,9 @@ function addActionsForHtmlUI()
   // document.getElementById('greenSlide').addEventListener("mouseup", function() { g_selectedColor[1] = this.value/100; });
   // document.getElementById('blueSlide').addEventListener("mouseup", function() { g_selectedColor[2] = this.value/100; });
   // document.getElementById('segmentSlide').addEventListener("mouseup", function() { g_segments = this.value; });
-  document.getElementById('angleSlide').addEventListener("mousemove", function() { g_yellowAngle = this.value; renderAllShapes(); });
-  document.getElementById('yellowSlide').addEventListener("mousemove", function() { g_yellowSlide = this.value; renderAllShapes(); });
-  document.getElementById('magentaSlide').addEventListener("mousemove", function() { g_magentaAngle = this.value; renderAllShapes(); });
+  document.getElementById('angleSlide').addEventListener("mousemove", function() { g_yellowAngle = this.value;  });
+  document.getElementById('yellowSlide').addEventListener("mousemove", function() { g_yellowSlide = this.value;  });
+  document.getElementById('magentaSlide').addEventListener("mousemove", function() { g_magentaAngle = this.value;  });
 
   // document.getElementById('angleSlide').addEventListener("mouseup", function() { g_globalAngle = this.value; renderAllShapes(); });
 
@@ -175,8 +187,8 @@ function main() {
   addActionsForHtmlUI();
 
   // Register function (event handler) to be called on a mouse press
-  canvas.onmousedown = function(ev){ click(ev) };
-  canvas.onmousemove = function(ev){ if(ev.buttons == 1) { click(ev); }};
+  // canvas.onmousedown = function(ev){ click(ev) };
+  // canvas.onmousemove = function(ev){ if(ev.buttons == 1) { click(ev); }};
 
   // Specify the color for clearing <canvas>
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -284,7 +296,7 @@ function tick() {
   // console.log(performance.now());
 
   // Save the current time
-  g_second=performance.now()/1000.0-g_startTime;
+  g_seconds=performance.now()/1000.0-g_startTime;
   // console.log(g_seconds)
 
   // Update Animation Angles
@@ -298,8 +310,9 @@ function tick() {
 }
 
 function updateAnimationAngles() {
+  // console.log(g_yellowAnimation);
   if(g_yellowAnimation) {
-    g_yellowAngle = (45*Math.sin(g_seconds));
+    g_yellowSlide = (45*Math.sin(g_seconds));
   }
 
   if(g_magenteAnimation) {
