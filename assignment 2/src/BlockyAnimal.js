@@ -403,13 +403,17 @@ function renderAllShapes(){
   box.matrix.rotate(g_magentaAngle,0,0,1);
   box.matrix.scale(.3,.3,.3);
   box.matrix.translate(-.5,0,-0.001);
+  box.render();
+
+
   // box.matrix.translate(-.1,.1,0,0);
   // box.matrix.rotate(-30,1,0,0);
   // box.matrix.scale(.2,.4,.2);
-  // box.matrix.multiply(yelloCoordinateMatrixInverse);
-  // box.matrix.rotate(g_yellowSlide,1,0,0);
-  // box.matrix.multiply(yelloCoordinateMatrix);
-  box.render()
+  // // box.matrix.multiply(yelloCoordinateMatrixInverse);
+  // // box.matrix.rotate(g_yellowSlide,1,0,0);
+  // // box.matrix.multiply(yelloCoordinateMatrix);
+  // box.matrix.multiply(basisAngle(yelloCoordinateMatrix,[g_yellowSlide,1,0,0]));
+  // box.render()
 
   // var time = performance.now() - startTime;
   // sendTextToHTML("numdot: " + len + " ms: " + Math.floor(time) + " fps: " + Math.floor(10000/time),"textBox");
@@ -423,4 +427,38 @@ function sendTextToHTML(text, htmlID) {
     return;
   }
   htmlElm.innerHTML = text;
+}
+
+// Change of basis angle matrix
+function basisAngle(matrix,angle)
+{
+  let i1 = new Vector4([1,0,0,1]);
+  let i2 = new Vector4([0,1,0,1]);
+  let i3 = new Vector4([0,0,1,1]);
+  let v1 = matrix.multiplyVector4(i1);
+  let v2 = matrix.multiplyVector4(i2);
+  let v3 = matrix.multiplyVector4(i3);
+
+  //console.log(v1,v2,v3)
+
+  let v1e = v1.elements;
+  let v2e = v2.elements;
+  let v3e = v3.elements;
+
+  let basisMatrix = new Matrix4();
+  let e = basisMatrix.elements;
+  e[0] = v1e[0];   e[4] = v2e[0];   e[8]  = v3e[0];   e[12] = 0;
+  e[1] = v1e[1];   e[5] = v2e[1];   e[9]  = v3e[1];   e[13] = 0;
+  e[2] = v1e[2];   e[6] = v2e[2];   e[10] = v3e[2];   e[14] = 0;
+  e[3] = 0;   e[7] = 0;   e[11] = 0;   e[15] = 1;
+
+  //console.log(basisMatrix)
+
+  let basisMatrixInverse = new Matrix4().invert(basisMatrix);
+
+  //console.log("inverse");
+  //console.log(basisMatrixInverse)
+
+  let BasisMatrixRotate = new Matrix4(basisMatrix).rotate(angle[0],angle[1],angle[2],angle[3]);
+  return new Matrix4(BasisMatrixRotate).multiply(basisMatrixInverse);
 }
