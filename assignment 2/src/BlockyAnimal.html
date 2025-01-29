@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)https://rodger.global-linguist.com/webgl/ch02/ColoredPoints.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Change a point color</title>
+  </head>
+
+  <body onload="main()">
+    <canvas id="webgl" width="400" height="400">
+    Please use a browser that supports "canvas"
+    </canvas>
+    <p id="textBox"> XXX </p>
+
+    <p>For the best experiance please trun on the speaker!</p>
+
+    <h3>Drawings:</h3>
+    <button onclick="japanFlag()">Japan</button>
+    <button onclick="usa()">USA</button>
+    <!-- <button onclick="windowXP()">Window XP</button> -->
+    <h3>Functions for drawing:</h3>
+    <button type="button" id="red">Red</button>
+    <button type="button" id="green">Green</button>
+    <button type="button" id="blue">Blue</button>
+    <button type="button" id="clearButton">Clear</button>
+    <button type="button" id="extreamButton">Extream Clear</button>
+
+    <br>
+    <br>
+    <button type="button" id="pointButton">Point</button>
+    <button type="button" id="triangleButton">Triangle</button>
+    <button type="button" id="circleButton">Circle</button>
+    <button type="button" id="tagonButton">Some_tagon</button>
+    <button type="button" id="starButton">Star</button>
+    <button type="button" id="ractangleButton">Ractangle</button>
+
+    <br>
+    Red   <input type="range" min="0" max="100" value="100" class="slider" id="redSlide">
+    <br>
+    Green <input type="range" min="0" max="100" value="100" class="slider" id="greenSlide">
+    <br>
+    Blue  <input type="range" min="0" max="100" value="100" class="slider" id="blueSlide">
+
+    <br><br>
+    Size <input type = "range" min="5.0" max="40.0" value="0" class="slider" id="sizeSlide">
+
+    <br>
+    Circle Segments <input type = "range" min="10" max="100" value="0" class="slider" id="segmentSlide">
+
+    <br>
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/color -->
+    <!-- Color Select: <input type="color" value="#FFFFFF"> -->
+
+    <br><br><br>
+    Number of Sides for the some_tagon:
+    <select name="numSideSelect" id="numSideSelect">
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+
+    <br><br><br>
+    Number of Points for the star:
+    <select name="numPointSelect" id="numPointSelect">
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+
+    <br><br><br>
+    Ractangle:<br>
+    Ractangle Width: <input type = "range" min="5.0" max="200.0" value="30" class="slider" id="widthSlide"><br>
+    Ractangle Height: <input type = "range" min="5.0" max="200.0" value="18" class="slider" id="heightSlide"><br>
+
+    <br><br><br><br><br>
+    <h3>Awesome Feature:</h3>
+    <p>The feature that I have added to make the webpage awesome is by adding the option to make some_tagon with up to 10 side control by the select menue. Then star with up to 10 points with the select menue. At last Ractangle and you can control the width and height with the slider. Size does not work with ractangle.
+      <br><br>
+      Other then more shape that you can use the draw. I have added a extream clear. Turn on your speaker to enjoy the full experiance of extream clear.
+    </p>
+    <br><br><br><br><br>
+    <h3>Drawing Details:</h3>
+    <br>
+    <h4>Japan:</h4>
+    <p>
+      Japan is quite easy since it is just a red circle and a white rectangle to create the japan flag. But I still base my design on this image to have more accurate scaling.
+      <img src="../Image/Construction_sheet_of_the_Japanese_flag.svg" alt="Japan Flag detail">
+      <br>
+      <a href="https://en.m.wikipedia.org/wiki/File:Construction_sheet_of_the_Japanese_flag.svg">Source of the image</a>
+    </p>
+    <br><br><br>
+    <h4>USA:</h4>
+    <p>
+      USA is much harder to make since I need to find ways to create rectangle and star in open gl.<br>
+      For the rectangle I have made a class that utilize 2 triangle to make a rectangle.<br>
+      For the star I have made 2 class. The first class is some_tagon class that can create a pentagon for the base of the star. The pentagon is created by sticking triangle together. So for a pentagon I have used 5 triangle to create the 5 side.
+      Then I have made a star class that is base on the pentagon class. Where it will draw the 5 point to create a star. 
+      <br>
+      <h5>In total:</h5>
+      Each stripes are made from a rectangle and each rectangle is created by putting 2 triangle together.
+      <br>
+      Each star are mode from 5 point and a pentagon. Then each pentagon is made out of 5 triangle as well. So each 5 point star in the US flag is made of 10 triangle.
+      <br><br>
+      <h5>Number of triangles:</h5>
+      Stripes * 13 = Rectangle * 13 = 2 Triangle * 13 = 26 Triangles<br>
+      Star * 50 = (5 Triangle + Pantagon) * 50 = (5 Triangle + 5 Triangle) * 50 = 10 Triangle * 50 = 500 Triangles<br>
+      Blue Square * 1 = 2 Triangle<br>
+      Total Triangle used to make the US flag = 528 Triangles
+      <br><br><br>
+      <img src="../Image/=-7.jpg" alt="Notes" width="800"height="auto">
+      <br>
+      <img src="../Image/=-08.jpg" alt="Notes" width="800"height="auto">
+      <br>
+      <img src="../Image/=-09.jpg" alt="Notes" width="800"height="auto">
+      <br>
+      <img src="../Image/=-10.jpg" alt="Notes" width="800"height="auto">
+      <br>
+      <img src="../Image/=-11.jpg" alt="Notes" width="800"height="auto">
+      <br>
+      <img src="../Image/=-12.jpg" alt="Notes" width="800"height="auto">
+      <br>
+      <br>
+      <a href="https://en.wikipedia.org/wiki/File:Flag_of_the_United_States_(Pantone).svg">Source of the first image</a><br>
+      <a href="https://flag-post.com/wp-content/uploads/2013/12/Proportions-Measured-in-Stripes.bmp">Source of the second image</a>
+    </p>
+    <h3>Note on design of star:</h3>
+    <img src="../Image/=-2.jpg" alt="Notes" width="800"height="auto">
+
+    <script src="../Change a point color_files/webgl-utils.js"></script>
+    <script src="../Change a point color_files/webgl-debug.js"></script>
+    <script src="../Change a point color_files/cuon-utils.js"></script>
+    <script src="../lib/cuon-matrix-cse160.js"></script>
+    <script src="../src/Rotation.js"></script>
+    <script src="../src/Points.js"></script>
+    <script src="../src/Triangle.js"></script>
+    <script src="../src/Circle.js"></script>
+    <script src="../src/N_tagon.js"></script>
+    <script src="../src/Star.js"></script>
+    <script src="../src/Ractangle.js"></script>
+    <script src="../src/Cube.js"></script>
+    <script src="../src/Draw.js"></script>
+    <script src="../src/BlockyAnimal.js"></script>
+  
+
+</body></html>
