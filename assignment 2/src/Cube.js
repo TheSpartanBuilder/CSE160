@@ -51,14 +51,14 @@ class Cube{
         drawTriangle3D( [0.0,0.0,0.0,  0.0,1.0,0.0, 1.0,1.0,0.0]);
 
         // Pass the color of a point to u_FragColor uniform variable
-        gl.uniform4f(u_FragColor,this.color[0]*.95,this.color[1]*.95,this.color[2]*.95,this.color[3]*.95);
+        gl.uniform4f(u_FragColor,this.color[0]*.95,this.color[1]*.95,this.color[2]*.95,this.color[3]);
         // gl.uniform4f(u_FragColor,1,1,1,1);
 
         drawTriangle3D( [0,1,0,   0,1,1,   1,1,1]);
         drawTriangle3D( [0,1,0,   1,1,1,   1,1,0]);
 
         // Pass the color of a point to u_FragColor uniform variable
-        gl.uniform4f(u_FragColor,this.color[0]*.8,this.color[1]*.9,this.color[2]*.9,this.color[3]*.9);
+        gl.uniform4f(u_FragColor,this.color[0]*.8,this.color[1]*.9,this.color[2]*.9,this.color[3]);
         // gl.uniform4f(u_FragColor,0.5,1,1,1);
 
         drawTriangle3D( [1,0,1,   0,0,1,   0,0,0]);
@@ -72,14 +72,14 @@ class Cube{
         // drawTriangle3D( [0,0,0,   1,0,0,   1,0,1]);
 
         // Pass the color of a point to u_FragColor uniform variable
-        gl.uniform4f(u_FragColor,this.color[0]*.8,this.color[1]*.8,this.color[2]*.8,this.color[3]*.8);
+        gl.uniform4f(u_FragColor,this.color[0]*.8,this.color[1]*.8,this.color[2]*.8,this.color[3]);
         // gl.uniform4f(u_FragColor,0.5,0.5,1,1);
 
         drawTriangle3D( [1,0,1,   1,1,1,   0,1,1]);
         drawTriangle3D( [0,1,1,   0,0,1,   1,0,1]);
 
         // Pass the color of a point to u_FragColor uniform variable
-        gl.uniform4f(u_FragColor,this.color[0]*.75,this.color[1]*.75,this.color[2]*.75,this.color[3]*.75);
+        gl.uniform4f(u_FragColor,this.color[0]*.75,this.color[1]*.75,this.color[2]*.75,this.color[3]);
         // gl.uniform4f(u_FragColor,0.5,0.5,0.5,1);
 
         drawTriangle3D( [1,1,1,   1,0,1,   1,0,0]);
