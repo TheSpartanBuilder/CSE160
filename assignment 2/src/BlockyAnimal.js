@@ -51,9 +51,12 @@ let u_GlobalRotateMatrix;
 // let g_point = 5;
 // let g_width = 30.0;
 // let g_height = 18.0;
-let g_yellowAngle = 0;
-let g_yellowSlide = 0;
-let g_magentaAngle = 0;
+let g_leftUpperLegAngle = 0;
+let g_leftLowerLegSlideAngle = 0;
+let g_leftFeetSlideAngle = 0;
+let g_rightUpperLegAngle = 0;
+let g_rightLowerLegSlideAngle = 0;
+let g_rightFeetSlideAngle = 0;
 let g_yellowAnimation = false;
 let g_magenteAnimation = false;
 let originalCoordinate = [0,0];
@@ -92,9 +95,12 @@ function addActionsForHtmlUI()
   // document.getElementById('greenSlide').addEventListener("mouseup", function() { g_selectedColor[1] = this.value/100; });
   // document.getElementById('blueSlide').addEventListener("mouseup", function() { g_selectedColor[2] = this.value/100; });
   // document.getElementById('segmentSlide').addEventListener("mouseup", function() { g_segments = this.value; });
-  document.getElementById('angleSlide').addEventListener("mousemove", function() { g_yellowAngle = this.value;  });
-  document.getElementById('yellowSlide').addEventListener("mousemove", function() { g_yellowSlide = this.value;  });
-  document.getElementById('magentaSlide').addEventListener("mousemove", function() { g_magentaAngle = this.value;  });
+  document.getElementById('leftUpperLegSlide').addEventListener("mousemove", function() { g_leftUpperLegAngle = this.value;  });
+  document.getElementById('leftLowerLegSlide').addEventListener("mousemove", function() { g_leftLowerLegSlideAngle = this.value;  });
+  document.getElementById('leftFeetSlide').addEventListener("mousemove", function() { g_leftFeetSlideAngle = this.value;  });
+  document.getElementById('rightUpperLegSlide').addEventListener("mousemove", function() { g_rightUpperLegAngle = this.value;  });
+  document.getElementById('rightLowerLegSlide').addEventListener("mousemove", function() { g_rightLowerLegSlideAngle = this.value;  });
+  document.getElementById('rightFeetSlide').addEventListener("mousemove", function() { g_rightFeetSlideAngle = this.value;  });
   // document.getElementById('angleSlide').addEventListener("mouseup", function() { g_yellowAngle = this.value;  });
   // document.getElementById('yellowSlide').addEventListener("mouseup", function() { g_yellowSlide = this.value;  });
   // document.getElementById('magentaSlide').addEventListener("mouseup", function() { g_magentaAngle = this.value;  });
@@ -333,6 +339,9 @@ function renderAllShapes(){
 
   var tom = new Tom();
   tom.render();
+
+  // var item = new Cylinder();
+  // item.render();
 }
 
 
