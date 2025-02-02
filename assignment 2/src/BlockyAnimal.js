@@ -68,19 +68,14 @@ let g_magenteAnimation = false;
 let g_headXSlideAngle = 0;
 let g_headYSlideAngle = 0;
 let originalCoordinate = [0,0];
+let g_animationOn = true;
+let g_animationSpeed = 1;
 
-let g_animation = false;
+// let g_animation = false;
 
-function g_yellowAnimationState(input)
+function g_animationState(input)
 {
-  // console.log(input);
-  g_yellowAnimation = input;
-}
-
-function g_magenteAnimationState(input)
-{
-  // console.log(input);
-  g_magenteAnimation = input;
+  g_animationOn = input;
 }
 
 // Set up actions for the HTML UI elements
@@ -105,20 +100,22 @@ function addActionsForHtmlUI()
   // document.getElementById('greenSlide').addEventListener("mouseup", function() { g_selectedColor[1] = this.value/100; });
   // document.getElementById('blueSlide').addEventListener("mouseup", function() { g_selectedColor[2] = this.value/100; });
   // document.getElementById('segmentSlide').addEventListener("mouseup", function() { g_segments = this.value; });
-  document.getElementById('leftUpperLegSlide').addEventListener("mousemove", function() { g_leftUpperLegAngle = this.value;  });
-  document.getElementById('leftLowerLegSlide').addEventListener("mousemove", function() { g_leftLowerLegSlideAngle = this.value;  });
-  document.getElementById('leftFeetSlide').addEventListener("mousemove", function() { g_leftFeetSlideAngle = this.value;  });
-  document.getElementById('rightUpperLegSlide').addEventListener("mousemove", function() { g_rightUpperLegAngle = this.value;  });
-  document.getElementById('rightLowerLegSlide').addEventListener("mousemove", function() { g_rightLowerLegSlideAngle = this.value;  });
-  document.getElementById('rightFeetSlide').addEventListener("mousemove", function() { g_rightFeetSlideAngle = this.value;  });
-  document.getElementById('leftUpperArmSlide').addEventListener("mousemove", function() { g_leftUpperArmSlideAngle = this.value;  });
-  document.getElementById('leftLowerArmSlide').addEventListener("mousemove", function() { g_leftLowerArmSlideAngle = this.value;  });
-  document.getElementById('leftHandSlide').addEventListener("mousemove", function() { g_leftHandSlideAngle = this.value;  });
-  document.getElementById('rightUpperArmSlide').addEventListener("mousemove", function() { g_rightUpperArmSlideAngle = this.value;  });
-  document.getElementById('rightLowerArmSlide').addEventListener("mousemove", function() { g_rightLowerArmSlideAngle = this.value;  });
-  document.getElementById('rightHandSlide').addEventListener("mousemove", function() { g_rightHandSlideAngle = this.value;  });
-  document.getElementById('headXSlide').addEventListener("mousemove", function() { g_headXSlideAngle = this.value;  });
-  document.getElementById('headYSlide').addEventListener("mousemove", function() { g_headYSlideAngle = this.value;  });
+  document.getElementById('leftUpperLegSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_leftUpperLegAngle = this.value;  });
+  document.getElementById('leftLowerLegSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_leftLowerLegSlideAngle = this.value;  });
+  document.getElementById('leftFeetSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_leftFeetSlideAngle = this.value;  });
+  document.getElementById('rightUpperLegSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_rightUpperLegAngle = this.value;  });
+  document.getElementById('rightLowerLegSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_rightLowerLegSlideAngle = this.value;  });
+  document.getElementById('rightFeetSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_rightFeetSlideAngle = this.value;  });
+  document.getElementById('leftUpperArmSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_leftUpperArmSlideAngle = this.value;  });
+  document.getElementById('leftLowerArmSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_leftLowerArmSlideAngle = this.value;  });
+  document.getElementById('leftHandSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_leftHandSlideAngle = this.value;  });
+  document.getElementById('rightUpperArmSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_rightUpperArmSlideAngle = this.value;  });
+  document.getElementById('rightLowerArmSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_rightLowerArmSlideAngle = this.value;  });
+  document.getElementById('rightHandSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_rightHandSlideAngle = this.value;  });
+  document.getElementById('headXSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_headXSlideAngle = this.value;  });
+  document.getElementById('headYSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_headYSlideAngle = this.value;  });
+  document.getElementById('animationSpeedSlide').addEventListener("mousemove", function() { g_animationSpeed = this.value;  });
+
   // document.getElementById('angleSlide').addEventListener("mouseup", function() { g_yellowAngle = this.value;  });
   // document.getElementById('yellowSlide').addEventListener("mouseup", function() { g_yellowSlide = this.value;  });
   // document.getElementById('magentaSlide').addEventListener("mouseup", function() { g_magentaAngle = this.value;  });
@@ -291,7 +288,7 @@ function tick() {
   // console.log(g_seconds)
 
   // Update Animation Angles
-  updateAnimationAngles();
+  if(g_animationOn) updateAnimationAngles();
 
   // Draw Everything
   renderAllShapes();
@@ -302,13 +299,32 @@ function tick() {
 
 function updateAnimationAngles() {
   // console.log(g_yellowAnimation);
-  if(g_yellowAnimation) {
-    g_yellowSlide = (45*Math.sin(g_seconds));
-  }
+  // if(g_yellowAnimation) {
+  //   g_yellowSlide = (45*Math.sin(g_seconds));
+  // }
 
-  if(g_magenteAnimation) {
-    g_magentaAngle = (45*Math.sin(3*g_seconds));
-  }
+  // if(g_magenteAnimation) {
+  //   g_magentaAngle = (45*Math.sin(3*g_seconds));
+  // }
+
+  let cos = Math.cos(g_animationSpeed * g_seconds);
+  let sin = Math.sin(g_animationSpeed * g_seconds);
+
+  // Arm control
+  g_leftUpperArmSlideAngle = (30*cos);
+  g_rightUpperArmSlideAngle = (-30*cos);
+  g_leftLowerArmSlideAngle = Math.max(40*cos,0);
+  g_rightLowerArmSlideAngle = -Math.min(40*cos,0);
+  g_leftHandSlideAngle = (20*cos);
+  g_rightHandSlideAngle = (-20*cos);
+
+  // Leg control
+  g_leftUpperLegAngle = (45*sin);
+  g_rightUpperLegAngle = (-45*sin);
+  g_leftLowerLegSlideAngle = -Math.min(45*sin,0);
+  g_rightLowerLegSlideAngle = Math.max(45*sin,0);
+  g_leftFeetSlideAngle = (30*sin);
+  g_rightFeetSlideAngle = (-30*sin);
 }
 
 
@@ -369,6 +385,9 @@ function renderAllShapes(){
 
   // var test = new TriangularPrism();
   // test.render();
+
+  var duration = performance.now() - startTime;
+  sendTextToHTML(" ms: " + Math.floor(duration) + " fps: " + Math.floor(10000/duration),"textBox");
 }
 
 

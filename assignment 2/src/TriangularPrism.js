@@ -6,11 +6,3 @@ class TriangularPrism extends Cylinder {
         this.upCircleVertex = generatePentagonVertices(this.x_cordinate,this.y_cordinate,this.sides,this.size);
     }
 }
-
-
-// class TriangularPrism {
-//     constructor() {
-//         this.type = "triangular_prism";
-//         this.matrix = new Matrix4();
-//     }
-// }
