@@ -24,8 +24,8 @@ var FSHADER_SOURCE =
 // https://stackoverflow.com/questions/14226803/wait-5-seconds-before-executing-next-line
 
 // Constants
-const explosion_sound = new Audio("../Audio/explosion-42132.mp3");
-const target_neutralized_sound = new Audio("../Audio/target-neutralized-sound-effect-for-editing-made-with-Voicemod.mp3");
+// const explosion_sound = new Audio("../Audio/explosion-42132.mp3");
+// const target_neutralized_sound = new Audio("../Audio/target-neutralized-sound-effect-for-editing-made-with-Voicemod.mp3");
 const POINT = 0;
 const TRIANGLE = 1;
 const CIRCLE = 2;
@@ -57,9 +57,19 @@ let g_leftFeetSlideAngle = 0;
 let g_rightUpperLegAngle = 0;
 let g_rightLowerLegSlideAngle = 0;
 let g_rightFeetSlideAngle = 0;
+let g_leftUpperArmSlideAngle = 0;
+let g_leftLowerArmSlideAngle = 0;
+let g_leftHandSlideAngle = 0;
+let g_rightUpperArmSlideAngle = 0;
+let g_rightLowerArmSlideAngle = 0;
+let g_rightHandSlideAngle = 0;
 let g_yellowAnimation = false;
 let g_magenteAnimation = false;
+let g_headXSlideAngle = 0;
+let g_headYSlideAngle = 0;
 let originalCoordinate = [0,0];
+
+let g_animation = false;
 
 function g_yellowAnimationState(input)
 {
@@ -101,6 +111,14 @@ function addActionsForHtmlUI()
   document.getElementById('rightUpperLegSlide').addEventListener("mousemove", function() { g_rightUpperLegAngle = this.value;  });
   document.getElementById('rightLowerLegSlide').addEventListener("mousemove", function() { g_rightLowerLegSlideAngle = this.value;  });
   document.getElementById('rightFeetSlide').addEventListener("mousemove", function() { g_rightFeetSlideAngle = this.value;  });
+  document.getElementById('leftUpperArmSlide').addEventListener("mousemove", function() { g_leftUpperArmSlideAngle = this.value;  });
+  document.getElementById('leftLowerArmSlide').addEventListener("mousemove", function() { g_leftLowerArmSlideAngle = this.value;  });
+  document.getElementById('leftHandSlide').addEventListener("mousemove", function() { g_leftHandSlideAngle = this.value;  });
+  document.getElementById('rightUpperArmSlide').addEventListener("mousemove", function() { g_rightUpperArmSlideAngle = this.value;  });
+  document.getElementById('rightLowerArmSlide').addEventListener("mousemove", function() { g_rightLowerArmSlideAngle = this.value;  });
+  document.getElementById('rightHandSlide').addEventListener("mousemove", function() { g_rightHandSlideAngle = this.value;  });
+  document.getElementById('headXSlide').addEventListener("mousemove", function() { g_headXSlideAngle = this.value;  });
+  document.getElementById('headYSlide').addEventListener("mousemove", function() { g_headYSlideAngle = this.value;  });
   // document.getElementById('angleSlide').addEventListener("mouseup", function() { g_yellowAngle = this.value;  });
   // document.getElementById('yellowSlide').addEventListener("mouseup", function() { g_yellowSlide = this.value;  });
   // document.getElementById('magentaSlide').addEventListener("mouseup", function() { g_magentaAngle = this.value;  });
@@ -345,6 +363,12 @@ function renderAllShapes(){
 
   // var ractangle = new Ractangle3D();
   // ractangle.render();
+
+  // var pyramid = new Pyramid();
+  // pyramid.render()
+
+  // var test = new TriangularPrism();
+  // test.render();
 }
 
 
