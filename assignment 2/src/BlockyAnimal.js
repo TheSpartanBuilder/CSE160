@@ -342,6 +342,9 @@ function renderAllShapes(){
 
   // var item = new Cylinder();
   // item.render();
+
+  // var ractangle = new Ractangle3D();
+  // ractangle.render();
 }
 
 
