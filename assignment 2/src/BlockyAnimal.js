@@ -325,6 +325,9 @@ function updateAnimationAngles() {
   g_rightLowerLegSlideAngle = Math.max(45*sin,0);
   g_leftFeetSlideAngle = (30*sin);
   g_rightFeetSlideAngle = (-30*sin);
+
+  // Head control
+  g_headYSlideAngle = (15*sin);
 }
 
 
