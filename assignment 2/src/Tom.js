@@ -141,22 +141,20 @@ class Tom {
         // let leftLegUp = new Cube();
         this.leftLegUp.color = this.lightGray.slice();
         this.leftLegUp.matrix.setTranslate(-0.14,-0.2,0.07);
-        this.leftLegUp.matrix.rotate(g_leftUpperLegAngle,1,0,0);
-        //eftLegUp.matrix.scale(0.12,0.3,0.13);
+        // this.leftLegUp.matrix.rotate(g_leftUpperLegAngle,1,0,0);
+        rotationOnAllAxis(this.leftLegUp.matrix,g_leftUpperLegAngle,g_leftUpperLegAngleY,g_leftUpperLegAngleZ);
         let letUpLegMatrix = new Matrix4(this.leftLegUp.matrix);
         this.leftLegUp.matrix.scale(1,-1,1);
         matrixScaleMass(this.leftLegUp.matrix, this.legUpDimention)
-        // let letUpLegMatrix = new Matrix4(leftLegUp.matrix);
         this.leftLegUp.render();
 
         // let leftLegDown = new Cube();
         this.leftLegDown.color = this.lightGray.slice();
-        // leftLegDown.matrix.translate(0,-0.8,0);
         this.leftLegDown.matrix.set(letUpLegMatrix);
-        // leftLegDown.matrix.multiply(letUpLegMatrix);
         this.leftLegDown.matrix.scale(1,-1,1);
         this.leftLegDown.matrix.translate(0,0.3,0);
-        this.leftLegDown.matrix.rotate(g_leftLowerLegSlideAngle,1,0,0);
+        // this.leftLegDown.matrix.rotate(g_leftLowerLegSlideAngle,1,0,0);
+        rotationOnAllAxis(this.leftLegDown.matrix,g_leftLowerLegSlideAngle,g_leftLowerLegSlideAngleY,g_leftLowerLegSlideAngleZ)
         let leftDownMatrix = new Matrix4(this.leftLegDown.matrix);
         matrixScaleMass(this.leftLegDown.matrix,this.legDownDimention);
         this.leftLegDown.render();
@@ -166,7 +164,8 @@ class Tom {
         this.leftFeet.matrix.set(leftDownMatrix);
         this.leftFeet.matrix.scale(1,1,-1);
         this.leftFeet.matrix.translate(-0.02,0.29,-0.15);
-        this.leftFeet.matrix.rotate(g_leftFeetSlideAngle,1,0,0);
+        // this.leftFeet.matrix.rotate(g_leftFeetSlideAngle,1,0,0);
+        rotationOnAllAxis(this.leftFeet.matrix,g_leftFeetSlideAngle,g_leftFeetSlideAngleY,g_leftFeetSlideAngleZ);
         matrixScaleMass(this.leftFeet.matrix,this.feetSize);
         this.leftFeet.render();
 
@@ -176,7 +175,8 @@ class Tom {
         // let rightLegUp = new Cube();
         this.rightLegUp.color = this.lightGray.slice();
         this.rightLegUp.matrix.setTranslate(0.02,-0.2,0.07);
-        this.rightLegUp.matrix.rotate(g_rightUpperLegAngle,1,0,0);
+        // this.rightLegUp.matrix.rotate(g_rightUpperLegAngle,1,0,0);
+        rotationOnAllAxis(this.rightLegUp.matrix,g_rightUpperLegAngle,g_rightUpperLegAngleY,g_rightUpperLegAngleZ);
         let rightUpLegMatrix = new Matrix4(this.rightLegUp.matrix);
         this.rightLegUp.matrix.scale(1,-1,1);
         matrixScaleMass(this.rightLegUp.matrix, this.legUpDimention)
@@ -187,7 +187,8 @@ class Tom {
         this.rightLegDown.matrix.set(rightUpLegMatrix);
         this.rightLegDown.matrix.scale(1,-1,1);
         this.rightLegDown.matrix.translate(0,0.3,0);
-        this.rightLegDown.matrix.rotate(g_rightLowerLegSlideAngle,1,0,0);
+        // this.rightLegDown.matrix.rotate(g_rightLowerLegSlideAngle,1,0,0);
+        rotationOnAllAxis(this.rightLegDown.matrix,g_rightLowerLegSlideAngle,g_rightLowerLegSlideAngleY,g_rightLowerLegSlideAngleZ);
         let rightDownMatrix = new Matrix4(this.rightLegDown.matrix);
         matrixScaleMass(this.rightLegDown.matrix,this.legDownDimention);
         this.rightLegDown.render();
@@ -197,7 +198,8 @@ class Tom {
         this.rightFeet.matrix.set(rightDownMatrix);
         this.rightFeet.matrix.scale(1,1,-1);
         this.rightFeet.matrix.translate(-0.02,0.29,-0.15);
-        this.rightFeet.matrix.rotate(g_rightFeetSlideAngle,1,0,0);
+        // this.rightFeet.matrix.rotate(g_rightFeetSlideAngle,1,0,0);
+        rotationOnAllAxis(this.rightFeet.matrix,g_rightFeetSlideAngle,g_rightFeetSlideAngleY,g_rightFeetSlideAngleZ);
         matrixScaleMass(this.rightFeet.matrix,this.feetSize);
         this.rightFeet.render();
 
@@ -207,7 +209,8 @@ class Tom {
         // let leftArmUp = new Cube();
         this.leftArmUp.color = this.lightGray;
         this.leftArmUp.matrix.setTranslate(-0.265,0.2,0.07);
-        this.leftArmUp.matrix.rotate(g_leftUpperArmSlideAngle,1,0,0);
+        // this.leftArmUp.matrix.rotate(g_leftUpperArmSlideAngle,1,0,0);
+        rotationOnAllAxis(this.leftArmUp.matrix,g_leftUpperArmSlideAngle,g_leftUpperArmSlideAngleY,g_leftUpperArmSlideAngleZ);
         let leftArmUpMatrix = new Matrix4(this.leftArmUp.matrix);
         this.leftArmUp.matrix.scale(1,-1,1);
         matrixScaleMass(this.leftArmUp.matrix, this.armUpDimention)
@@ -215,12 +218,11 @@ class Tom {
 
         // let leftArmDown = new Cube();
         this.leftArmDown.color = this.lightGray.slice();
-        // leftLegDown.matrix.translate(0,-0.8,0);
         this.leftArmDown.matrix.set(leftArmUpMatrix);
-        // leftLegDown.matrix.multiply(letUpLegMatrix);
         this.leftArmDown.matrix.scale(1,-1,1);
         this.leftArmDown.matrix.translate(0,0.25,0);
-        this.leftArmDown.matrix.rotate(-g_leftLowerArmSlideAngle,1,0,0);
+        // this.leftArmDown.matrix.rotate(-g_leftLowerArmSlideAngle,1,0,0);
+        rotationOnAllAxis(this.leftArmDown.matrix,-g_leftLowerArmSlideAngle,-g_leftLowerArmSlideAngleY,-g_leftLowerArmSlideAngleZ);
         let leftArmDownMatrix = new Matrix4(this.leftArmDown.matrix);
         matrixScaleMass(this.leftArmDown.matrix,this.armUpDimention);
         this.leftArmDown.render();
@@ -230,7 +232,8 @@ class Tom {
         this.leftHand.matrix.set(leftArmDownMatrix);
         this.leftHand.matrix.scale(1,1,-1);
         this.leftHand.matrix.translate(-0.02,0.29,-0.14);
-        this.leftHand.matrix.rotate(g_leftHandSlideAngle,1,0,0);
+        // this.leftHand.matrix.rotate(g_leftHandSlideAngle,1,0,0);
+        rotationOnAllAxis(this.leftHand.matrix,g_leftHandSlideAngle,g_leftHandSlideAngleY,g_leftHandSlideAngleZ);
         matrixScaleMass(this.leftHand.matrix,this.handSize);
         this.leftHand.render();
 
@@ -240,7 +243,8 @@ class Tom {
         // let rightArmUp = new Cube();
         this.rightArmUp.color = this.lightGray;
         this.rightArmUp.matrix.setTranslate(0.15,0.2,0.07);
-        this.rightArmUp.matrix.rotate(g_rightUpperArmSlideAngle,1,0,0);
+        // this.rightArmUp.matrix.rotate(g_rightUpperArmSlideAngle,1,0,0);
+        rotationOnAllAxis(this.rightArmUp.matrix,g_rightUpperArmSlideAngle,g_rightUpperArmSlideAngleY,g_rightUpperArmSlideAngleZ);
         let rightArmUpMatrix = new Matrix4(this.rightArmUp.matrix);
         this.rightArmUp.matrix.scale(1,-1,1);
         matrixScaleMass(this.rightArmUp.matrix, this.armUpDimention)
@@ -248,12 +252,11 @@ class Tom {
 
         // let rightArmDown = new Cube();
         this.rightArmDown.color = this.lightGray.slice();
-        // leftLegDown.matrix.translate(0,-0.8,0);
         this.rightArmDown.matrix.set(rightArmUpMatrix);
-        // leftLegDown.matrix.multiply(letUpLegMatrix);
         this.rightArmDown.matrix.scale(1,-1,1);
         this.rightArmDown.matrix.translate(0,0.25,0);
-        this.rightArmDown.matrix.rotate(-g_rightLowerArmSlideAngle,1,0,0);
+        // this.rightArmDown.matrix.rotate(-g_rightLowerArmSlideAngle,1,0,0);
+        rotationOnAllAxis(this.rightArmDown.matrix,-g_rightLowerArmSlideAngle,-g_rightLowerArmSlideAngleY,-g_rightLowerArmSlideAngleZ);
         let rightArmDownMatrix = new Matrix4(this.rightArmDown.matrix);
         matrixScaleMass(this.rightArmDown.matrix,this.armUpDimention);
         this.rightArmDown.render();
@@ -264,6 +267,7 @@ class Tom {
         this.rightHand.matrix.scale(1,1,-1);
         this.rightHand.matrix.translate(-0.02,0.29,-0.14);
         this.rightHand.matrix.rotate(g_rightHandSlideAngle,1,0,0);
+        rotationOnAllAxis(this.rightHand.matrix,g_rightHandSlideAngle,g_rightHandSlideAngleY,g_rightHandSlideAngleZ);
         matrixScaleMass(this.rightHand.matrix,this.handSize);
         this.rightHand.render();
 
@@ -339,7 +343,6 @@ class Tom {
         this.mouth.matrix.translate(0.025,-0.02,-0.02);
         matrixScaleMass(this.mouth.matrix,this.mouthSize);
         this.mouth.color = this.mouthColor;
-        // matrixScaleMass(mouth.matrix,this.mouthSize);
         this.mouth.render();
 
         // let nose = new Cube();
@@ -484,4 +487,10 @@ class Tom {
 
 function matrixScaleMass(matrix,value) {
     matrix.scale(value[0],value[1],value[2]);
+}
+
+function rotationOnAllAxis(matrix,xAngle,yAngle,zAngle) {
+    matrix.rotate(xAngle,1,0,0);
+    matrix.rotate(yAngle,0,1,0);
+    matrix.rotate(zAngle,0,0,1);
 }

@@ -63,13 +63,40 @@ let g_leftHandSlideAngle = 0;
 let g_rightUpperArmSlideAngle = 0;
 let g_rightLowerArmSlideAngle = 0;
 let g_rightHandSlideAngle = 0;
-let g_yellowAnimation = false;
-let g_magenteAnimation = false;
+// let g_yellowAnimation = false;
+// let g_magenteAnimation = false;
 let g_headXSlideAngle = 0;
 let g_headYSlideAngle = 0;
 let originalCoordinate = [0,0];
 let g_animationOn = false;
 let g_animationSpeed = 1;
+let g_specialAnimation = false;
+
+let g_leftUpperLegAngleY = 0;
+let g_leftLowerLegSlideAngleY = 0;
+let g_leftFeetSlideAngleY = 0;
+let g_rightUpperLegAngleY = 0;
+let g_rightLowerLegSlideAngleY = 0;
+let g_rightFeetSlideAngleY = 0;
+let g_leftUpperArmSlideAngleY = 0;
+let g_leftLowerArmSlideAngleY = 0;
+let g_leftHandSlideAngleY = 0;
+let g_rightUpperArmSlideAngleY = 0;
+let g_rightLowerArmSlideAngleY = 0;
+let g_rightHandSlideAngleY = 0;
+
+let g_leftUpperLegAngleZ = 0;
+let g_leftLowerLegSlideAngleZ = 0;
+let g_leftFeetSlideAngleZ = 0;
+let g_rightUpperLegAngleZ = 0;
+let g_rightLowerLegSlideAngleZ = 0;
+let g_rightFeetSlideAngleZ = 0;
+let g_leftUpperArmSlideAngleZ = 0;
+let g_leftLowerArmSlideAngleZ = 0;
+let g_leftHandSlideAngleZ = 0;
+let g_rightUpperArmSlideAngleZ = 0;
+let g_rightLowerArmSlideAngleZ = 0;
+let g_rightHandSlideAngleZ = 0;
 
 // let g_animation = false;
 
@@ -89,6 +116,32 @@ function zeroAllAngle()
   g_rightHandSlideAngle = 0;
   g_headXSlideAngle = 0;
   g_headYSlideAngle = 0;
+
+  g_leftUpperLegAngleY = 0;
+  g_leftLowerLegSlideAngleY = 0;
+  g_leftFeetSlideAngleY = 0;
+  g_rightUpperLegAngleY = 0;
+  g_rightLowerLegSlideAngleY = 0;
+  g_rightFeetSlideAngleY = 0;
+  g_leftUpperArmSlideAngleY = 0;
+  g_leftLowerArmSlideAngleY = 0;
+  g_leftHandSlideAngleY = 0;
+  g_rightUpperArmSlideAngleY = 0;
+  g_rightLowerArmSlideAngleY = 0;
+  g_rightHandSlideAngleY = 0;
+
+  g_leftUpperLegAngleZ = 0;
+  g_leftLowerLegSlideAngleZ = 0;
+  g_leftFeetSlideAngleZ = 0;
+  g_rightUpperLegAngleZ = 0;
+  g_rightFeetSlideAngleZ = 0;
+  g_leftUpperArmSlideAngleZ = 0;
+  g_leftLowerArmSlideAngleZ = 0;
+  g_leftHandSlideAngleZ = 0;
+  g_rightUpperArmSlideAngleZ = 0;
+  g_rightLowerArmSlideAngleZ = 0;
+  g_rightHandSlideAngleZ = 0;
+
   document.getElementById('leftUpperLegSlide').value = 0;
   document.getElementById('leftLowerLegSlide').value = 0;
   document.getElementById('leftFeetSlide').value = 0;
@@ -103,7 +156,32 @@ function zeroAllAngle()
   document.getElementById('rightHandSlide').value = 0;
   document.getElementById('headXSlide').value = 0;
   document.getElementById('headYSlide').value = 0;
-  document.getElementById('animationSpeedSlide').value = 0;
+
+  document.getElementById('leftUpperLegSlideY').value = 0;
+  document.getElementById('leftLowerLegSlideY').value = 0;
+  document.getElementById('leftFeetSlideY').value = 0;
+  document.getElementById('rightUpperLegSlideY').value = 0;
+  document.getElementById('rightLowerLegSlideY').value = 0;
+  document.getElementById('rightFeetSlideY').value = 0;
+  document.getElementById('leftUpperArmSlideY').value = 0;
+  document.getElementById('leftLowerArmSlideY').value = 0;
+  document.getElementById('leftHandSlideY').value = 0;
+  document.getElementById('rightUpperArmSlideY').value = 0;
+  document.getElementById('rightLowerArmSlideY').value = 0;
+  document.getElementById('rightHandSlideY').value = 0;
+
+  document.getElementById('leftUpperLegSlideZ').value = 0;
+  document.getElementById('leftLowerLegSlideZ').value = 0;
+  document.getElementById('leftFeetSlideZ').value = 0;
+  document.getElementById('rightUpperLegSlideZ').value = 0;
+  document.getElementById('rightLowerLegSlideZ').value = 0;
+  document.getElementById('rightFeetSlideZ').value = 0;
+  document.getElementById('leftUpperArmSlideZ').value = 0;
+  document.getElementById('leftLowerArmSlideZ').value = 0;
+  document.getElementById('leftHandSlideZ').value = 0;
+  document.getElementById('rightUpperArmSlideZ').value = 0;
+  document.getElementById('rightLowerArmSlideZ').value = 0;
+  document.getElementById('rightHandSlideZ').value = 0;
 }
 
 function g_animationState(input)
@@ -112,6 +190,25 @@ function g_animationState(input)
   if(input == false)
   {
     zeroAllAngle();
+  }
+  else if(g_specialAnimation)
+  {
+    zeroAllAngle();
+    g_specialAnimation = false;
+  }
+}
+
+function g_specialAnimationState(input)
+{
+  g_specialAnimation = input;
+  if(input == false)
+  {
+    zeroAllAngle();
+  }
+  else if(g_animationOn)
+  {
+    zeroAllAngle();
+    g_animationOn = false;
   }
 }
 
@@ -137,21 +234,47 @@ function addActionsForHtmlUI()
   // document.getElementById('greenSlide').addEventListener("mouseup", function() { g_selectedColor[1] = this.value/100; });
   // document.getElementById('blueSlide').addEventListener("mouseup", function() { g_selectedColor[2] = this.value/100; });
   // document.getElementById('segmentSlide').addEventListener("mouseup", function() { g_segments = this.value; });
-  document.getElementById('leftUpperLegSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_leftUpperLegAngle = this.value;  });
-  document.getElementById('leftLowerLegSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_leftLowerLegSlideAngle = this.value;  });
-  document.getElementById('leftFeetSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_leftFeetSlideAngle = this.value;  });
-  document.getElementById('rightUpperLegSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_rightUpperLegAngle = this.value;  });
-  document.getElementById('rightLowerLegSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_rightLowerLegSlideAngle = this.value;  });
-  document.getElementById('rightFeetSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_rightFeetSlideAngle = this.value;  });
-  document.getElementById('leftUpperArmSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_leftUpperArmSlideAngle = this.value;  });
-  document.getElementById('leftLowerArmSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_leftLowerArmSlideAngle = this.value;  });
-  document.getElementById('leftHandSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_leftHandSlideAngle = this.value;  });
-  document.getElementById('rightUpperArmSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_rightUpperArmSlideAngle = this.value;  });
-  document.getElementById('rightLowerArmSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_rightLowerArmSlideAngle = this.value;  });
-  document.getElementById('rightHandSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_rightHandSlideAngle = this.value;  });
-  document.getElementById('headXSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_headXSlideAngle = this.value;  });
-  document.getElementById('headYSlide').addEventListener("mousemove", function() { if(!g_animationOn) g_headYSlideAngle = this.value;  });
+  document.getElementById('leftUpperLegSlide').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftUpperLegAngle = this.value;  });
+  document.getElementById('leftLowerLegSlide').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftLowerLegSlideAngle = this.value;  });
+  document.getElementById('leftFeetSlide').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftFeetSlideAngle = this.value;  });
+  document.getElementById('rightUpperLegSlide').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightUpperLegAngle = this.value;  });
+  document.getElementById('rightLowerLegSlide').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightLowerLegSlideAngle = this.value;  });
+  document.getElementById('rightFeetSlide').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightFeetSlideAngle = this.value;  });
+  document.getElementById('leftUpperArmSlide').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftUpperArmSlideAngle = this.value;  });
+  document.getElementById('leftLowerArmSlide').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftLowerArmSlideAngle = this.value;  });
+  document.getElementById('leftHandSlide').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftHandSlideAngle = this.value;  });
+  document.getElementById('rightUpperArmSlide').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightUpperArmSlideAngle = this.value;  });
+  document.getElementById('rightLowerArmSlide').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightLowerArmSlideAngle = this.value;  });
+  document.getElementById('rightHandSlide').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightHandSlideAngle = this.value;  });
+  document.getElementById('headXSlide').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_headXSlideAngle = this.value;  });
+  document.getElementById('headYSlide').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_headYSlideAngle = this.value;  });
   document.getElementById('animationSpeedSlide').addEventListener("mousemove", function() { g_animationSpeed = this.value;  });
+
+  document.getElementById('leftUpperLegSlideY').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftUpperLegAngleY = this.value;  });
+  document.getElementById('leftLowerLegSlideY').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftLowerLegSlideAngleY = this.value;  });
+  document.getElementById('leftFeetSlideY').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftFeetSlideAngleY = this.value;  });
+  document.getElementById('rightUpperLegSlideY').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightUpperLegAngleY = this.value;  });
+  document.getElementById('rightLowerLegSlideY').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightLowerLegSlideAngleY = this.value;  });
+  document.getElementById('rightFeetSlideY').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightFeetSlideAngleY = this.value;  });
+  document.getElementById('leftUpperArmSlideY').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftUpperArmSlideAngleY = this.value;  });
+  document.getElementById('leftLowerArmSlideY').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftLowerArmSlideAngleY = this.value;  });
+  document.getElementById('leftHandSlideY').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftHandSlideAngleY = this.value;  });
+  document.getElementById('rightUpperArmSlideY').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightUpperArmSlideAngleY = this.value;  });
+  document.getElementById('rightLowerArmSlideY').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightLowerArmSlideAngleY = this.value;  });
+  document.getElementById('rightHandSlideY').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightHandSlideAngleY = this.value;  });
+
+  document.getElementById('leftUpperLegSlideZ').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftUpperLegAngleZ = this.value;  });
+  document.getElementById('leftLowerLegSlideZ').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftLowerLegSlideAngleZ = this.value;  });
+  document.getElementById('leftFeetSlideZ').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftFeetSlideAngleZ = this.value;  });
+  document.getElementById('rightUpperLegSlideZ').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightUpperLegAngleZ = this.value;  });
+  document.getElementById('rightLowerLegSlideZ').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightLowerLegSlideAngleZ = this.value;  });
+  document.getElementById('rightFeetSlideZ').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightFeetSlideAngleZ = this.value;  });
+  document.getElementById('leftUpperArmSlideZ').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftUpperArmSlideAngleZ = this.value;  });
+  document.getElementById('leftLowerArmSlideZ').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftLowerArmSlideAngleZ = this.value;  });
+  document.getElementById('leftHandSlideZ').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_leftHandSlideAngleZ = this.value;  });
+  document.getElementById('rightUpperArmSlideZ').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightUpperArmSlideAngleZ = this.value;  });
+  document.getElementById('rightLowerArmSlideZ').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightLowerArmSlideAngleZ = this.value;  });
+  document.getElementById('rightHandSlideZ').addEventListener("mousemove", function() { if(!g_animationOn || !g_specialAnimation) g_rightHandSlideAngleZ = this.value;  });
 
   // document.getElementById('angleSlide').addEventListener("mouseup", function() { g_yellowAngle = this.value;  });
   // document.getElementById('yellowSlide').addEventListener("mouseup", function() { g_yellowSlide = this.value;  });
@@ -287,6 +410,12 @@ function endClick(ev) {
 
 function click(ev) {
 
+  if(ev.shiftKey)
+  {
+    g_specialAnimationState(true);
+    return;
+  }
+
   //Extract the event click and return it in WebGL coordinates
   [x,y] = convertCoordinatesEventToGL(ev);
   // console.log(x,y);
@@ -326,6 +455,8 @@ function tick() {
 
   // Update Animation Angles
   if(g_animationOn) updateAnimationAngles();
+
+  if(g_specialAnimation) specialAction();
 
   // Draw Everything
   renderAllShapes();
@@ -476,3 +607,29 @@ function sendTextToHTML(text, htmlID) {
 //   let BasisMatrixRotate = new Matrix4(basisMatrix).rotate(angle[0],angle[1],angle[2],angle[3]);
 //   return new Matrix4(BasisMatrixRotate).multiply(basisMatrixInverse);
 // }
+
+
+// Special action
+function specialAction(){
+  let cos = Math.cos(g_animationSpeed * g_seconds);
+  let sin = Math.sin(g_animationSpeed * g_seconds);
+
+  // Arm control
+  g_leftUpperArmSlideAngleZ = Math.min(-140*sin,0)-Math.max(-140*sin,0);
+  g_rightUpperArmSlideAngleZ = Math.max(140*sin,0)-Math.min(140*sin,0);
+  g_leftLowerArmSlideAngleZ = Math.min(-60*sin,0)-Math.max(-60*sin,0);
+  g_rightLowerArmSlideAngleZ = Math.max(60*sin,0)-Math.min(60*sin,0);
+  g_leftHandSlideAngleZ = Math.min(-15*sin,0)-Math.max(-15*sin,0);
+  g_rightHandSlideAngleZ = Math.max(15*sin,0)-Math.min(15*sin,0);
+
+  // Leg control
+  g_leftUpperLegAngleZ = Math.min(-45*sin,0)-Math.max(-45*sin,0);
+  g_rightUpperLegAngleZ= Math.max(45*sin,0)-Math.min(45*sin,0);
+  // g_leftLowerLegSlideAngle = -Math.min(45*sin,0);
+  // g_rightLowerLegSlideAngle = Math.max(45*sin,0);
+  // g_leftFeetSlideAngle = (30*sin);
+  // g_rightFeetSlideAngle = (-30*sin);
+
+  // Head control
+  // g_headYSlideAngle = (15*sin);
+}

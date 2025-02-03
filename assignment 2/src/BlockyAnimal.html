@@ -13,9 +13,8 @@
 
     <br>
     Animation control(When animation is on other control will not work):<br>
-    <button onclick="g_animationState(true)">On</button><button onclick="g_animationState(false)">Off</button><br>
+    <button onclick="g_animationState(true)">On</button><button onclick="g_specialAnimationState(true)">Special Animation</button><button onclick="g_animationState(false); g_specialAnimationState(false)">Off</button><br>
     Animation Speed <input type="range" min="1.0" max="10.0" value="1.0" class="slider" id="animationSpeedSlide"><br>
-    <button onclick="specialAnimation()">Special Animation</button>
 
     <br><br>
     Reset button:<br>
@@ -26,41 +25,65 @@
     <br>
     Left leg control:
     <br>
-    Upper leg   <input type="range" min="0" max="360" value="0" class="slider" id="leftUpperLegSlide">
+    Upper leg X   <input type="range" min="0" max="360" value="0" class="slider" id="leftUpperLegSlide">
+    Upper leg Y   <input type="range" min="0" max="360" value="0" class="slider" id="leftUpperLegSlideY">
+    Upper leg Z   <input type="range" min="0" max="360" value="0" class="slider" id="leftUpperLegSlideZ">
     <br>
-    Lower leg <input type="range" min="0" max="360" value="0" class="slider" id="leftLowerLegSlide">
+    Lower leg X   <input type="range" min="0" max="360" value="0" class="slider" id="leftLowerLegSlide">
+    Lower leg Y   <input type="range" min="0" max="360" value="0" class="slider" id="leftLowerLegSlideY">
+    Lower leg Z   <input type="range" min="0" max="360" value="0" class="slider" id="leftLowerLegSlideZ">
     <br>
-    Feet  <input type="range" min="0" max="360" value="0" class="slider" id="leftFeetSlide">
+    Feet X  <input type="range" min="0" max="360" value="0" class="slider" id="leftFeetSlide">
+    Feet Y  <input type="range" min="0" max="360" value="0" class="slider" id="leftFeetSlideY">
+    Feet Z  <input type="range" min="0" max="360" value="0" class="slider" id="leftFeetSlideZ">
 
     <br><br>
     <br>
     Right leg control:
     <br>
-    Upper leg   <input type="range" min="0" max="360" value="0" class="slider" id="rightUpperLegSlide">
+    Upper leg X   <input type="range" min="0" max="360" value="0" class="slider" id="rightUpperLegSlide">
+    Upper leg Y   <input type="range" min="0" max="360" value="0" class="slider" id="rightUpperLegSlideY">
+    Upper leg Z   <input type="range" min="0" max="360" value="0" class="slider" id="rightUpperLegSlideZ">
     <br>
-    Lower leg <input type="range" min="0" max="360" value="0" class="slider" id="rightLowerLegSlide">
+    Lower leg X <input type="range" min="0" max="360" value="0" class="slider" id="rightLowerLegSlide">
+    Lower leg Y <input type="range" min="0" max="360" value="0" class="slider" id="rightLowerLegSlideY">
+    Lower leg Z <input type="range" min="0" max="360" value="0" class="slider" id="rightLowerLegSlideZ">
     <br>
-    Feet  <input type="range" min="0" max="360" value="0" class="slider" id="rightFeetSlide">
+    Feet X  <input type="range" min="0" max="360" value="0" class="slider" id="rightFeetSlide">
+    Feet Y  <input type="range" min="0" max="360" value="0" class="slider" id="rightFeetSlideY">
+    Feet Z  <input type="range" min="0" max="360" value="0" class="slider" id="rightFeetSlideZ">
 
     <br><br>
     <br>
     Left arm control:
     <br>
-    Upper arm   <input type="range" min="0" max="360" value="0" class="slider" id="leftUpperArmSlide">
+    Upper arm X   <input type="range" min="0" max="360" value="0" class="slider" id="leftUpperArmSlide">
+    Upper arm Y   <input type="range" min="0" max="360" value="0" class="slider" id="leftUpperArmSlideY">
+    Upper arm Z   <input type="range" min="0" max="360" value="0" class="slider" id="leftUpperArmSlideZ">
     <br>
-    Lower arm <input type="range" min="0" max="360" value="0" class="slider" id="leftLowerArmSlide">
+    Lower arm X <input type="range" min="0" max="360" value="0" class="slider" id="leftLowerArmSlide">
+    Lower arm Y <input type="range" min="0" max="360" value="0" class="slider" id="leftLowerArmSlideY">
+    Lower arm Z <input type="range" min="0" max="360" value="0" class="slider" id="leftLowerArmSlideZ">
     <br>
-    Hand  <input type="range" min="0" max="360" value="0" class="slider" id="leftHandSlide">
+    Hand X  <input type="range" min="0" max="360" value="0" class="slider" id="leftHandSlide">
+    Hand Y  <input type="range" min="0" max="360" value="0" class="slider" id="leftHandSlideY">
+    Hand Z  <input type="range" min="0" max="360" value="0" class="slider" id="leftHandSlideZ">
 
     <br><br>
     <br>
     Right arm control:
     <br>
-    Upper arm   <input type="range" min="0" max="360" value="0" class="slider" id="rightUpperArmSlide">
+    Upper arm X   <input type="range" min="0" max="360" value="0" class="slider" id="rightUpperArmSlide">
+    Upper arm Y   <input type="range" min="0" max="360" value="0" class="slider" id="rightUpperArmSlideY">
+    Upper arm Z   <input type="range" min="0" max="360" value="0" class="slider" id="rightUpperArmSlideZ">
     <br>
-    Lower arm <input type="range" min="0" max="360" value="0" class="slider" id="rightLowerArmSlide">
+    Lower arm X <input type="range" min="0" max="360" value="0" class="slider" id="rightLowerArmSlide">
+    Lower arm Y <input type="range" min="0" max="360" value="0" class="slider" id="rightLowerArmSlideY">
+    Lower arm Z <input type="range" min="0" max="360" value="0" class="slider" id="rightLowerArmSlideZ">
     <br>
-    Hand  <input type="range" min="0" max="360" value="0" class="slider" id="rightHandSlide">
+    Hand X  <input type="range" min="0" max="360" value="0" class="slider" id="rightHandSlide">
+    Hand Y  <input type="range" min="0" max="360" value="0" class="slider" id="rightHandSlideY">
+    Hand Z  <input type="range" min="0" max="360" value="0" class="slider" id="rightHandSlideZ">
 
     <br><br>
     Head movement control:
