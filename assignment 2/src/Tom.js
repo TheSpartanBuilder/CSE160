@@ -130,7 +130,7 @@ class Tom {
         this.body.render();
 
         this.outerBody.color = this.lightGray.slice();
-        this.outerBody.matrix = new Matrix4(bodyMatrix);
+        this.outerBody.matrix.set(bodyMatrix);
         this.outerBody.matrix.scale(1.2,1.2,1.2);
         this.outerBody.matrix.translate(-0.08,-0.08,0.1);
         this.outerBody.render();
@@ -139,7 +139,6 @@ class Tom {
 
         // Left leg component
         // let leftLegUp = new Cube();
-        this.leftLegUp.matrix.setIdentity();
         this.leftLegUp.color = this.lightGray.slice();
         this.leftLegUp.matrix.setTranslate(-0.14,-0.2,0.07);
         this.leftLegUp.matrix.rotate(g_leftUpperLegAngle,1,0,0);
@@ -153,7 +152,7 @@ class Tom {
         // let leftLegDown = new Cube();
         this.leftLegDown.color = this.lightGray.slice();
         // leftLegDown.matrix.translate(0,-0.8,0);
-        this.leftLegDown.matrix = new Matrix4(letUpLegMatrix);
+        this.leftLegDown.matrix.set(letUpLegMatrix);
         // leftLegDown.matrix.multiply(letUpLegMatrix);
         this.leftLegDown.matrix.scale(1,-1,1);
         this.leftLegDown.matrix.translate(0,0.3,0);
@@ -164,7 +163,7 @@ class Tom {
 
         // let leftFeet = new Cube();
         this.leftFeet.color = this.feetColor.slice();
-        this.leftFeet.matrix = new Matrix4(leftDownMatrix);
+        this.leftFeet.matrix.set(leftDownMatrix);
         this.leftFeet.matrix.scale(1,1,-1);
         this.leftFeet.matrix.translate(-0.02,0.29,-0.15);
         this.leftFeet.matrix.rotate(g_leftFeetSlideAngle,1,0,0);
@@ -185,7 +184,7 @@ class Tom {
 
         // let rightLegDown = new Cube();
         this.rightLegDown.color = this.lightGray.slice();
-        this.rightLegDown.matrix = new Matrix4(rightUpLegMatrix);
+        this.rightLegDown.matrix.set(rightUpLegMatrix);
         this.rightLegDown.matrix.scale(1,-1,1);
         this.rightLegDown.matrix.translate(0,0.3,0);
         this.rightLegDown.matrix.rotate(g_rightLowerLegSlideAngle,1,0,0);
@@ -195,7 +194,7 @@ class Tom {
 
         // let rightFeet = new Cube();
         this.rightFeet.color = this.feetColor.slice();
-        this.rightFeet.matrix = new Matrix4(rightDownMatrix);
+        this.rightFeet.matrix.set(rightDownMatrix);
         this.rightFeet.matrix.scale(1,1,-1);
         this.rightFeet.matrix.translate(-0.02,0.29,-0.15);
         this.rightFeet.matrix.rotate(g_rightFeetSlideAngle,1,0,0);
@@ -217,7 +216,7 @@ class Tom {
         // let leftArmDown = new Cube();
         this.leftArmDown.color = this.lightGray.slice();
         // leftLegDown.matrix.translate(0,-0.8,0);
-        this.leftArmDown.matrix = new Matrix4(leftArmUpMatrix);
+        this.leftArmDown.matrix.set(leftArmUpMatrix);
         // leftLegDown.matrix.multiply(letUpLegMatrix);
         this.leftArmDown.matrix.scale(1,-1,1);
         this.leftArmDown.matrix.translate(0,0.25,0);
@@ -228,7 +227,7 @@ class Tom {
 
         // let leftHand = new Cube();
         this.leftHand.color = this.handColor.slice();
-        this.leftHand.matrix = new Matrix4(leftArmDownMatrix);
+        this.leftHand.matrix.set(leftArmDownMatrix);
         this.leftHand.matrix.scale(1,1,-1);
         this.leftHand.matrix.translate(-0.02,0.29,-0.14);
         this.leftHand.matrix.rotate(g_leftHandSlideAngle,1,0,0);
@@ -250,7 +249,7 @@ class Tom {
         // let rightArmDown = new Cube();
         this.rightArmDown.color = this.lightGray.slice();
         // leftLegDown.matrix.translate(0,-0.8,0);
-        this.rightArmDown.matrix = new Matrix4(rightArmUpMatrix);
+        this.rightArmDown.matrix.set(rightArmUpMatrix);
         // leftLegDown.matrix.multiply(letUpLegMatrix);
         this.rightArmDown.matrix.scale(1,-1,1);
         this.rightArmDown.matrix.translate(0,0.25,0);
@@ -261,7 +260,7 @@ class Tom {
 
         // let rightHand = new Cube();
         this.rightHand.color = this.handColor.slice();
-        this.rightHand.matrix = new Matrix4(rightArmDownMatrix);
+        this.rightHand.matrix.set(rightArmDownMatrix);
         this.rightHand.matrix.scale(1,1,-1);
         this.rightHand.matrix.translate(-0.02,0.29,-0.14);
         this.rightHand.matrix.rotate(g_rightHandSlideAngle,1,0,0);
@@ -281,7 +280,7 @@ class Tom {
 
         // let secondTail = new Cylinder();
         this.secondTail.color = this.tailColor.slice();
-        this.secondTail.matrix = new Matrix4(firstTailMatrix);
+        this.secondTail.matrix.set(firstTailMatrix);
         this.secondTail.matrix.translate(0,0,0.3);
         this.secondTail.matrix.rotate(-15,1,0,0);
         this.secondTail.matrix.scale(0.8,0.8,1);
@@ -290,7 +289,7 @@ class Tom {
 
         // let thirdTail = new Cylinder();
         this.thirdTail.color = this.tailColor.slice();
-        this.thirdTail.matrix = new Matrix4(secondTailMatrix);
+        this.thirdTail.matrix.set(secondTailMatrix);
         this.thirdTail.matrix.translate(0,0,0.3);
         this.thirdTail.matrix.rotate(-15,1,0,0);
         this.thirdTail.matrix.scale(0.8,0.8,1);
@@ -299,7 +298,7 @@ class Tom {
 
         // let forthTail = new Cylinder();
         this.forthTail.color = this.tailColor.slice();
-        this.forthTail.matrix = new Matrix4(thirdTailMatrix);
+        this.forthTail.matrix.set(thirdTailMatrix);
         this.forthTail.matrix.translate(0,0,0.3);
         this.forthTail.matrix.rotate(15,1,0,0);
         this.forthTail.matrix.scale(0.8,0.8,1);
@@ -308,7 +307,7 @@ class Tom {
 
         // let fithTail = new Cylinder();
         this.fithTail.color = this.tailColor.slice();
-        this.fithTail.matrix = new Matrix4(forthTailMatrix);
+        this.fithTail.matrix.set(forthTailMatrix);
         this.fithTail.matrix.translate(0,0,0.3);
         this.fithTail.matrix.rotate(15,1,0,0);
         this.fithTail.matrix.scale(0.8,0.8,1);
@@ -317,7 +316,7 @@ class Tom {
 
         // let sixthTail = new Cylinder();
         this.sixthTail.color = this.tailTipColor.slice();
-        this.sixthTail.matrix = new Matrix4(fithTailMatrix);
+        this.sixthTail.matrix.set(fithTailMatrix);
         this.sixthTail.matrix.translate(0,0,0.3);
         this.sixthTail.matrix.rotate(15,1,0,0);
         this.sixthTail.matrix.scale(0.8,0.8,1);
@@ -336,7 +335,7 @@ class Tom {
         this.head.render();
 
         // let mouth = new Cube();
-        this.mouth.matrix = new Matrix4(headMatrix);
+        this.mouth.matrix.set(headMatrix);
         this.mouth.matrix.translate(0.025,-0.02,-0.02);
         matrixScaleMass(this.mouth.matrix,this.mouthSize);
         this.mouth.color = this.mouthColor;
@@ -345,49 +344,49 @@ class Tom {
 
         // let nose = new Cube();
         this.nose.color = this.noseColor;
-        this.nose.matrix = new Matrix4(headMatrix);
+        this.nose.matrix.set(headMatrix);
         this.nose.matrix.translate(0.12,0.05,-0.05);
         matrixScaleMass(this.nose.matrix,this.noseSize);
         this.nose.render();
 
         // let leftEye = new Cube();
         this.leftEye.color = this.eyeColor;
-        this.leftEye.matrix = new Matrix4(headMatrix);
+        this.leftEye.matrix.set(headMatrix);
         this.leftEye.matrix.translate(0.07,0.13,-0.02);
         matrixScaleMass(this.leftEye.matrix,this.eyeSize);
         this.leftEye.render();
 
         // let leftPupilOutside = new Cube();
         this.leftPupilOutside.color = this.pupilOutsideColor;
-        this.leftPupilOutside.matrix = new Matrix4(headMatrix);
+        this.leftPupilOutside.matrix.set(headMatrix);
         this.leftPupilOutside.matrix.translate(0.09,0.13,-0.03);
         matrixScaleMass(this.leftPupilOutside.matrix,this.pupilOutsideSize);
         this.leftPupilOutside.render();
 
         // let leftPupil = new Cube();
         this.leftPupil.color = this.pupilColor;
-        this.leftPupil.matrix = new Matrix4(headMatrix);
+        this.leftPupil.matrix.set(headMatrix);
         this.leftPupil.matrix.translate(0.095,0.135,-0.04);
         matrixScaleMass(this.leftPupil.matrix,this.pupilSize);
         this.leftPupil.render();
 
         // let rightEye = new Cube();
         this.rightEye.color = this.eyeColor;
-        this.rightEye.matrix = new Matrix4(headMatrix);
+        this.rightEye.matrix.set(headMatrix);
         this.rightEye.matrix.translate(0.195,0.13,-0.02);
         matrixScaleMass(this.rightEye.matrix,this.eyeSize);
         this.rightEye.render();
 
         // let rightPupilOutside = new Cube();
         this.rightPupilOutside.color = this.pupilOutsideColor;
-        this.rightPupilOutside.matrix = new Matrix4(headMatrix);
+        this.rightPupilOutside.matrix.set(headMatrix);
         this.rightPupilOutside.matrix.translate(0.195,0.13,-0.03);
         matrixScaleMass(this.rightPupilOutside.matrix,this.pupilOutsideSize);
         this.rightPupilOutside.render();
 
         // let rightPupil = new Cube();
         this.rightPupil.color = this.pupilColor;
-        this.rightPupil.matrix = new Matrix4(headMatrix);
+        this.rightPupil.matrix.set(headMatrix);
         this.rightPupil.matrix.translate(0.2,0.135,-0.04);
         matrixScaleMass(this.rightPupil.matrix,this.pupilSize);
         this.rightPupil.render();
@@ -397,7 +396,7 @@ class Tom {
         // whiskers
         // let firstLeftWhisker = new Cube();
         this.firstLeftWhisker.color = this.whiskerColor;
-        this.firstLeftWhisker.matrix = new Matrix4(headMatrix);
+        this.firstLeftWhisker.matrix.set(headMatrix);
         this.firstLeftWhisker.matrix.translate(0.1,0.05,-0.03);
         this.firstLeftWhisker.matrix.rotate(70,0,0,1);
         matrixScaleMass(this.firstLeftWhisker.matrix,this.whiskerSize);
@@ -405,7 +404,7 @@ class Tom {
 
         // let secondLeftWhisker = new Cube();
         this.secondLeftWhisker.color = this.whiskerColor;
-        this.secondLeftWhisker.matrix = new Matrix4(headMatrix);
+        this.secondLeftWhisker.matrix.set(headMatrix);
         this.secondLeftWhisker.matrix.translate(0.1,0.05,-0.03);
         this.secondLeftWhisker.matrix.rotate(90,0,0,1);
         matrixScaleMass(this.secondLeftWhisker.matrix,this.whiskerSize);
@@ -413,7 +412,7 @@ class Tom {
 
         // let thirdLeftWhisker = new Cube();
         this.thirdLeftWhisker.color = this.whiskerColor;
-        this.thirdLeftWhisker.matrix = new Matrix4(headMatrix);
+        this.thirdLeftWhisker.matrix.set(headMatrix);
         this.thirdLeftWhisker.matrix.translate(0.1,0.05,-0.03);
         this.thirdLeftWhisker.matrix.rotate(110,0,0,1);
         matrixScaleMass(this.thirdLeftWhisker.matrix,this.whiskerSize);
@@ -421,7 +420,7 @@ class Tom {
 
         // let firstRightWhisker = new Cube();
         this.firstRightWhisker.color = this.whiskerColor;
-        this.firstRightWhisker.matrix = new Matrix4(headMatrix);
+        this.firstRightWhisker.matrix.set(headMatrix);
         this.firstRightWhisker.matrix.translate(0.25,0.06,-0.03);
         this.firstRightWhisker.matrix.rotate(250,0,0,1);
         matrixScaleMass(this.firstRightWhisker.matrix,this.whiskerSize);
@@ -429,7 +428,7 @@ class Tom {
 
         // let secondRighWhisker = new Cube();
         this.secondRighWhisker.color = this.whiskerColor;
-        this.secondRighWhisker.matrix = new Matrix4(headMatrix);
+        this.secondRighWhisker.matrix.set(headMatrix);
         this.secondRighWhisker.matrix.translate(0.25,0.06,-0.03);
         this.secondRighWhisker.matrix.rotate(270,0,0,1);
         matrixScaleMass(this.secondRighWhisker.matrix,this.whiskerSize);
@@ -437,7 +436,7 @@ class Tom {
 
         // let thirdRightWhisker = new Cube();
         this.thirdRightWhisker.color = this.whiskerColor;
-        this.thirdRightWhisker.matrix = new Matrix4(headMatrix);
+        this.thirdRightWhisker.matrix.set(headMatrix);
         this.thirdRightWhisker.matrix.translate(0.25,0.06,-0.03);
         this.thirdRightWhisker.matrix.rotate(290,0,0,1);
         matrixScaleMass(this.thirdRightWhisker.matrix,this.whiskerSize);
@@ -449,7 +448,7 @@ class Tom {
 
         // let leftEar = new TriangularPrism();
         this.leftEar.color = this.earColor;
-        this.leftEar.matrix = new Matrix4(headMatrix);
+        this.leftEar.matrix.set(headMatrix);
         this.leftEar.matrix.translate(0.023,0.323,0.2);
         this.leftEar.matrix.rotate(18,0,0,1);
         matrixScaleMass(this.leftEar.matrix,this.earSize);
@@ -457,7 +456,7 @@ class Tom {
 
         // let leftInnerEar = new TriangularPrism();
         this.leftInnerEar.color = this.innerEarColor;
-        this.leftInnerEar.matrix = new Matrix4(headMatrix);
+        this.leftInnerEar.matrix.set(headMatrix);
         this.leftInnerEar.matrix.translate(0.015,0.33,0.17);
         this.leftInnerEar.matrix.rotate(18,0,0,1);
         matrixScaleMass(this.leftInnerEar.matrix,this.innerEarSize);
@@ -465,7 +464,7 @@ class Tom {
 
         // let rightEar = new TriangularPrism();
         this.rightEar.color = this.earColor;
-        this.rightEar.matrix = new Matrix4(headMatrix);
+        this.rightEar.matrix.set(headMatrix);
         this.rightEar.matrix.translate(0.33,0.323,0.2);
         this.rightEar.matrix.rotate(360-18,0,0,1);
         matrixScaleMass(this.rightEar.matrix,this.earSize);
@@ -474,7 +473,7 @@ class Tom {
 
         // let rightInnerEar = new TriangularPrism();
         this.rightInnerEar.color = this.innerEarColor;
-        this.rightInnerEar.matrix = new Matrix4(headMatrix);
+        this.rightInnerEar.matrix.set(headMatrix);
         this.rightInnerEar.matrix.translate(0.335,0.33,0.17);
         this.rightInnerEar.matrix.rotate(360-18,0,0,1);
         matrixScaleMass(this.rightInnerEar.matrix,this.innerEarSize);
