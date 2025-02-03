@@ -77,7 +77,52 @@ class Tom {
         this.rightInnerEar = new TriangularPrism();
     }
 
+    resetObjectMatrix()
+    {
+        this.body.matrix.setIdentity();
+        this.outerBody.matrix.setIdentity();
+        this.leftLegUp.matrix.setIdentity();
+        this.leftLegDown.matrix.setIdentity();
+        this.leftFeet.matrix.setIdentity();
+        this.rightLegUp.matrix.setIdentity();
+        this.rightLegDown.matrix.setIdentity();
+        this.rightFeet.matrix.setIdentity();
+        this.leftArmUp.matrix.setIdentity();
+        this.leftArmDown.matrix.setIdentity();
+        this.leftHand.matrix.setIdentity();
+        this.rightArmUp.matrix.setIdentity();
+        this.rightArmDown.matrix.setIdentity();
+        this.rightHand.matrix.setIdentity();
+        this.firstTail.matrix.setIdentity();
+        this.secondTail.matrix.setIdentity();
+        this.thirdTail.matrix.setIdentity();
+        this.forthTail.matrix.setIdentity();
+        this.fithTail.matrix.setIdentity();
+        this.sixthTail.matrix.setIdentity();
+        this.head.matrix.setIdentity();
+        this.mouth.matrix.setIdentity();
+        this.nose.matrix.setIdentity();
+        this.leftEye.matrix.setIdentity();
+        this.leftPupilOutside.matrix.setIdentity();
+        this.leftPupil.matrix.setIdentity();
+        this.rightEye.matrix.setIdentity();
+        this.rightPupilOutside.matrix.setIdentity();
+        this.rightPupil.matrix.setIdentity();
+        this.firstLeftWhisker.matrix.setIdentity();
+        this.secondLeftWhisker.matrix.setIdentity();
+        this.thirdLeftWhisker.matrix.setIdentity();
+        this.firstRightWhisker.matrix.setIdentity();
+        this.secondRighWhisker.matrix.setIdentity();
+        this.thirdRightWhisker.matrix.setIdentity();
+        this.leftEar.matrix.setIdentity();
+        this.leftInnerEar.matrix.setIdentity();
+        this.rightEar.matrix.setIdentity();
+        this.rightInnerEar.matrix.setIdentity();
+    }
+
     render() {
+        this.resetObjectMatrix();
+
         this.body.color = this.darkGray.slice();
         this.body.matrix.scale(0.25,0.45,0.2);
         this.body.matrix.translate(-.50,-.45,0);

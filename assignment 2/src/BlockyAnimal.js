@@ -368,6 +368,7 @@ function updateAnimationAngles() {
 }
 
 
+var tom = new Tom();
 // Draw every shape that is supposed to be in the canvas
 function renderAllShapes(){
 
@@ -411,7 +412,7 @@ function renderAllShapes(){
   // box.matrix.translate(-.5,0,-0.001);
   // box.render();
 
-  var tom = new Tom();
+  
   tom.render();
 
   // var item = new Cylinder();
