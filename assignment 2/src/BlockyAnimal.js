@@ -100,6 +100,15 @@ let g_rightHandSlideAngleZ = 0;
 
 // let g_animation = false;
 
+
+// From lab 2 
+var stats = new Stats();
+stats.dom.style.left = "auto";
+stats.dom.style.right = "0";
+stats.showPanel(0);
+document.body.appendChild(stats.dom);
+
+
 function zeroAllAngle()
 {
   g_leftUpperLegAngle = 0;
@@ -449,6 +458,9 @@ function tick() {
   // Print some debug information so we know we are running
   // console.log(performance.now());
 
+  // From lab 2
+  stats.begin();
+
   // Save the current time
   g_seconds=performance.now()/1000.0-g_startTime;
   // console.log(g_seconds)
@@ -462,6 +474,7 @@ function tick() {
   renderAllShapes();
 
   // Tell the browser to update anain when it has time
+  stats.end();
   requestAnimationFrame(tick);
 }
 
