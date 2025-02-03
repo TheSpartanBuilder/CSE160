@@ -270,58 +270,58 @@ class Tom {
 
 
 
-        // // Tail
-        // // let firstTail = new Cylinder();
-        // this.firstTail.color = this.tailColor.slice();
-        // this.firstTail.matrix.setTranslate(0,-0.15,0.23);
-        // this.firstTail.matrix.rotate(45,1,0,0);
-        // matrixScaleMass(this.firstTail.matrix,this.tailSize);
-        // let firstTailMatrix = new Matrix4(this.firstTail.matrix);
-        // this.firstTail.render();
+        // Tail
+        // let firstTail = new Cylinder();
+        this.firstTail.color = this.tailColor.slice();
+        this.firstTail.matrix.setTranslate(0,-0.15,0.23);
+        this.firstTail.matrix.rotate(45,1,0,0);
+        matrixScaleMass(this.firstTail.matrix,this.tailSize);
+        let firstTailMatrix = new Matrix4(this.firstTail.matrix);
+        this.firstTail.render();
 
-        // // let secondTail = new Cylinder();
-        // this.secondTail.color = this.tailColor.slice();
-        // this.secondTail.matrix = new Matrix4(firstTailMatrix);
-        // this.secondTail.matrix.translate(0,0,0.3);
-        // this.secondTail.matrix.rotate(-15,1,0,0);
-        // this.secondTail.matrix.scale(0.8,0.8,1);
-        // let secondTailMatrix = new Matrix4(this.secondTail.matrix);
-        // this.secondTail.render();
+        // let secondTail = new Cylinder();
+        this.secondTail.color = this.tailColor.slice();
+        this.secondTail.matrix = new Matrix4(firstTailMatrix);
+        this.secondTail.matrix.translate(0,0,0.3);
+        this.secondTail.matrix.rotate(-15,1,0,0);
+        this.secondTail.matrix.scale(0.8,0.8,1);
+        let secondTailMatrix = new Matrix4(this.secondTail.matrix);
+        this.secondTail.render();
 
-        // // let thirdTail = new Cylinder();
-        // this.thirdTail.color = this.tailColor.slice();
-        // this.thirdTail.matrix = new Matrix4(secondTailMatrix);
-        // this.thirdTail.matrix.translate(0,0,0.3);
-        // this.thirdTail.matrix.rotate(-15,1,0,0);
-        // this.thirdTail.matrix.scale(0.8,0.8,1);
-        // let thirdTailMatrix = new Matrix4(this.thirdTail.matrix);
-        // this.thirdTail.render();
+        // let thirdTail = new Cylinder();
+        this.thirdTail.color = this.tailColor.slice();
+        this.thirdTail.matrix = new Matrix4(secondTailMatrix);
+        this.thirdTail.matrix.translate(0,0,0.3);
+        this.thirdTail.matrix.rotate(-15,1,0,0);
+        this.thirdTail.matrix.scale(0.8,0.8,1);
+        let thirdTailMatrix = new Matrix4(this.thirdTail.matrix);
+        this.thirdTail.render();
 
-        // // let forthTail = new Cylinder();
-        // this.forthTail.color = this.tailColor.slice();
-        // this.forthTail.matrix = new Matrix4(thirdTailMatrix);
-        // this.forthTail.matrix.translate(0,0,0.3);
-        // this.forthTail.matrix.rotate(15,1,0,0);
-        // this.forthTail.matrix.scale(0.8,0.8,1);
-        // let forthTailMatrix = new Matrix4(this.forthTail.matrix);
-        // this.forthTail.render();
+        // let forthTail = new Cylinder();
+        this.forthTail.color = this.tailColor.slice();
+        this.forthTail.matrix = new Matrix4(thirdTailMatrix);
+        this.forthTail.matrix.translate(0,0,0.3);
+        this.forthTail.matrix.rotate(15,1,0,0);
+        this.forthTail.matrix.scale(0.8,0.8,1);
+        let forthTailMatrix = new Matrix4(this.forthTail.matrix);
+        this.forthTail.render();
 
-        // // let fithTail = new Cylinder();
-        // this.fithTail.color = this.tailColor.slice();
-        // this.fithTail.matrix = new Matrix4(forthTailMatrix);
-        // this.fithTail.matrix.translate(0,0,0.3);
-        // this.fithTail.matrix.rotate(15,1,0,0);
-        // this.fithTail.matrix.scale(0.8,0.8,1);
-        // let fithTailMatrix = new Matrix4(this.fithTail.matrix);
-        // this.fithTail.render();
+        // let fithTail = new Cylinder();
+        this.fithTail.color = this.tailColor.slice();
+        this.fithTail.matrix = new Matrix4(forthTailMatrix);
+        this.fithTail.matrix.translate(0,0,0.3);
+        this.fithTail.matrix.rotate(15,1,0,0);
+        this.fithTail.matrix.scale(0.8,0.8,1);
+        let fithTailMatrix = new Matrix4(this.fithTail.matrix);
+        this.fithTail.render();
 
-        // // let sixthTail = new Cylinder();
-        // this.sixthTail.color = this.tailTipColor.slice();
-        // this.sixthTail.matrix = new Matrix4(fithTailMatrix);
-        // this.sixthTail.matrix.translate(0,0,0.3);
-        // this.sixthTail.matrix.rotate(15,1,0,0);
-        // this.sixthTail.matrix.scale(0.8,0.8,1);
-        // this.sixthTail.render();
+        // let sixthTail = new Cylinder();
+        this.sixthTail.color = this.tailTipColor.slice();
+        this.sixthTail.matrix = new Matrix4(fithTailMatrix);
+        this.sixthTail.matrix.translate(0,0,0.3);
+        this.sixthTail.matrix.rotate(15,1,0,0);
+        this.sixthTail.matrix.scale(0.8,0.8,1);
+        this.sixthTail.render();
 
 
 
