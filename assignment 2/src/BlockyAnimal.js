@@ -471,7 +471,7 @@ function tick() {
   if(g_specialAnimation) specialAction();
 
   // Draw Everything
-  renderAllShapes();
+  renderScene();
 
   // Tell the browser to update anain when it has time
   stats.end();
@@ -514,7 +514,7 @@ function updateAnimationAngles() {
 
 var tom = new Tom();
 // Draw every shape that is supposed to be in the canvas
-function renderAllShapes(){
+function renderScene(){
 
   // Check the time at the start of this function
   var startTime = performance.now();
@@ -522,54 +522,8 @@ function renderAllShapes(){
   // Clear <canvas>
   gl.clear(gl.COLOR_BUFFER_BIT);
 
-  // // Draw a cube
-  // var body = new Cube();
-  // body.color = [1.0,0.0,0.0,1.0];
-  // body.matrix.translate(-.25,-.75,0.0);
-  // body.matrix.rotate(-5,1,0,0);
-  // body.matrix.scale(0.5,.3,.5);
-  // body.render();
-
-  // // Draw left arm
-  // var leftArm = new Cube();
-  // leftArm.color = [1,1,0,1];
-  // leftArm.matrix.translate(0,-.5,0.0);
-  // leftArm.matrix.rotate(-5,1,0,0);
-
-  // leftArm.matrix.rotate(-g_yellowSlide,0,0,1);
-  // //leftArm.matrix.rotate(45*Math.sin(g_seconds),0,0,1);
-  // var yelloCoordinateMatrix = new Matrix4(leftArm.matrix);
-  // leftArm.matrix.scale(0.25,.7,.5);
-  // leftArm.matrix.translate(-.5,0,0);
-  // leftArm.render()
-
-  // // var yelloCoordinateMatrixInverse = new Matrix4().invert(yelloCoordinateMatrix);
-
-  // // Test box
-  // var box = new Cube();
-  // box.color = [1,0,1,1];
-  // box.matrix = yelloCoordinateMatrix
-  // box.matrix.translate(0, 0.65, 0);
-  // //box.matrix.rotate(0,1,0,0);
-  // box.matrix.rotate(g_magentaAngle,0,0,1);
-  // box.matrix.scale(.3,.3,.3);
-  // box.matrix.translate(-.5,0,-0.001);
-  // box.render();
-
   
   tom.render();
-
-  // var item = new Cylinder();
-  // item.render();
-
-  // var ractangle = new Ractangle3D();
-  // ractangle.render();
-
-  // var pyramid = new Pyramid();
-  // pyramid.render()
-
-  // var test = new TriangularPrism();
-  // test.render();
 
   var duration = performance.now() - startTime;
   sendTextToHTML(" ms: " + Math.floor(duration) + " fps: " + Math.floor(10000/duration),"textBox");
