@@ -68,14 +68,51 @@ let g_magenteAnimation = false;
 let g_headXSlideAngle = 0;
 let g_headYSlideAngle = 0;
 let originalCoordinate = [0,0];
-let g_animationOn = true;
+let g_animationOn = false;
 let g_animationSpeed = 1;
 
 // let g_animation = false;
 
+function zeroAllAngle()
+{
+  g_leftUpperLegAngle = 0;
+  g_leftLowerLegSlideAngle = 0;
+  g_leftFeetSlideAngle = 0;
+  g_rightUpperLegAngle = 0;
+  g_rightLowerLegSlideAngle = 0;
+  g_rightFeetSlideAngle = 0;
+  g_leftUpperArmSlideAngle = 0;
+  g_leftLowerArmSlideAngle = 0;
+  g_leftHandSlideAngle = 0;
+  g_rightUpperArmSlideAngle = 0;
+  g_rightLowerArmSlideAngle = 0;
+  g_rightHandSlideAngle = 0;
+  g_headXSlideAngle = 0;
+  g_headYSlideAngle = 0;
+  document.getElementById('leftUpperLegSlide').value = 0;
+  document.getElementById('leftLowerLegSlide').value = 0;
+  document.getElementById('leftFeetSlide').value = 0;
+  document.getElementById('rightUpperLegSlide').value = 0;
+  document.getElementById('rightLowerLegSlide').value = 0;
+  document.getElementById('rightFeetSlide').value = 0;
+  document.getElementById('leftUpperArmSlide').value = 0;
+  document.getElementById('leftLowerArmSlide').value = 0;
+  document.getElementById('leftHandSlide').value = 0;
+  document.getElementById('rightUpperArmSlide').value = 0;
+  document.getElementById('rightLowerArmSlide').value = 0;
+  document.getElementById('rightHandSlide').value = 0;
+  document.getElementById('headXSlide').value = 0;
+  document.getElementById('headYSlide').value = 0;
+  document.getElementById('animationSpeedSlide').value = 0;
+}
+
 function g_animationState(input)
 {
   g_animationOn = input;
+  if(input == false)
+  {
+    zeroAllAngle();
+  }
 }
 
 // Set up actions for the HTML UI elements
@@ -438,4 +475,3 @@ function sendTextToHTML(text, htmlID) {
 //   let BasisMatrixRotate = new Matrix4(basisMatrix).rotate(angle[0],angle[1],angle[2],angle[3]);
 //   return new Matrix4(BasisMatrixRotate).multiply(basisMatrixInverse);
 // }
-
