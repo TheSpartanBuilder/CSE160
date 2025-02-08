@@ -52,6 +52,7 @@ let u_Size;
 let u_ModelMatrix;
 let u_ProjectionMatrix;
 let u_ViewMatrix;
+let u_Sampler0;
 let u_GlobalRotateMatrix;
 
 // let g_selectedColor=[1.0,1.0,1.0,1.0];
@@ -598,35 +599,29 @@ function specialAction(){
 }
 
 
-function initTextures(gl, n) {
-  var texture = gl.createTexture();   // Create a texture object
-  if (!texture) {
-    console.log('Failed to create the texture object');
-    return false;
-  }
-
-  // Get the storage location of u_Sampler
-  var u_Sampler = gl.getUniformLocation(gl.program, 'u_Sampler');
-  if (!u_Sampler) {
-    console.log('Failed to get the storage location of u_Sampler');
-    return false;
-  }
+function initTextures(gl) {
   var image = new Image();  // Create the image object
   if (!image) {
     console.log('Failed to create the image object');
     return false;
   }
   // Register the event handler to be called on loading an image
-  image.onload = function(){ loadTexture(gl, n, texture, u_Sampler, image); };
+  image.onload = function(){ sendTextureToGLSL(gl, n, u_Sampler0, image); };
   // Tell the browser to load an image
-  image.src = '../resources/sky.jpg';
+  image.src = '../Image/code/santa_bailey-256x256.png';
 
   return true;
 }
 
 
 
-function loadTexture(gl, n, texture, u_Sampler, image) {
+function sendTextureToGLSL(gl, image) {
+  var texture = gl.createTexture();   // Create a texture object
+  if (!texture) {
+    console.log('Failed to create the texture object');
+    return false;
+  }
+
   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1); // Flip the image's y axis
   // Enable texture unit0
   gl.activeTexture(gl.TEXTURE0);
@@ -641,7 +636,9 @@ function loadTexture(gl, n, texture, u_Sampler, image) {
   // Set the texture unit 0 to the sampler
   gl.uniform1i(u_Sampler, 0);
   
-  gl.clear(gl.COLOR_BUFFER_BIT);   // Clear <canvas>
+  // gl.clear(gl.COLOR_BUFFER_BIT);   // Clear <canvas>
 
-  gl.drawArrays(gl.TRIANGLE_STRIP, 0, n); // Draw the rectangle
+  // gl.drawArrays(gl.TRIANGLE_STRIP, 0, n); // Draw the rectangle
+
+  console.log('finished loadTexture');
 }
