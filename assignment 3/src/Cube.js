@@ -7,6 +7,7 @@ class Cube{
       //this.size = 5.0;
       //this.segments = 10;
       this.matrix = new Matrix4();
+      this.textureNum = -2;
     }
 
     update(){
@@ -23,6 +24,9 @@ class Cube{
       
       //Reference
       //https://www.math.brown.edu/tbanchof/Beyond3d/Images/chapter8/image04.jpg
+
+      // Pass the texture number
+      gl.uniform1i(u_whichTexture,this.textureNum);
       
       // Pass the matrix to u_ModelMatrix attribute
       gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);

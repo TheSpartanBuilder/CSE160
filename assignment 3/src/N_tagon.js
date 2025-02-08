@@ -6,6 +6,7 @@ class N_tagon
     this.color = [1.0,1.0,1.0,1.0];
     this.size = 5.0;
     this.numSide = 5;
+    this.textureNum = -2;
     this.array = new generatePentagonVertices(this.position[0],this.position[1],this.numSide,this.size);
     //console.log(generatePentagonVertices(this.position[0],this.position[1],this.numSide,this.size));
     }
@@ -16,6 +17,9 @@ class N_tagon
     }
 
     render(){
+
+        // Pass the texture number
+        gl.uniform1i(u_whichTexture,this.textureNum);
 
         gl.uniform4f(u_FragColor, this.color[0], this.color[1], this.color[2], this.color[3]);
 

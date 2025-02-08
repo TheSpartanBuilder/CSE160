@@ -10,12 +10,15 @@ class Cylinder {
         this.size = 40;
         this.upCircleVertex = generatePentagonVertices(this.x_cordinate,this.y_cordinate,this.sides,this.size);
         this.height = 0.5;
+        this.textureNum = -2;
         // this.downCircleVertex = generatePentagonVertices(this.x_cordinate,this.y_cordinate - this.y_distance,this.sides,this.size);
     }
 
 
 
     render() {
+        // Pass the texture number
+        gl.uniform1i(u_whichTexture,this.textureNum);
         // Pass the matrix to u_ModelMatrix attribute
         gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
         gl.uniform4f(u_FragColor,this.color[0],this.color[1],this.color[2],this.color[3]);

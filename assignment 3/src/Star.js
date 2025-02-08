@@ -7,6 +7,7 @@ class Star{
     this.numSide = 5;
     this.array = generateStarVertices(this.position[0],this.position[1],this.numSide,this.size);
     this.arrayPoint = generatePointStarVertices(this.position[0],this.position[1],this.numSide,this.array);
+    this.textureNum = -2;
     //console.log(generatePentagonVertices(this.position[0],this.position[1],this.numSide,this.size));
     }
 
@@ -17,6 +18,8 @@ class Star{
     }
 
     render(){
+        // Pass the texture number
+        gl.uniform1i(u_whichTexture,this.textureNum);
 
         gl.uniform4f(u_FragColor, this.color[0], this.color[1], this.color[2], this.color[3]);
 

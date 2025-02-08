@@ -1,6 +1,7 @@
 class CubeTexture extends Cube {
     constructor(){
         super();
+        this.textureNum = 0;
     }
 
     render(){
@@ -9,6 +10,9 @@ class CubeTexture extends Cube {
       
       //Reference
       //https://www.math.brown.edu/tbanchof/Beyond3d/Images/chapter8/image04.jpg
+
+      // Pass the texture number
+      gl.uniform1i(u_whichTexture,this.textureNum);
       
       // Pass the matrix to u_ModelMatrix attribute
       gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);

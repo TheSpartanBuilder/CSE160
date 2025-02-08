@@ -5,6 +5,7 @@ class Triangle
         this.position = [0.0,0.0,0.0];
         this.color = [1.0,1.0,1.0,1.0];
         this.size = 5.0;
+        this.textureNum = -2;
       }
 
       update()
@@ -13,6 +14,8 @@ class Triangle
       }
     
       render(){
+        // Pass the texture number
+        gl.uniform1i(u_whichTexture,this.textureNum);
         // Pass the size of a point to u_Size variable
         gl.uniform1f(u_Size,this.size);
         // Pass the position of a point to a_Position variable

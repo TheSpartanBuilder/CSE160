@@ -5,9 +5,12 @@ class Pyramid {
         this.squareCoordinate = [[0,0,0],[0,1,0],[1,1,0],[1,0,0]];
         this.tipCoordinate = [1/2,1/2,1/2];
         this.matrix = new Matrix4();
+        this.textureNum = -2;
     }
 
     render() {
+        // Pass the texture number
+        gl.uniform1i(u_whichTexture,this.textureNum);
         // Setting the color of the pyramid
         gl.uniform4f(u_FragColor, this.color[0], this.color[1], this.color[2], this.color[3]);
 

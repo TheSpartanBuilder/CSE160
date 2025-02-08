@@ -8,6 +8,7 @@ class Ractangle
         this.width = 0.5;
         this.height = 0.2;
         this.array = generateRactangleVertex(this.position,this.width/100,this.height/100);
+        this.textureNum = -2;
       }
   
       update(){
@@ -15,6 +16,8 @@ class Ractangle
       }
     
       render(){
+        // Pass the texture number
+        gl.uniform1i(u_whichTexture,this.textureNum);
   
           // Pass the size of a point to u_Size variable
           gl.uniform1f(u_Size,this.size);

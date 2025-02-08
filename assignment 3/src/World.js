@@ -1,32 +1,54 @@
 // ColoredPoint.js (c) 2012 matsuda
 // Vertex shader program
-var VSHADER_SOURCE =
-  'precision mediump float;\n'+
-  'attribute vec4 a_Position;\n' +
-  'attribute vec2 a_UV;\n'+
-  'varying vec2 v_UV;\n'+
-  'uniform float u_Size;\n' +
-  'uniform mat4 u_ModelMatrix;\n'+
-  'uniform mat4 u_GlobalRotateMatrix;\n'+
-  'void main() {\n' +
-  '  gl_Position = u_GlobalRotateMatrix * u_ModelMatrix * a_Position;\n' +
-  '  //gl_Position = a_Position;\n' +
-  '  //gl_PointSize = 10.0;\n' +
-  '  //gl_PointSize = u_Size;\n' +
-  '  v_UV = a_UV;\n'+
-  '}\n';
+var VSHADER_SOURCE = `
+  precision mediump float;
+  attribute vec4 a_Position;
+  attribute vec2 a_UV;
+  varying vec2 v_UV;
+  uniform float u_Size;
+  uniform mat4 u_ModelMatrix;
+  uniform mat4 u_GlobalRotateMatrix;
+  uniform mat4 u_ViewMatrix;
+  uniform mat4 u_ProjectionMatrix;
+  void main() {
+    gl_Position = u_ProjectionMatrix * u_ViewMatrix * u_GlobalRotateMatrix * u_ModelMatrix * a_Position;
+    //gl_Position = a_Position;
+    //gl_PointSize = 10.0;
+    //gl_PointSize = u_Size;
+    v_UV = a_UV;
+  }`;
 
 // Fragment shader program
-var FSHADER_SOURCE =
-  'precision mediump float;\n' +
-  'varying vec2 v_UV;\n'+
-  'uniform vec4 u_FragColor;\n' +  // uniform変数
-  'uniform sampler2D u_Sampler0;\n'+
-  'void main() {\n' +
-  '  gl_FragColor = u_FragColor;\n' +
-  '  gl_FragColor = vec4(v_UV,1.0,1.0);\n'+
-  '  gl_FragColor = texture2D(u_Sampler0, v_UV);\n'+
-  '}\n'; 
+var FSHADER_SOURCE = `
+  precision mediump float;
+  varying vec2 v_UV;
+  uniform vec4 u_FragColor;
+  uniform sampler2D u_Sampler0;
+  uniform int u_whichTexture;
+  void main() {
+  //gl_FragColor = u_FragColor;
+  //gl_FragColor = vec4(v_UV,1.0,1.0);
+  //gl_FragColor = texture2D(u_Sampler0, v_UV);
+
+    if (u_whichTexture == -2) {
+      // Use color
+      gl_FragColor = u_FragColor;
+    }
+    else if (u_whichTexture == -1) {
+      // Use UV debug color
+      gl_FragColor = vec4(v_UV,1.0,1.0);
+    }
+    else if (u_whichTexture == 0)
+    {
+      // Use tecture0
+      gl_FragColor = texture2D(u_Sampler0, v_UV);
+    }
+    else
+    {
+      // Error, put Redish
+      gl_FragColor = vec4(1,.2,.2,1);
+    }
+  }`;
 
 // Visit when free
 // https://stackoverflow.com/questions/14226803/wait-5-seconds-before-executing-next-line
@@ -54,6 +76,7 @@ let u_ProjectionMatrix;
 let u_ViewMatrix;
 let u_Sampler0;
 let u_GlobalRotateMatrix;
+let u_whichTexture;
 
 // let g_selectedColor=[1.0,1.0,1.0,1.0];
 // let g_selectedSize= 5.0;
@@ -375,6 +398,12 @@ function connectVariablesToGLSL()
     return;
   }
 
+  u_whichTexture = gl.getUniformLocation(gl.program, "u_whichTexture");
+  if(!u_whichTexture) {
+    console.log('Failed to get the storage location of u_whichTexture');
+    return;
+  }
+
   // Get the storage location of u_ViewMatrix
   // u_ViewMatrix = gl.getUniformLocation(gl.program, 'u_ViewMatrix');
   // if(!u_ViewMatrix) {
@@ -389,10 +418,26 @@ function connectVariablesToGLSL()
     return;
   }
 
+  // Get the storage location of u_ViewMatrix
+  u_ViewMatrix = gl.getUniformLocation(gl.program, "u_ViewMatrix");
+  if(!u_ViewMatrix) {
+    console.log('Failed to get the storage location of u_ViewMatrix');
+    return;
+  }
+
+  // Get the storage location of u_ProjectionMatrix
+  u_ProjectionMatrix = gl.getUniformLocation(gl.program, "u_ProjectionMatrix");
+  if(!u_ProjectionMatrix) {
+    console.log('Failed to get the storage location of u_ProjectionMatrix');
+    return;
+  }
+
   // Set an initial value for this matrix to indentity
   var identityM = new Matrix4();
   gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
   gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, identityM.elements);
+  gl.uniformMatrix4fv(u_ViewMatrix, false, identityM.elements);
+  gl.uniformMatrix4fv(u_ProjectionMatrix, false, identityM.elements);
 }
 
 function main() {
@@ -499,7 +544,7 @@ function tick() {
   if(g_specialAnimation) specialAction();
 
   // Draw Everything
-  renderScene();
+  renderAllShapes();
 
   // Tell the browser to update anain when it has time
   stats.end();
@@ -539,15 +584,29 @@ function updateAnimationAngles() {
   g_headYSlideAngle = (15*sin);
 }
 
+var g_eye=[0,0,-1];
+var g_at=[0,0,0];
+var g_up=[0,1,0];
 
 var tom = new Tom();
 var cube = new CubeTexture();
 cube.matrix.scale(0.5,0.5,0.5);
 // Draw every shape that is supposed to be in the canvas
-function renderScene(){
+function renderAllShapes(){
 
   // Check the time at the start of this function
   var startTime = performance.now();
+
+  // Pass the projection matrix
+  var projMat = new Matrix4();
+  projMat.setPerspective(90,canvas.width/canvas.height,.1,100);
+  gl.uniformMatrix4fv(u_ProjectionMatrix,false,projMat.elements);
+
+  // Pass the view matrix 
+  var viewMat = new Matrix4();
+  viewMat.setLookAt(g_eye[0],g_eye[1],g_eye[2], g_at[0],g_at[1],g_at[2], g_up[0],g_up[1],g_up[2]); // (eye, at, up)
+  // viewMat.setLookAt(0,0,-1, 0,0,0, 0,1,0); // (eye, at, up)
+  gl.uniformMatrix4fv(u_ViewMatrix, false, viewMat.elements);
 
   // Clear <canvas>
   gl.clear(gl.COLOR_BUFFER_BIT);
@@ -599,14 +658,14 @@ function specialAction(){
 }
 
 
-function initTextures(gl) {
+function initTextures() {
   var image = new Image();  // Create the image object
   if (!image) {
     console.log('Failed to create the image object');
     return false;
   }
   // Register the event handler to be called on loading an image
-  image.onload = function(){ sendTextureToGLSL(gl, n, u_Sampler0, image); };
+  image.onload = function(){ sendTextureToGLSL(image); };
   // Tell the browser to load an image
   image.src = '../Image/code/santa_bailey-256x256.png';
 
@@ -615,7 +674,7 @@ function initTextures(gl) {
 
 
 
-function sendTextureToGLSL(gl, image) {
+function sendTextureToGLSL(image) {
   var texture = gl.createTexture();   // Create a texture object
   if (!texture) {
     console.log('Failed to create the texture object');
@@ -634,11 +693,11 @@ function sendTextureToGLSL(gl, image) {
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
   
   // Set the texture unit 0 to the sampler
-  gl.uniform1i(u_Sampler, 0);
+  gl.uniform1i(u_Sampler0, 0);
   
   // gl.clear(gl.COLOR_BUFFER_BIT);   // Clear <canvas>
 
   // gl.drawArrays(gl.TRIANGLE_STRIP, 0, n); // Draw the rectangle
 
-  console.log('finished loadTexture');
+  // console.log('finished loadTexture');
 }
