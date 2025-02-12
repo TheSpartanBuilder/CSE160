@@ -453,6 +453,8 @@ function main() {
 
   initTextures(gl,0);
 
+  document.onkeydown = keydown;
+
   // Register function (event handler) to be called on a mouse press
   canvas.onmousedown = function(ev){ click(ev) };
   canvas.onmousemove = function(ev){ if(ev.buttons == 1) { click(ev); }};
@@ -461,25 +463,9 @@ function main() {
   // Specify the color for clearing <canvas>
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
-  // Clear <canvas>
-  //gl.clear(gl.COLOR_BUFFER_BIT);
-  //renderAllShapes();
 
   requestAnimationFrame(tick);
-
-  // test();
-  // drawPentagon();
-  // let test = new Ractangle();
-  // test.render();
-
-  // console.log(myGeneratePentagonVertices(0,0,5,2));
 }
-
-/*
-var g_points = [];  // The array for the position of a mouse press
-var g_colors = [];  // The array to store the color of a point
-var g_size = [];    // The array to store the size of a point
-*/
 
 var g_shapeList = []; // The array to store the object of a point
 
@@ -584,9 +570,11 @@ function updateAnimationAngles() {
   g_headYSlideAngle = (15*sin);
 }
 
-var g_eye=[0,0,-1];
-var g_at=[0,0,0];
-var g_up=[0,1,0];
+// var g_eye=[0,0,-1];
+// var g_at=[0,0,100];
+// var g_up=[0,1,0];
+
+var cam = new Camera();
 
 var tom = new Tom();
 var cube = new CubeTexture();
@@ -604,9 +592,18 @@ function renderAllShapes(){
 
   // Pass the view matrix 
   var viewMat = new Matrix4();
-  viewMat.setLookAt(g_eye[0],g_eye[1],g_eye[2], g_at[0],g_at[1],g_at[2], g_up[0],g_up[1],g_up[2]); // (eye, at, up)
+  viewMat.setLookAt(cam.g_eye[0],cam.g_eye[1],cam.g_eye[2], cam.g_at[0],cam.g_at[1],cam.g_at[2], cam.g_up[0],cam.g_up[1],cam.g_up[2]); // (eye, at, up)
   // viewMat.setLookAt(0,0,-1, 0,0,0, 0,1,0); // (eye, at, up)
   gl.uniformMatrix4fv(u_ViewMatrix, false, viewMat.elements);
+
+  // Draw the flor
+  var floor = new Cube();
+  floor.color = [1,1,1,1];
+  floor.textureNum = 0;
+  floor.matrix.translate(0,-.75,0);
+  floor.matrix.scale(10,0,10);
+  floor.matrix.translate(-.5,0,-.5);
+  floor.render();
 
   // Clear <canvas>
   gl.clear(gl.COLOR_BUFFER_BIT);
@@ -700,4 +697,57 @@ function sendTextureToGLSL(image) {
   // gl.drawArrays(gl.TRIANGLE_STRIP, 0, n); // Draw the rectangle
 
   // console.log('finished loadTexture');
+}
+
+
+// https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+// window.addEventListener("keydown",
+//   (event) => {
+//     switch (event.key) {
+//       case "w":
+//         cam.moveForward();
+//         break;
+//       case "s":
+//         cam.moveBackword();
+//         break;
+//       case "a":
+//         cam.moveLeft();
+//         break;
+//       case "d":
+//         cam.moveRight();
+//         break;
+//       case "q":
+//         cam.panLeft();
+//         break;
+//       case "e":
+//         cam.panRight();
+//         break;
+      
+//     }
+//   }
+// );
+
+function keydown(event){
+  switch (event.key) {
+    case "w":
+      cam.moveForward();
+      break;
+    case "s":
+      cam.moveBackword();
+      break;
+    case "a":
+      cam.moveLeft();
+      break;
+    case "d":
+      cam.moveRight();
+      break;
+    case "q":
+      cam.panLeft();
+      break;
+    case "e":
+      cam.panRight();
+      break;
+    
+  }
+  renderAllShapes();
 }
