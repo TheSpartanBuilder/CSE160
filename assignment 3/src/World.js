@@ -53,7 +53,7 @@ var FSHADER_SOURCE = `
       {
         gl_FragColor = texture2D(u_Sampler1, v_UV);
       }
-        else if(u_TextureNum == 2)
+      else if(u_TextureNum == 2)
       {
         gl_FragColor = texture2D(u_Sampler2, v_UV);
       }
