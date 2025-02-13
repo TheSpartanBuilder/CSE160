@@ -10,10 +10,10 @@ class CubeTexture extends Cube {
         this.image.src = image_source;
         this.u_SamplerX = u_SamplerX;
         this.textureID = textureID;
-        if(image_source != null && u_SamplerX != null)
-        {
-          this.initTextures();
-        }
+        // if(image_source != null && u_SamplerX != null)
+        // {
+        //   this.initTextures();
+        // }
         this.texture;
         this.gl_TEXTURE = gl_TEXTURE;
     }
@@ -70,8 +70,8 @@ class CubeTexture extends Cube {
       // Set the texture unit 0 to the sampler
       gl.uniform1i(this.u_SamplerX, this.textureID);
       
-      console.log(this.image.src);
-      console.log(this.u_SamplerX);
+      // console.log(this.image.src);
+      // console.log(this.u_SamplerX);
 
       this.texture = texture;
 

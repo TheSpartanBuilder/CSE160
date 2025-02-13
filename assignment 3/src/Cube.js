@@ -15,6 +15,8 @@ class Cube{
     }
 
     render(){
+      // Pass the texture number
+      gl.uniform1i(u_whichTexture,this.textureNum);
       drawCube(this.matrix,this.color);
     }
   
