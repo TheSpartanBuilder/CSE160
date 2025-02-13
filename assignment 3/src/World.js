@@ -24,7 +24,10 @@ var FSHADER_SOURCE = `
   varying vec2 v_UV;
   uniform vec4 u_FragColor;
   uniform sampler2D u_Sampler0;
+  uniform sampler2D u_Sampler1;
+  uniform sampler2D u_Sampler2;
   uniform int u_whichTexture;
+  uniform int u_TextureNum;
   void main() {
   //gl_FragColor = u_FragColor;
   //gl_FragColor = vec4(v_UV,1.0,1.0);
@@ -41,7 +44,19 @@ var FSHADER_SOURCE = `
     else if (u_whichTexture == 0)
     {
       // Use tecture0
-      gl_FragColor = texture2D(u_Sampler0, v_UV);
+      // gl_FragColor = texture2D(u_Sampler0, v_UV);
+      if (u_TextureNum == 0)
+      {
+        gl_FragColor = texture2D(u_Sampler0, v_UV);
+      }
+      else if(u_TextureNum == 1)
+      {
+        gl_FragColor = texture2D(u_Sampler1, v_UV);
+      }
+        else if(u_TextureNum == 2)
+      {
+        gl_FragColor = texture2D(u_Sampler2, v_UV);
+      }
     }
     else
     {
@@ -75,8 +90,11 @@ let u_ModelMatrix;
 let u_ProjectionMatrix;
 let u_ViewMatrix;
 let u_Sampler0;
+let u_Sampler1;
+let u_Sampler2;
 let u_GlobalRotateMatrix;
 let u_whichTexture;
+let u_TextureNum;
 
 // let g_selectedColor=[1.0,1.0,1.0,1.0];
 // let g_selectedSize= 5.0;
@@ -404,6 +422,12 @@ function connectVariablesToGLSL()
     return;
   }
 
+  u_TextureNum = gl.getUniformLocation(gl.program, "u_TextureNum");
+  if(!u_TextureNum) {
+    console.log('Failed to get the storage location of u_TextureNum');
+    return;
+  }
+
   // Get the storage location of u_ViewMatrix
   // u_ViewMatrix = gl.getUniformLocation(gl.program, 'u_ViewMatrix');
   // if(!u_ViewMatrix) {
@@ -432,6 +456,24 @@ function connectVariablesToGLSL()
     return;
   }
 
+  u_Sampler0 = gl.getUniformLocation(gl.program, 'u_Sampler0');
+  if (!u_Sampler0) {
+    console.log('Failed to get the storage location of u_Sampler0');
+    return false;
+  }
+
+  u_Sampler1 = gl.getUniformLocation(gl.program, 'u_Sampler1');
+  if (!u_Sampler1) {
+    console.log('Failed to get the storage location of u_Sampler1');
+    return false;
+  }
+
+  u_Sampler2 = gl.getUniformLocation(gl.program, 'u_Sampler2');
+  if (!u_Sampler1) {
+    console.log('Failed to get the storage location of u_Sampler2');
+    return false;
+  }
+
   // Set an initial value for this matrix to indentity
   var identityM = new Matrix4();
   gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
@@ -439,6 +481,12 @@ function connectVariablesToGLSL()
   gl.uniformMatrix4fv(u_ViewMatrix, false, identityM.elements);
   gl.uniformMatrix4fv(u_ProjectionMatrix, false, identityM.elements);
 }
+
+// Objects in the world
+var tom;
+var cube;
+var floor;
+var sky;
 
 function main() {
 
@@ -451,7 +499,7 @@ function main() {
   // Set up actions for the HTML UI elements
   addActionsForHtmlUI();
 
-  initTextures(gl,0);
+  // initTextures(gl,0);
 
   document.onkeydown = keydown;
 
@@ -459,6 +507,27 @@ function main() {
   canvas.onmousedown = function(ev){ click(ev) };
   canvas.onmousemove = function(ev){ if(ev.buttons == 1) { click(ev); }};
   // canvas.onmouseup = function(ev){ endClick(ev)};
+
+  tom = new Tom();
+
+  cube = new CubeTexture("../Image/code/santa_bailey-256x256.png",u_Sampler0,0,gl.TEXTURE0);
+  cube.matrix.scale(0.5,0.5,0.5);
+  cube.initTextures();
+
+  floor = new CubeTexture('../Image/code/grey-dots-background_1053-180.jpg',u_Sampler1,1,gl.TEXTURE1);
+  floor.color = [1,1,1,1];
+  floor.matrix.translate(0,-.75,0);
+  floor.matrix.scale(10,0,10);
+  floor.matrix.translate(-.5,0,-.5);
+  // floor.matrix.scale(0.6,0.6,0.6);
+  floor.initTextures();
+
+  sky = new CubeTexture('../Image/code/why-sky-blue-2db86ae-ezgif.com-resize.jpg',u_Sampler2,2,gl.TEXTURE2);
+  sky.color = [1.0,0.0,0.0,1.0];
+  sky.matrix.scale(50,50,50);
+  sky.matrix.translate(-.5,-.5,-.5);
+  sky.initTextures();
+
 
   // Specify the color for clearing <canvas>
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -576,9 +645,9 @@ function updateAnimationAngles() {
 
 var cam = new Camera();
 
-var tom = new Tom();
-var cube = new CubeTexture();
-cube.matrix.scale(0.5,0.5,0.5);
+// var tom;
+// var cube;
+// var floor;
 // Draw every shape that is supposed to be in the canvas
 function renderAllShapes(){
 
@@ -597,20 +666,15 @@ function renderAllShapes(){
   gl.uniformMatrix4fv(u_ViewMatrix, false, viewMat.elements);
 
   // Draw the flor
-  var floor = new Cube();
-  floor.color = [1,1,1,1];
-  floor.textureNum = 0;
-  floor.matrix.translate(0,-.75,0);
-  floor.matrix.scale(10,0,10);
-  floor.matrix.translate(-.5,0,-.5);
-  floor.render();
 
   // Clear <canvas>
   gl.clear(gl.COLOR_BUFFER_BIT);
 
   
   // tom.render();
+  floor.render();
   cube.render();
+  sky.render();
 
   var duration = performance.now() - startTime;
   sendTextToHTML(" ms: " + Math.floor(duration) + " fps: " + Math.floor(10000/duration),"textBox");
@@ -749,5 +813,5 @@ function keydown(event){
       break;
     
   }
-  renderAllShapes();
+  // renderAllShapes();
 }
