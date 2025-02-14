@@ -499,7 +499,7 @@ var cube;
 var floor;
 var sky;
 var brick;
-var wallArray;
+var wallArray = [];
 
 function main() {
 
@@ -544,18 +544,12 @@ function main() {
   brick = new CubeTexture('../Image/code/bf8f1b26cb46d0657330039dab47a7d7-ezgif.com-resize.jpg',u_Sampler3,3,gl.TEXTURE3);
   brick.initTextures();
 
-  wallArray = [];
+  // wallArray;
 
   for (let x = 0; x<32; x++)
     {
       for(let y = 0; y<32; y++)
       {
-        // if(g_map[x][y]==1)
-        // {
-        //   var body = new CubeTextureInUse(brick);
-        //   body.matrix.translate(x-4,-.75,y-4);
-        //   body.render();
-        // }
         if(x < 1 || x==31 || y== 0 || y==31)
         {
           let body = new CubeTextureInUse(brick);
@@ -754,9 +748,9 @@ function renderAllShapes(){
 
   for(let i = 0; i < wallArray.length; i++)
   {
+    wallArray[i].inputTexture(brick);
     wallArray[i].render();
   }
-  
 
   // let test = new CubeTextureInUse(cube);
   // test.render();

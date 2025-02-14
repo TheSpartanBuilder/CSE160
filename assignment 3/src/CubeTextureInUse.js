@@ -8,6 +8,14 @@ class CubeTextureInUse extends Cube {
         this.gl_TEXTURE = config.gl_TEXTURE;
     }
 
+    inputTexture(config)
+    {
+        this.u_SamplerX = config.u_SamplerX;
+        this.textureID = config.textureID;
+        this.texture = config.texture;
+        this.gl_TEXTURE = config.gl_TEXTURE;
+    }
+
     render(){
         // Draw
         // var offset = this.size/200.0;
