@@ -719,18 +719,20 @@ function drawMap()
 // var cube;
 // var floor;
 // Draw every shape that is supposed to be in the canvas
+var projMat = new Matrix4();
+var viewMat = new Matrix4();
 function renderAllShapes(){
 
   // Check the time at the start of this function
   var startTime = performance.now();
 
   // Pass the projection matrix
-  var projMat = new Matrix4();
+  // var projMat = new Matrix4();
   projMat.setPerspective(90,canvas.width/canvas.height,.1,100);
   gl.uniformMatrix4fv(u_ProjectionMatrix,false,projMat.elements);
 
   // Pass the view matrix 
-  var viewMat = new Matrix4();
+  // var viewMat = new Matrix4();
   viewMat.setLookAt(cam.g_eye[0],cam.g_eye[1],cam.g_eye[2], cam.g_at[0],cam.g_at[1],cam.g_at[2], cam.g_up[0],cam.g_up[1],cam.g_up[2]); // (eye, at, up)
   // viewMat.setLookAt(0,0,-1, 0,0,0, 0,1,0); // (eye, at, up)
   gl.uniformMatrix4fv(u_ViewMatrix, false, viewMat.elements);
