@@ -74,4 +74,85 @@ class CubeTextureInUse extends Cube {
         drawTriangle3DUV( [0,0,1,   0,1,1,   0,1,0],[0,1, 1,1, 1,0]);
         drawTriangle3DUV( [0,1,0,   0,0,0,   0,0,1],[1,0, 0,0, 0,1]);
       }
+
+
+    renderFaster() {
+        var rgba = this.color;
+        // Pass the texture number
+        gl.uniform1i(u_whichTexture,this.textureNum);
+        gl.uniform1i(u_TextureNum,this.textureID);
+
+        // Pass the matrix to u_ModelMatrix attribute
+        gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
+  
+        // Pass the color of a point to u_FragColor variable
+        gl.uniform4f(u_FragColor, this.color[0], this.color[1], this.color[2], this.color[3]);
+
+        var allverts = [];
+        // Front of cube
+        allverts = allverts.concat([0,0,0,  1,1,0,  1,0,0]);
+        allverts = allverts.concat([0.0,0.0,0.0,  0.0,1.0,0.0, 1.0,1.0,0.0]);
+
+        // Top of cube
+        allverts = allverts.concat([0,1,0,   0,1,1,   1,1,1]);
+        allverts = allverts.concat([0,1,0,   1,1,1,   1,1,0]);
+
+        // Right of cube
+        allverts = allverts.concat([1,0,1,   0,0,1,   0,0,0]);
+        allverts = allverts.concat([0,0,0,   1,0,0,   1,0,1]);
+
+        // Left of cube
+        allverts = allverts.concat([1,0,1,   1,1,1,   0,1,1]);
+        allverts = allverts.concat([0,1,1,   0,0,1,   1,0,1]);
+
+        // Bottom of cube
+        allverts = allverts.concat([1,1,1,   1,0,1,   1,0,0]);
+        allverts = allverts.concat([1,0,0,   1,1,0,   1,1,1]);
+
+        // Back of cube
+        allverts = allverts.concat([0,0,1,   0,1,1,   0,1,0]);
+        allverts = allverts.concat([0,1,0,   0,0,0,   0,0,1]);
+
+        drawTriangle3DBatch(allverts);
+    }
+
+    OldrenderFaster() {
+        var rgba = this.color;
+        // Pass the texture number
+        gl.uniform1i(u_whichTexture,this.textureNum);
+        gl.uniform1i(u_TextureNum,this.textureID);
+
+        // Pass the matrix to u_ModelMatrix attribute
+        gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
+  
+        // Pass the color of a point to u_FragColor variable
+        gl.uniform4f(u_FragColor, this.color[0], this.color[1], this.color[2], this.color[3]);
+
+        var allverts = [];
+        // Front of cube
+        allverts = allverts.concat([0,0,0, 1,1,0, 1,0,0]);
+        allverts = allverts.concat([0,0,0, 0,1,0, 1,1,0]);
+
+        // Top of cube
+        allverts = allverts.concat([0,1,0, 0,1,1, 1,1,1]);
+        allverts = allverts.concat([0,1,0, 1,1,1, 1,1,0]);
+
+        // Right of cube
+        allverts = allverts.concat([1,1,0, 1,1,1, 1,0,0]);
+        allverts = allverts.concat([1,0,0, 1,1,1, 1,0,1]);
+
+        // Left of cube
+        allverts = allverts.concat([0,1,0, 0,1,1, 0,0,0]);
+        allverts = allverts.concat([0,0,0, 0,1,1, 1,0,0]);
+
+        // Bottom of cube
+        allverts = allverts.concat([0,0,0, 0,0,1, 1,0,1]);
+        allverts = allverts.concat([0,0,0, 1,0,1, 1,0,0]);
+
+        // Back of cube
+        allverts = allverts.concat([0,0,1, 1,1,1, 1,0,1]);
+        allverts = allverts.concat([0,0,1, 0,1,1, 1,1,1]);
+
+        drawTriangle3DBatch(allverts);
+    }
 }
