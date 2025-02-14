@@ -26,6 +26,7 @@ var FSHADER_SOURCE = `
   uniform sampler2D u_Sampler0;
   uniform sampler2D u_Sampler1;
   uniform sampler2D u_Sampler2;
+  uniform sampler2D u_Sampler3;
   uniform int u_whichTexture;
   uniform int u_TextureNum;
   void main() {
@@ -56,6 +57,10 @@ var FSHADER_SOURCE = `
       else if(u_TextureNum == 2)
       {
         gl_FragColor = texture2D(u_Sampler2, v_UV);
+      }
+      else if(u_TextureNum == 3)
+      {
+        gl_FragColor = texture2D(u_Sampler3, v_UV);
       }
     }
     else
@@ -474,6 +479,12 @@ function connectVariablesToGLSL()
     return false;
   }
 
+  u_Sampler3 = gl.getUniformLocation(gl.program, 'u_Sampler3');
+  if (!u_Sampler3) {
+    console.log('Failed to get the storage location of u_Sampler3');
+    return false;
+  }
+
   // Set an initial value for this matrix to indentity
   var identityM = new Matrix4();
   gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
@@ -487,6 +498,7 @@ var tom;
 var cube;
 var floor;
 var sky;
+var brick;
 
 function main() {
 
@@ -528,6 +540,8 @@ function main() {
   sky.matrix.translate(-.5,-.5,-.5);
   sky.initTextures();
 
+  brick = new CubeTexture('../Image/code/bf8f1b26cb46d0657330039dab47a7d7-ezgif.com-resize.jpg',u_Sampler3,3,gl.TEXTURE3);
+  brick.initTextures();
 
   // Specify the color for clearing <canvas>
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -645,6 +659,42 @@ function updateAnimationAngles() {
 
 var cam = new Camera();
 
+
+var g_map = [
+  [1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 1, 1, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 1, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 1],
+];
+
+function drawMap()
+{
+  for (let x = 0; x<32; x++)
+  {
+    for(let y = 0; y<32; y++)
+    {
+      // if(g_map[x][y]==1)
+      // {
+      //   var body = new CubeTextureInUse(brick);
+      //   body.matrix.translate(x-4,-.75,y-4);
+      //   body.render();
+      // }
+      if(x < 1 || x==31 || y== 0 || y==31)
+      {
+        var body = new CubeTextureInUse(brick);
+        body.matrix.translate(0,-.75,0);
+        body.matrix.scale(.4,.4,.4);
+        body.matrix.translate(x-16,0,y-16);
+        body.render();
+      }
+    }
+  }
+}
+
 // var tom;
 // var cube;
 // var floor;
@@ -675,6 +725,10 @@ function renderAllShapes(){
   floor.render();
   cube.render();
   sky.render();
+  drawMap();
+
+  let test = new CubeTextureInUse(cube);
+  test.render();
 
   var duration = performance.now() - startTime;
   sendTextToHTML(" ms: " + Math.floor(duration) + " fps: " + Math.floor(10000/duration),"textBox");
