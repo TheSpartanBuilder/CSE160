@@ -66,6 +66,8 @@ function drawTriangle(vertices)
 
             // Draw the rectangle
             gl.drawArrays(gl.TRIANGLES, 0, n);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER,null);
 }
 
 
@@ -94,6 +96,8 @@ function drawTriangle3D(vertices)
 
     // Draw the rectangle
     gl.drawArrays(gl.TRIANGLES, 0, n);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER,null);
 }
 
 function drawTriangle3DColor(vertices,color)
@@ -124,6 +128,8 @@ function drawTriangle3DColor(vertices,color)
 
     // Draw the rectangle
     gl.drawArrays(gl.TRIANGLES, 0, n);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER,null);
 }
 
 function drawTriangle3DUV(vertices,uv)
@@ -170,6 +176,8 @@ function drawTriangle3DUV(vertices,uv)
 
     // Draw the rectangle
     gl.drawArrays(gl.TRIANGLES, 0, n);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER,null);
 }
 
 
@@ -200,6 +208,8 @@ function drawTriangle3DBatch(vertices)
 
     // Draw the rectangle
     gl.drawArrays(gl.TRIANGLES, 0, n);
+
+    // gl.bindBuffer(gl.ARRAY_BUFFER,null);
 }
 
 
@@ -240,4 +250,33 @@ function drawTriangle3DBatchUV(vertices,uv)
 
     // Draw the rectangle
     gl.drawArrays(gl.TRIANGLES, 0, n);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER,null);
 }
+
+
+// var g_vertexBuffer = null;
+// function initTriangle3D() {
+//     // Create a buffer object
+//     g_vertexBuffer = gl.createBuffer();
+//     if(!g_vertexBuffer) {
+//         console.log('Failed to create the buffer onject');
+//         return -1;
+//     }
+
+//     // Bind the buffer object to target
+//     gl.bindBuffer(gl.ARRAY_BUFFER, g_vertexBuffer);
+
+//     // Assign the buffer object to a_Position variable
+//     gl.vertexAttribPointer(a_Position);
+// }
+
+
+// function drawTriangle3DLessBuffer(vertices) {
+//     var n = vertices.length/3;
+
+//     if (g_vertexBuffer==null)
+//     {
+//         initTriangle3D();
+//     }
+// }
