@@ -101,17 +101,19 @@ class Camera {
     }
     
     panUpDown(amount) {
+        let originalVerticalAngle = this.verticalAngle;
         let finalAnlge = Math.min(-amount*this.sensitivity,70);
-        if(this.verticalAngle >= 80 && finalAnlge > 0 || this.verticalAngle <= -80 && finalAnlge < 0)
+        if(this.verticalAngle >= 87 && finalAnlge > 0 || this.verticalAngle <= -87 && finalAnlge < 0)
         {
             // console.log(this.verticalAngle,finalAnlge);
             return;
         }
         this.verticalAngle = this.verticalAngle + finalAnlge;
         // this.cameraTurnVerticalAdvance(this.turnAngle,-1);
-        if(this.verticalAngle >= 80 || this.verticalAngle <= -80)
+        if(this.verticalAngle >= 87 || this.verticalAngle <= -87)
         {
             // console.log(this.verticalAngle,finalAnlge);
+            this.verticalAngle = originalVerticalAngle;
             return;
         }
         this.cameraTurnVerticalAdvanceMatrix(finalAnlge,1);
