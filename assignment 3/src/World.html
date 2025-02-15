@@ -9,9 +9,12 @@
     <canvas id="webgl" width="800" height="600" style="position: absolute; z-index: 0">
     Please use a browser that supports "canvas"
     </canvas>
-    <canvas id="HUD" width="800" height="600" style="position: absolute; z-index: 1">
+    <canvas id="HUD" width="800" height="600" style="position: absolute; z-index: 5">
       Please use a browser that supports "canvas"
     </canvas>
+
+    <canvas width="800" height="600"></canvas>
+
     <p id="textBox"> XXX </p>
 
     <br>
@@ -20,7 +23,13 @@
     <button onclick="flyingOff()">Off</button>
     <button onclick="flyingReset()">Reset</button><br>
 
+
     <br>
+    Tom:
+    <br>
+    <button onclick="showTom()">Show</button>
+    <button onclick="hideTom()">Hide</button>
+    <br><br>
     Animation control(When animation is on other control will not work):<br>
     <button onclick="g_animationState(true)">On</button><button onclick="g_specialAnimationState(true)">Special Animation</button><button onclick="g_animationState(false); g_specialAnimationState(false)">Off</button><br>
     Animation Speed <input type="range" min="1.0" max="10.0" value="1.0" class="slider" id="animationSpeedSlide"><br>

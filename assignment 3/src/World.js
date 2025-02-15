@@ -530,6 +530,7 @@ var floor;
 var sky;
 var brick;
 var wallArray = [];
+var tomVisibility = false;
 
 function main() {
 
@@ -787,7 +788,7 @@ function renderAllShapes(){
   floor.renderFaster();
   cube.renderFaster();
   sky.renderFaster();
-  tom.renderFast();
+  if(tomVisibility) tom.renderFast();
   crosshair.render();
 
   for(let i = 0; i < wallArray.length; i++)
@@ -997,4 +998,14 @@ function getMovement(e)
 
   cam.panLeftRight(x);
   cam.panUpDown(y);
+}
+
+function showTom()
+{
+  tomVisibility = true;
+}
+
+function hideTom()
+{
+  tomVisibility = false;
 }
