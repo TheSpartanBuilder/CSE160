@@ -926,3 +926,18 @@ function keydown(event){
   }
   // renderAllShapes();
 }
+
+function flyingOn()
+{
+  cam.fly = true;
+}
+
+function flyingOff()
+{
+  cam.fly = false;
+}
+
+function flyingReset()
+{
+  cam.cameraReset();
+}

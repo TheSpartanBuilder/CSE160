@@ -12,6 +12,12 @@
     <p id="textBox"> XXX </p>
 
     <br>
+    Flying<br>
+    <button onclick="flyingOn()">On</button>
+    <button onclick="flyingOff()">Off</button>
+    <button onclick="flyingReset()">Reset</button><br>
+
+    <br>
     Animation control(When animation is on other control will not work):<br>
     <button onclick="g_animationState(true)">On</button><button onclick="g_specialAnimationState(true)">Special Animation</button><button onclick="g_animationState(false); g_specialAnimationState(false)">Off</button><br>
     Animation Speed <input type="range" min="1.0" max="10.0" value="1.0" class="slider" id="animationSpeedSlide"><br>

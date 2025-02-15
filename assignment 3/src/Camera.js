@@ -6,7 +6,7 @@ class Camera {
         this.g_at=[0,0,0];
         this.g_up=[0,1,0];
         this.verticalAngle = 0;
-        this.fly = true;
+        this.fly = false;
     }
 
     // Normal API
@@ -187,7 +187,15 @@ class Camera {
         }
     }
 
-
+    cameraReset() {
+        this.stepSize = 0.1;
+        this.turnAngle = 5;  
+        this.g_eye=[0,0,-1];
+        this.g_at=[0,0,0];
+        this.g_up=[0,1,0];
+        this.verticalAngle = 0;
+        this.fly = false;
+    }
 
 
 
