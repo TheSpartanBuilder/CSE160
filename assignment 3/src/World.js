@@ -533,9 +533,11 @@ function main() {
   document.onkeydown = keydown;
 
   // Register function (event handler) to be called on a mouse press
-  canvas.onmousedown = function(ev){ click(ev) };
-  canvas.onmousemove = function(ev){ if(ev.buttons == 1) { click(ev); }};
+  // canvas.onmousedown = function(ev){ click(ev) };
+  // canvas.onmousemove = function(ev){ if(ev.buttons == 1) { click(ev); }};
   // canvas.onmouseup = function(ev){ endClick(ev)};
+
+  setUpMouseLock();
 
 
   // Location matrix
@@ -590,34 +592,34 @@ function main() {
 
 var g_shapeList = []; // The array to store the object of a point
 
-function endClick(ev) {
-  // [x,y] = convertCoordinatesEventToGL(ev);
-  // originalCoordinate = [x,y];
-  let backToNormal = new Matrix4();
-  gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, backToNormal.elements);
-}
+// function endClick(ev) {
+//   // [x,y] = convertCoordinatesEventToGL(ev);
+//   // originalCoordinate = [x,y];
+//   let backToNormal = new Matrix4();
+//   gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, backToNormal.elements);
+// }
 
-function click(ev) {
+// function click(ev) {
 
-  if(ev.shiftKey)
-  {
-    g_specialAnimationState(true);
-    return;
-  }
+//   if(ev.shiftKey)
+//   {
+//     g_specialAnimationState(true);
+//     return;
+//   }
 
-  //Extract the event click and return it in WebGL coordinates
-  [x,y] = convertCoordinatesEventToGL(ev);
-  // console.log(x,y);
+//   //Extract the event click and return it in WebGL coordinates
+//   [x,y] = convertCoordinatesEventToGL(ev);
+//   // console.log(x,y);
 
 
-  // let offsetX = originalCoordinate[0];
-  // let offsetY = originalCoordinate[1];
-  var globalRotMat = new Matrix4().rotate((x) *200,0,1,0);
-  var globalRotMat2 = new Matrix4().rotate((y) *200,1,0,0);
-  var totalMatrix = new Matrix4(globalRotMat).multiply(globalRotMat2);
-  gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, totalMatrix.elements);
-  // gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, globalRotMat.elements);
-}
+//   // let offsetX = originalCoordinate[0];
+//   // let offsetY = originalCoordinate[1];
+//   var globalRotMat = new Matrix4().rotate((x) *200,0,1,0);
+//   var globalRotMat2 = new Matrix4().rotate((y) *200,1,0,0);
+//   var totalMatrix = new Matrix4(globalRotMat).multiply(globalRotMat2);
+//   gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, totalMatrix.elements);
+//   // gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, globalRotMat.elements);
+// }
 
 // Extract the event clock and return it in WebGL coordinates
 function convertCoordinatesEventToGL(ev){
@@ -927,6 +929,11 @@ function keydown(event){
   // renderAllShapes();
 }
 
+
+/**
+ * This set of function is used to set the state of the camera to
+ * flying or not flying or to reset the camera to it's defult position. 
+ */
 function flyingOn()
 {
   cam.fly = true;
@@ -940,4 +947,34 @@ function flyingOff()
 function flyingReset()
 {
   cam.cameraReset();
+}
+
+/**
+ * Setting up the system to lock the mouse in place
+ * Source of the code
+ * https://stackoverflow.com/questions/30699743/javascript-disable-the-cursor
+ */
+function setUpMouseLock()
+{
+  canvas.onclick = function() {
+    canvas.requestPointerLock();
+  }
+  document.addEventListener('pointerlockchange', lockChangeAlert, false);
+}
+
+function lockChangeAlert() {
+  if(document.pointerLockElement === canvas) {
+    document.addEventListener("mousemove",getMovement , false);
+  } else { 
+    document.removeEventListener("mousemove", getMovement, false);
+  }
+}
+
+function getMovement(e)
+{
+  let x = e.movementX;
+  let y = e.movementY;
+
+  cam.panLeftRight(x);
+  cam.panUpDown(y);
 }

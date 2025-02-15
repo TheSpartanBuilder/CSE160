@@ -7,6 +7,7 @@ class Camera {
         this.g_up=[0,1,0];
         this.verticalAngle = 0;
         this.fly = false;
+        this.sensitivity = 0.3;
     }
 
     // Normal API
@@ -91,7 +92,30 @@ class Camera {
         // this.cameraTurnVerticalAdvance(this.turnAngle,1);
         this.cameraTurnVerticalAdvanceMatrix(this.turnAngle,-1);
     }
+
+
+
+    panLeftRight(amount) {
+        let finalAnlge = amount*this.sensitivity;
+        this.cameraTurnAdvanceMatrix(finalAnlge,-1);
+    }
     
+    panUpDown(amount) {
+        let finalAnlge = Math.min(-amount*this.sensitivity,70);
+        if(this.verticalAngle >= 80 && finalAnlge > 0 || this.verticalAngle <= -80 && finalAnlge < 0)
+        {
+            // console.log(this.verticalAngle,finalAnlge);
+            return;
+        }
+        this.verticalAngle = this.verticalAngle + finalAnlge;
+        // this.cameraTurnVerticalAdvance(this.turnAngle,-1);
+        if(this.verticalAngle >= 80 || this.verticalAngle <= -80)
+        {
+            // console.log(this.verticalAngle,finalAnlge);
+            return;
+        }
+        this.cameraTurnVerticalAdvanceMatrix(finalAnlge,1);
+    }
     
     
     
