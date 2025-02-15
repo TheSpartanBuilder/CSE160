@@ -31,6 +31,7 @@ var FSHADER_SOURCE = `
   uniform sampler2D u_Sampler1;
   uniform sampler2D u_Sampler2;
   uniform sampler2D u_Sampler3;
+  uniform sampler2D u_Sampler4;
   uniform int u_whichTexture;
   uniform int u_TextureNum;
   void main() {
@@ -65,6 +66,10 @@ var FSHADER_SOURCE = `
       else if(u_TextureNum == 3)
       {
         gl_FragColor = texture2D(u_Sampler3, v_UV);
+      }
+      else if(u_TextureNum == 4)
+      {
+        gl_FragColor = texture2D(u_Sampler4, v_UV);
       }
     }
     else if (u_whichTexture == 1)
@@ -106,6 +111,8 @@ let u_ViewMatrix;
 let u_Sampler0;
 let u_Sampler1;
 let u_Sampler2;
+let u_Sampler3;
+let u_Sampler4;
 let u_GlobalRotateMatrix;
 let u_whichTexture;
 let u_TextureNum;
@@ -501,6 +508,12 @@ function connectVariablesToGLSL()
     return false;
   }
 
+  u_Sampler4 = gl.getUniformLocation(gl.program, 'u_Sampler4');
+  if (!u_Sampler4) {
+    console.log('Failed to get the storage location of u_Sampler4');
+    return false;
+  }
+
   // Set an initial value for this matrix to indentity
   var identityM = new Matrix4();
   gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
@@ -510,6 +523,7 @@ function connectVariablesToGLSL()
 }
 
 // Objects in the world
+var crosshair;
 var tom;
 var cube;
 var floor;
@@ -565,6 +579,8 @@ function main() {
 
   brick = new CubeTexture('../Image/code/bf8f1b26cb46d0657330039dab47a7d7-ezgif.com-resize.jpg',u_Sampler3,3,gl.TEXTURE3);
   brick.initTextures();
+
+  crosshair = new Crosshair();
 
   // wallArray;
 
@@ -772,6 +788,7 @@ function renderAllShapes(){
   cube.renderFaster();
   sky.renderFaster();
   tom.renderFast();
+  crosshair.render();
 
   for(let i = 0; i < wallArray.length; i++)
   {
@@ -954,16 +971,19 @@ function flyingReset()
  * Source of the code
  * https://stackoverflow.com/questions/30699743/javascript-disable-the-cursor
  */
+var hud = document.getElementById('HUD'); 
+var ctx = hud.getContext('2d');
 function setUpMouseLock()
 {
-  canvas.onclick = function() {
-    canvas.requestPointerLock();
+  
+  hud.onclick = function() {
+    hud.requestPointerLock();
   }
   document.addEventListener('pointerlockchange', lockChangeAlert, false);
 }
 
 function lockChangeAlert() {
-  if(document.pointerLockElement === canvas) {
+  if(document.pointerLockElement === hud) {
     document.addEventListener("mousemove",getMovement , false);
   } else { 
     document.removeEventListener("mousemove", getMovement, false);

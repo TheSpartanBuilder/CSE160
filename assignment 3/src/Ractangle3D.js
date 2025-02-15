@@ -1,5 +1,5 @@
 class Ractangle3D {
-    constructor() {
+    constructor(config) {
         this.type = "ractangle";
         this.vertexs = [[0,0,0],[0,0,1],[1,0,1],[1,0,0]];
         this.color = [1.0,1.0,1.0,1.0];
