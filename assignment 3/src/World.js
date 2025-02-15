@@ -916,6 +916,12 @@ function keydown(event){
     case "e":
       cam.panRight();
       break;
+    case "1":
+      cam.panUp();
+      break;
+    case "2":
+      cam.panDown();
+      break;
     
   }
   // renderAllShapes();

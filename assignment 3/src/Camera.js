@@ -5,22 +5,61 @@ class Camera {
         this.g_eye=[0,0,-1];
         this.g_at=[0,0,0];
         this.g_up=[0,1,0];
+        this.verticalAngle = 0;
+        this.fly = true;
     }
 
+    // Normal API
     moveForward() {
-        this.cameraForwardAdvance(this.stepSize);
+        if(this.fly)
+        {
+            this.cameraForwardAdvance(this.stepSize);
+        }
+        else
+        {
+            this.cameraTurnVerticalAdvance(-this.verticalAngle,-1);
+            this.cameraForwardAdvance(this.stepSize);
+            this.cameraTurnVerticalAdvance(this.verticalAngle,-1);
+        }
     }
     
     moveBackword() {
-        this.cameraBackwordAdvance(this.stepSize);
+        if(this.fly)
+        {
+            this.cameraBackwordAdvance(this.stepSize);
+        }
+        else
+        {
+            this.cameraTurnVerticalAdvance(-this.verticalAngle,-1);
+            this.cameraBackwordAdvance(this.stepSize);
+            this.cameraTurnVerticalAdvance(this.verticalAngle,-1);
+        }
     }
     
     moveLeft() {
-        this.cameraLeftRightAdvance(this.stepSize,-1);
+        if(this.fly)
+        {
+            this.cameraLeftRightAdvance(this.stepSize,-1);
+        }
+        else
+        {
+            this.cameraTurnVerticalAdvance(-this.verticalAngle,-1);
+            this.cameraLeftRightAdvance(this.stepSize,-1);
+            this.cameraTurnVerticalAdvance(this.verticalAngle,-1);
+        }
     }
     
     moveRight() {
-        this.cameraLeftRightAdvance(this.stepSize,1);
+        if(this.fly)
+        {
+            this.cameraLeftRightAdvance(this.stepSize,1);
+        }
+        else
+        {
+            this.cameraTurnVerticalAdvance(-this.verticalAngle,-1);
+            this.cameraLeftRightAdvance(this.stepSize,1);
+            this.cameraTurnVerticalAdvance(this.verticalAngle,-1);
+        }
     }
     
     panLeft() {
@@ -30,10 +69,29 @@ class Camera {
     panRight() {
         this.cameraTurnAdvance(this.turnAngle,1);
     }
+
+    panUp() {
+        if(this.verticalAngle >= 85)
+        {
+            return;
+        }
+        this.verticalAngle = this.verticalAngle + this.turnAngle;
+        this.cameraTurnVerticalAdvance(this.turnAngle,-1);
+    }
+
+    panDown() {
+        if(this.verticalAngle <= -85)
+        {
+            return;
+        }
+        this.verticalAngle = this.verticalAngle - this.turnAngle;
+        this.cameraTurnVerticalAdvance(this.turnAngle,1);
+    }
     
     
     
     
+    // Internal function
     cameraForwardAdvance(amount) {
         let d = new Vector3(this.g_at).sub(new Vector3(this.g_eye));
         // console.log(d);
@@ -84,5 +142,52 @@ class Camera {
         this.g_at[0] = this.g_eye[0] + d.elements[0];
         this.g_at[2] = this.g_eye[2] + d.elements[2];
         // console.log(g_at);
+    }
+
+    cameraTurnVerticalAdvance(angle, direction) {
+        // console.log(g_at);
+        let d = new Vector3(this.g_at).sub(new Vector3(this.g_eye));
+        // console.log(d.elements);
+        let dx2 = Math.pow(d.elements[1],2);
+        let dy2 = Math.pow(d.elements[2],2);
+        let r = Math.pow(dx2+dy2,1/2);
+        // console.log(r);
+        let theta = Math.atan2(d.elements[2],d.elements[1]);
+        theta = theta + angle * Math.PI/180 * direction;
+        d.elements[1] = r * Math.cos(theta);
+        d.elements[2] = r * Math.sin(theta);
+        // console.log(d.elements);
+        this.g_at[1] = this.g_eye[1] + d.elements[1];
+        this.g_at[2] = this.g_eye[2] + d.elements[2];
+        // console.log(g_at);
+    }
+
+
+
+
+
+    // Old
+    moveForwardOld() {
+        this.cameraForwardAdvance(this.stepSize);
+    }
+    
+    moveBackwordOld() {
+        this.cameraBackwordAdvance(this.stepSize);
+    }
+    
+    moveLeftOld() {
+        this.cameraLeftRightAdvance(this.stepSize,-1);
+    }
+    
+    moveRightOld() {
+        this.cameraLeftRightAdvance(this.stepSize,1);
+    }
+    
+    panLeftOld() {
+        this.cameraTurnAdvance(this.turnAngle,-1);
+    }
+    
+    panRightOld() {
+        this.cameraTurnAdvance(this.turnAngle,1);
     }
 }
