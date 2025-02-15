@@ -17,9 +17,9 @@ class Camera {
         }
         else
         {
-            this.cameraTurnVerticalAdvance(-this.verticalAngle,-1);
+            this.cameraTurnVerticalAdvanceMatrix(-this.verticalAngle,1);
             this.cameraForwardAdvance(this.stepSize);
-            this.cameraTurnVerticalAdvance(this.verticalAngle,-1);
+            this.cameraTurnVerticalAdvanceMatrix(this.verticalAngle,1);
         }
     }
     
@@ -30,9 +30,9 @@ class Camera {
         }
         else
         {
-            this.cameraTurnVerticalAdvance(-this.verticalAngle,-1);
+            this.cameraTurnVerticalAdvanceMatrix(-this.verticalAngle,1);
             this.cameraBackwordAdvance(this.stepSize);
-            this.cameraTurnVerticalAdvance(this.verticalAngle,-1);
+            this.cameraTurnVerticalAdvanceMatrix(this.verticalAngle,1);
         }
     }
     
@@ -43,9 +43,9 @@ class Camera {
         }
         else
         {
-            this.cameraTurnVerticalAdvance(-this.verticalAngle,-1);
+            this.cameraTurnVerticalAdvanceMatrix(-this.verticalAngle,1);
             this.cameraLeftRightAdvance(this.stepSize,-1);
-            this.cameraTurnVerticalAdvance(this.verticalAngle,-1);
+            this.cameraTurnVerticalAdvanceMatrix(this.verticalAngle,1);
         }
     }
     
@@ -56,18 +56,20 @@ class Camera {
         }
         else
         {
-            this.cameraTurnVerticalAdvance(-this.verticalAngle,-1);
+            this.cameraTurnVerticalAdvanceMatrix(-this.verticalAngle,1);
             this.cameraLeftRightAdvance(this.stepSize,1);
-            this.cameraTurnVerticalAdvance(this.verticalAngle,-1);
+            this.cameraTurnVerticalAdvanceMatrix(this.verticalAngle,1);
         }
     }
     
     panLeft() {
-        this.cameraTurnAdvance(this.turnAngle,-1);
+        // this.cameraTurnAdvance(this.turnAngle,-1);
+        this.cameraTurnAdvanceMatrix(this.turnAngle,1);
     }
     
     panRight() {
-        this.cameraTurnAdvance(this.turnAngle,1);
+        // this.cameraTurnAdvance(this.turnAngle,1);
+        this.cameraTurnAdvanceMatrix(this.turnAngle,-1);
     }
 
     panUp() {
@@ -76,7 +78,8 @@ class Camera {
             return;
         }
         this.verticalAngle = this.verticalAngle + this.turnAngle;
-        this.cameraTurnVerticalAdvance(this.turnAngle,-1);
+        // this.cameraTurnVerticalAdvance(this.turnAngle,-1);
+        this.cameraTurnVerticalAdvanceMatrix(this.turnAngle,1);
     }
 
     panDown() {
@@ -85,7 +88,8 @@ class Camera {
             return;
         }
         this.verticalAngle = this.verticalAngle - this.turnAngle;
-        this.cameraTurnVerticalAdvance(this.turnAngle,1);
+        // this.cameraTurnVerticalAdvance(this.turnAngle,1);
+        this.cameraTurnVerticalAdvanceMatrix(this.turnAngle,-1);
     }
     
     
@@ -160,6 +164,27 @@ class Camera {
         this.g_at[1] = this.g_eye[1] + d.elements[1];
         this.g_at[2] = this.g_eye[2] + d.elements[2];
         // console.log(g_at);
+    }
+
+    cameraTurnAdvanceMatrix(angle, direction) {
+        let f = new Vector3(this.g_at).sub(new Vector3(this.g_eye));
+        let rotationMatrix = new Matrix4().setRotate(angle*direction,this.g_up[0],this.g_up[1],this.g_up[2]);
+        let f_prime = rotationMatrix.multiplyVector3(f);
+        for(let i = 0; i < 3; i++)
+        {
+            this.g_at[i] = this.g_eye[i] + f_prime.elements[i];
+        }
+    }
+
+    cameraTurnVerticalAdvanceMatrix(angle, direction) {
+        let f = new Vector3(this.g_at).sub(new Vector3(this.g_eye));
+        let left = Vector3.cross(f,new Vector3(this.g_up));
+        let rotationMatrix = new Matrix4().setRotate(angle*direction,left.elements[0],left.elements[1],left.elements[2]);
+        let f_prime = rotationMatrix.multiplyVector3(f);
+        for(let i = 0; i < 3; i++)
+        {
+            this.g_at[i] = this.g_eye[i] + f_prime.elements[i];
+        }
     }
 
 
