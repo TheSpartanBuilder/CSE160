@@ -32,6 +32,10 @@ var FSHADER_SOURCE = `
   uniform sampler2D u_Sampler2;
   uniform sampler2D u_Sampler3;
   uniform sampler2D u_Sampler4;
+  uniform sampler2D u_Sampler5;
+  uniform sampler2D u_Sampler6;
+  uniform sampler2D u_Sampler7;
+  uniform sampler2D u_Sampler8;
   uniform int u_whichTexture;
   uniform int u_TextureNum;
   void main() {
@@ -70,6 +74,22 @@ var FSHADER_SOURCE = `
       else if(u_TextureNum == 4)
       {
         gl_FragColor = texture2D(u_Sampler4, v_UV);
+      }
+      else if(u_TextureNum == 5)
+      {
+        gl_FragColor = texture2D(u_Sampler5, v_UV);
+      }
+      else if(u_TextureNum == 6)
+      {
+        gl_FragColor = texture2D(u_Sampler6, v_UV);
+      }
+      else if(u_TextureNum == 7)
+      {
+        gl_FragColor = texture2D(u_Sampler7, v_UV);
+      }
+      else if(u_TextureNum == 8)
+      {
+        gl_FragColor = texture2D(u_Sampler8, v_UV);
       }
     }
     else if (u_whichTexture == 1)
@@ -113,6 +133,10 @@ let u_Sampler1;
 let u_Sampler2;
 let u_Sampler3;
 let u_Sampler4;
+let u_Sampler5;
+let u_Sampler6;
+let u_Sampler7;
+let u_Sampler8;
 let u_GlobalRotateMatrix;
 let u_whichTexture;
 let u_TextureNum;
@@ -514,6 +538,30 @@ function connectVariablesToGLSL()
     return false;
   }
 
+  u_Sampler5 = gl.getUniformLocation(gl.program, 'u_Sampler5');
+  if (!u_Sampler5) {
+    console.log('Failed to get the storage location of u_Sampler5');
+    return false;
+  }
+
+  u_Sampler6 = gl.getUniformLocation(gl.program, 'u_Sampler6');
+  if (!u_Sampler6) {
+    console.log('Failed to get the storage location of u_Sampler6');
+    return false;
+  }
+
+  u_Sampler7 = gl.getUniformLocation(gl.program, 'u_Sampler7');
+  if (!u_Sampler7) {
+    console.log('Failed to get the storage location of u_Sampler7');
+    return false;
+  }
+
+  u_Sampler8 = gl.getUniformLocation(gl.program, 'u_Sampler8');
+  if (!u_Sampler8) {
+    console.log('Failed to get the storage location of u_Sampler8');
+    return false;
+  }
+
   // Set an initial value for this matrix to indentity
   var identityM = new Matrix4();
   gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
@@ -531,6 +579,12 @@ var sky;
 var brick;
 var wallArray = [];
 var tomVisibility = false;
+var floorMapBlock;
+var firstFloorMapBlock;
+var secondFloorMapBlock;
+var thirdFloorMapBlock;
+var forthFloorMapBlock
+var stoneBrick;
 
 function main() {
 
@@ -564,13 +618,16 @@ function main() {
   cube.matrix.scale(0.5,0.5,0.5);
   cube.initTextures();
 
-  floor = new CubeTexture('../Image/code/grey-dots-background_1053-180.jpg',u_Sampler1,1,gl.TEXTURE1);
-  floor.color = [1,1,1,1];
-  floor.matrix.translate(0,-.75,0);
-  floor.matrix.scale(10,0,10);
-  floor.matrix.translate(-.5,0,-.5);
-  // floor.matrix.scale(0.6,0.6,0.6);
-  floor.initTextures();
+  // floor = new CubeTexture('../Image/code/grey-dots-background_1053-180.jpg',u_Sampler1,1,gl.TEXTURE1);
+  // floor.color = [1,1,1,1];
+  // floor.matrix.translate(0,-.75,0);
+  // floor.matrix.scale(12,0,12);
+  // floor.matrix.translate(-.5,0,-.5);
+  // // floor.matrix.scale(0.6,0.6,0.6);
+  // floor.initTextures();
+
+  stoneBrick = new CubeTexture("../Image/code/stone_bricks.png",u_Sampler1,1,gl.TEXTURE1);
+  stoneBrick.initTextures();
 
   sky = new CubeTexture('../Image/code/why-sky-blue-2db86ae-ezgif.com-resize.jpg',u_Sampler2,2,gl.TEXTURE2);
   sky.color = [1.0,0.0,0.0,1.0];
@@ -578,27 +635,58 @@ function main() {
   sky.matrix.translate(-.5,-.5,-.5);
   sky.initTextures();
 
-  brick = new CubeTexture('../Image/code/bf8f1b26cb46d0657330039dab47a7d7-ezgif.com-resize.jpg',u_Sampler3,3,gl.TEXTURE3);
+  brick = new CubeTexture('../Image/code/bricks.png',u_Sampler3,3,gl.TEXTURE3);
   brick.initTextures();
 
   crosshair = new Crosshair();
 
   // wallArray;
 
-  for (let x = 0; x<32; x++)
-    {
-      for(let y = 0; y<32; y++)
-      {
-        if(x < 1 || x==31 || y== 0 || y==31)
-        {
-          let body = new CubeTextureInUse(brick);
-          body.matrix.translate(0,-.75,0);
-          body.matrix.scale(.4,.4,.4);
-          body.matrix.translate(x-16,0,y-16);
-          wallArray.push(body);
-        }
-      }
-    }
+  // for (let x = 0; x<32; x++)
+  //   {
+  //     for(let y = 0; y<32; y++)
+  //     {
+  //       if(x < 1 || x==31 || y== 0 || y==31)
+  //       {
+  //         let body = new CubeTextureInUse(brick);
+  //         body.matrix.translate(0,-.75,0);
+  //         body.matrix.scale(.4,.4,.4);
+  //         body.matrix.translate(x-16,0,y-16);
+  //         wallArray.push(body);
+  //       }
+  //     }
+  //   }
+
+  // for (let x = 0; x<32; x++)
+  //   {
+  //     for(let y = 0; y<32; y++)
+  //     {
+  //       if(x < 1 || x==31 || y== 0 || y==31)
+  //       {
+  //         let body = new CubeTextureInUse(brick);
+  //         body.matrix.translate(0,-.75,0);
+  //         body.matrix.scale(.4,.4,.4);
+  //         body.matrix.translate(x-16,0,y-16);
+  //         wallArray.push(body);
+  //       }
+  //     }
+  //   }
+
+  
+  floorMapBlock = new DrawMap(floorMap,-1.25,brick);
+  floorMapBlock.mapUpdate();
+
+  firstFloorMapBlock = new DrawMap(firstFloorMap,-0.85,brick);
+  firstFloorMapBlock.mapUpdate();
+
+  secondFloorMapBlock = new DrawMap(firstFloorMap,-0.45,brick);
+  secondFloorMapBlock.mapUpdate();
+
+  thirdFloorMapBlock = new DrawMap(firstFloorMap,-0.05,brick);
+  thirdFloorMapBlock.mapUpdate();
+
+  forthFloorMapBlock = new DrawMap(firstFloorMap,0.35,brick);
+  forthFloorMapBlock.mapUpdate();
 
   // Specify the color for clearing <canvas>
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -716,18 +804,6 @@ function updateAnimationAngles() {
 
 var cam = new Camera();
 
-
-var g_map = [
-  [1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 1, 1, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 1, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 1],
-];
-
 function drawMap()
 {
   // var body = new CubeTextureInUse(brick);
@@ -785,18 +861,25 @@ function renderAllShapes(){
   // floor.render();
   // cube.render();
   // sky.render();
-  floor.renderFaster();
+  // floor.renderFaster();
   cube.renderFaster();
   sky.renderFaster();
   if(tomVisibility) tom.renderFast();
   crosshair.render();
 
-  for(let i = 0; i < wallArray.length; i++)
-  {
-    wallArray[i].inputTexture(brick);
-    wallArray[i].renderFaster();
-    // wallArray[i].render();
-  }
+  // for(let i = 0; i < wallArray.length; i++)
+  // {
+  //   wallArray[i].inputTexture(brick);
+  //   wallArray[i].renderFaster();
+  //   // wallArray[i].render();
+  // }
+
+  floorMapBlock.renderTexture(stoneBrick);
+  firstFloorMapBlock.renderTexture(brick);
+  secondFloorMapBlock.renderTexture(brick);
+  thirdFloorMapBlock.renderTexture(brick);
+  forthFloorMapBlock.renderTexture(brick);
+  // floorMapBlock.render();
 
   // let test = new CubeTextureInUse(cube);
   // test.render();
