@@ -161,7 +161,8 @@ class CubeTextureInUse extends Cube {
         // allUV = allUV.concat([0,1, 1,1, 1,0]);
         // allUV = allUV.concat([1,0, 0,0, 0,1]);
 
-        drawTriangle3DBatch(allverts);
+        // drawTriangle3DBatch(allverts);
+        drawTriangle3DBatchUV(allverts,allUV);
     }
 
     OldrenderFaster() {

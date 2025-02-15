@@ -4,7 +4,9 @@ var VSHADER_SOURCE = `
   precision mediump float;
   attribute vec4 a_Position;
   attribute vec2 a_UV;
+  attribute vec4 a_Color;
   varying vec2 v_UV;
+  varying vec4 v_Color;
   uniform float u_Size;
   uniform mat4 u_ModelMatrix;
   uniform mat4 u_GlobalRotateMatrix;
@@ -16,12 +18,14 @@ var VSHADER_SOURCE = `
     //gl_PointSize = 10.0;
     //gl_PointSize = u_Size;
     v_UV = a_UV;
+    v_Color = a_Color;
   }`;
 
 // Fragment shader program
 var FSHADER_SOURCE = `
   precision mediump float;
   varying vec2 v_UV;
+  varying vec4 v_Color;
   uniform vec4 u_FragColor;
   uniform sampler2D u_Sampler0;
   uniform sampler2D u_Sampler1;
@@ -63,6 +67,10 @@ var FSHADER_SOURCE = `
         gl_FragColor = texture2D(u_Sampler3, v_UV);
       }
     }
+    else if (u_whichTexture == 1)
+    {
+      gl_FragColor = v_Color;
+    }
     else
     {
       // Error, put Redish
@@ -89,6 +97,7 @@ let canvas;
 let gl;
 let a_Position;
 let a_UV;
+let a_Color;
 let u_FragColor;
 let u_Size;
 let u_ModelMatrix;
@@ -393,10 +402,17 @@ function connectVariablesToGLSL()
     return;
   }
 
-  // Get the storage location of a_Position
+  // Get the storage location of a_UV
   a_UV = gl.getAttribLocation(gl.program, 'a_UV');
   if(a_UV < 0) {
     console.log('Failed to get the storage location of a_UV');
+    return;
+  }
+
+  // Get the storage location of a_Color
+  a_Color = gl.getAttribLocation(gl.program, 'a_Color');
+  if(a_Color < 0) {
+    console.log('Failed to get the storage location of a_Color');
     return;
   }
 
@@ -521,7 +537,11 @@ function main() {
   canvas.onmousemove = function(ev){ if(ev.buttons == 1) { click(ev); }};
   // canvas.onmouseup = function(ev){ endClick(ev)};
 
+
+  // Location matrix
+  let locationMatrix = new Matrix4().translate(-0.5,0.15,0);
   tom = new Tom();
+  tom.setLocationMatrix(locationMatrix);
 
   cube = new CubeTexture("../Image/code/santa_bailey-256x256.png",u_Sampler0,0,gl.TEXTURE0);
   cube.matrix.scale(0.5,0.5,0.5);
@@ -743,15 +763,19 @@ function renderAllShapes(){
   gl.clear(gl.COLOR_BUFFER_BIT);
 
   
-  // tom.render();
-  floor.render();
-  cube.render();
-  sky.render();
+  // floor.render();
+  // cube.render();
+  // sky.render();
+  floor.renderFaster();
+  cube.renderFaster();
+  sky.renderFaster();
+  tom.renderFast();
 
   for(let i = 0; i < wallArray.length; i++)
   {
     wallArray[i].inputTexture(brick);
-    wallArray[i].render();
+    wallArray[i].renderFaster();
+    // wallArray[i].render();
   }
 
   // let test = new CubeTextureInUse(cube);

@@ -144,4 +144,47 @@ class CubeTexture extends Cube {
       drawTriangle3DUV( [0,0,1,   0,1,1,   0,1,0],[0,1, 1,1, 1,0]);
       drawTriangle3DUV( [0,1,0,   0,0,0,   0,0,1],[1,0, 0,0, 0,1]);
     }
+
+    renderFaster() {
+      var rgba = this.color;
+      // Pass the texture number
+      gl.uniform1i(u_whichTexture,this.textureNum);
+      gl.uniform1i(u_TextureNum,this.textureID);
+
+      // Pass the matrix to u_ModelMatrix attribute
+      gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
+
+      // Pass the color of a point to u_FragColor variable
+      gl.uniform4f(u_FragColor, this.color[0], this.color[1], this.color[2], this.color[3]);
+
+      var allverts = [
+          0,0,0,   1,1,0,   1,0,0,
+          0,0,0,   0,1,0,   1,1,0,
+          0,1,0,   0,1,1,   1,1,1,
+          0,1,0,   1,1,1,   1,1,0,
+          1,0,1,   0,0,1,   0,0,0,
+          0,0,0,   1,0,0,   1,0,1,
+          1,0,1,   1,1,1,   0,1,1,
+          0,1,1,   0,0,1,   1,0,1,
+          1,1,1,   1,0,1,   1,0,0,
+          1,0,0,   1,1,0,   1,1,1,
+          0,0,1,   0,1,1,   0,1,0,
+          0,1,0,   0,0,0,   0,0,1
+      ];
+      var allUV = [
+          0,0, 1,1, 1,0,
+          0,0, 0,1, 1,1,
+          0,0, 0,1, 1,1,
+          0,0, 1,1, 1,0,
+          1,1, 0,1, 0,0,
+          0,0, 1,0, 1,1,
+          1,0, 1,1, 0,1,
+          0,1, 0,0, 1,0,
+          1,1, 0,1, 0,0,
+          0,0, 1,0, 1,1,
+          0,1, 1,1, 1,0,
+          1,0, 0,0, 0,1
+      ];
+      drawTriangle3DBatchUV(allverts,allUV);
+  }
 }
