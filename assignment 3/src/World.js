@@ -1239,6 +1239,8 @@ function placeBlockReset(){
 /**
  * https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/readPixels
  * https://github.com/davidwparker/programmingtil-webgl/blob/master/0033-reading-pixels/index.js
+ * https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext#preservedrawingbuffer
+ * https://www.youtube.com/watch?v=9uG0W7659lA
  */
 function getCrosshairColor()
 {

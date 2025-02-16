@@ -3,6 +3,8 @@
  * https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
  * https://rodger.global-linguist.com/webgl/ch10/HUD.html
  * https://sites.google.com/site/webglbook/home/9-various-techniques
+ * https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillText
+ * https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
  */
 class HUDStates{
     constructor(theAimLab=null)
