@@ -397,6 +397,7 @@ function addActionsForHtmlUI()
   //Options
   // document.getElementById("numSideSelect").addEventListener( "change" ,function() { g_numSide = this.value; });
   // document.getElementById("numPointSelect").addEventListener( "change" ,function() { g_point = this.value; });
+  document.addEventListener("click", (event) => {placeBlock();});
 }
 
 
@@ -1091,4 +1092,26 @@ function showTom()
 function hideTom()
 {
   tomVisibility = false;
+}
+
+
+function handleFrontPoint()
+{
+  let looking = new Vector3(cam.g_at).sub(new Vector3(cam.g_eye));
+  let lookingUnit = looking.normalize();
+  let expectedPoint = new Vector3(cam.g_at).add(lookingUnit)
+  console.log(lookingUnit);
+  let expectedLocation = [];
+  for(let i = 0; i < 3; i++)
+  {
+    expectedLocation[i] = Math.round(expectedPoint.elements[i]);
+  }
+  console.log(expectedLocation);
+  return expectedLocation
+}
+
+function placeBlock()
+{
+  let placementPoint = handleFrontPoint();
+  console.log(placementPoint);
 }
