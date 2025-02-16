@@ -90,6 +90,9 @@ class CubeTextureInUse extends Cube {
         gl.uniform1i(u_whichTexture,this.textureNum);
         gl.uniform1i(u_TextureNum,this.textureID);
 
+        gl.activeTexture(this.gl_TEXTURE);
+        gl.bindTexture(gl.TEXTURE_2D,this.texture)
+
         // Pass the matrix to u_ModelMatrix attribute
         gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
   

@@ -586,6 +586,7 @@ var secondFloorMapBlock;
 var thirdFloorMapBlock;
 var forthFloorMapBlock
 var stoneBrick;
+var dirt;
 
 function main() {
 
@@ -615,6 +616,11 @@ function main() {
   tom = new Tom();
   tom.setLocationMatrix(locationMatrix);
 
+
+
+  renderArray = {};
+
+
   cube = new CubeTexture("../Image/code/santa_bailey-256x256.png",u_Sampler0,0,gl.TEXTURE0);
   cube.matrix.scale(0.5,0.5,0.5);
   cube.initTextures();
@@ -638,6 +644,9 @@ function main() {
 
   brick = new CubeTexture('../Image/code/bricks.png',u_Sampler3,3,gl.TEXTURE3);
   brick.initTextures();
+
+  dirt = new CubeTexture('../Image/code/dirt.png',u_Sampler4,4,gl.TEXTURE4);
+  dirt.initTextures();
 
   crosshair = new Crosshair();
 
@@ -837,6 +846,7 @@ function drawMap()
 // Draw every shape that is supposed to be in the canvas
 var projMat = new Matrix4();
 var viewMat = new Matrix4();
+var renderArray = [];
 function renderAllShapes(){
 
   // Check the time at the start of this function
@@ -884,6 +894,13 @@ function renderAllShapes(){
 
   // let test = new CubeTextureInUse(cube);
   // test.render();
+
+
+  for(let key in renderArray)
+  {
+    renderArray[key].renderFaster();
+  }
+
 
   var duration = performance.now() - startTime;
   sendTextToHTML(" ms: " + Math.floor(duration) + " fps: " + Math.floor(10000/duration),"textBox");
@@ -1097,21 +1114,25 @@ function hideTom()
 
 function handleFrontPoint()
 {
-  let looking = new Vector3(cam.g_at).sub(new Vector3(cam.g_eye));
-  let lookingUnit = looking.normalize();
-  let expectedPoint = new Vector3(cam.g_at).add(lookingUnit)
-  console.log(lookingUnit);
+  let temp_g_at = [cam.g_at[0]/0.4,cam.g_at[1]/0.4,cam.g_at[2]/0.4];
+  let temp_g_eye = [cam.g_eye[0]/0.4,cam.g_eye[1]/0.4,cam.g_eye[2]/0.4]
+  let looking = new Vector3(temp_g_at).sub(new Vector3(temp_g_eye));
+  // let lookingUnit = looking.normalize();
+  let expectedPoint = new Vector3(cam.g_eye).add(looking)
   let expectedLocation = [];
   for(let i = 0; i < 3; i++)
   {
-    expectedLocation[i] = Math.round(expectedPoint.elements[i]);
+    expectedLocation[i] = Math.round(expectedPoint.elements[i]) * 0.4;
   }
-  console.log(expectedLocation);
   return expectedLocation
 }
 
 function placeBlock()
 {
   let placementPoint = handleFrontPoint();
-  console.log(placementPoint);
+  let body = new CubeTextureInUse(dirt);
+  body.matrix.translate(0,-0.85,0);
+  body.matrix.scale(0.4,0.4,0.4);
+  body.matrix.translate(placementPoint[0],0,placementPoint[2]);
+  renderArray[placementPoint] = body;
 }
