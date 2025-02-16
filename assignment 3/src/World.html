@@ -5,12 +5,15 @@
     <title>Change a point color</title>
   </head>
 
-  <body onload="main()">
+  <body onload="main()" style="background-color:rgb(0, 204, 255);">
     <canvas id="webgl" width="800" height="600" style="position: absolute; z-index: 0">
     Please use a browser that supports "canvas"
     </canvas>
+    <canvas id="HUDStats" width="800" height="600" style="position: absolute; z-index: 3">
+    Please use a browser that supports "canvas"
+    </canvas>
     <canvas id="HUD" width="800" height="600" style="position: absolute; z-index: 5">
-      Please use a browser that supports "canvas"
+    Please use a browser that supports "canvas"
     </canvas>
 
     <canvas width="800" height="600"></canvas>
@@ -23,6 +26,19 @@
     <button onclick="flyingOff()">Off</button>
     <button onclick="flyingReset()">Reset</button><br>
 
+    <br>
+    Place Block(Press r to remove block)<br>
+    (When trying to remove block since the system is not that acurate. You may want to move the mouse aronud the block you want to remove)<br>
+
+    <button onclick="placeBlockOn()">On</button>
+    <button onclick="placeBlockOff()">Off</button>
+    <button onclick="placeBlockReset()">Reset</button><br>
+
+    <br>
+    Aim Lab<br>
+    <button onclick="aimLabSetUP()">On</button>
+    <button onclick="aimLabOff()">Off</button>
+    <button onclick="aimLabReset()">Reset</button>
 
     <br>
     Tom:
@@ -133,6 +149,9 @@
     <script src="../src/Crosshair.js"></script>
     <script src="../src/DrawMap.js"></script>
     <script src="../src/Maps.js"></script>
+    <script src="../src/AimLab.js"></script>
+    <script src="../src/Target.js"></script>
+    <script src="../src/HUDStats.js"></script>
     <script src="../src/World.js"></script>
   
 

@@ -397,7 +397,7 @@ function addActionsForHtmlUI()
   //Options
   // document.getElementById("numSideSelect").addEventListener( "change" ,function() { g_numSide = this.value; });
   // document.getElementById("numPointSelect").addEventListener( "change" ,function() { g_point = this.value; });
-  document.addEventListener("click", (event) => {placeBlock();});
+  document.addEventListener("click", (event) => {placeBlock();theAimLab.shoot();});
   document.addEventListener("contextmenu", (event) => {deleteBlock();});
 }
 
@@ -588,6 +588,11 @@ var thirdFloorMapBlock;
 var forthFloorMapBlock
 var stoneBrick;
 var dirt;
+var whiteCube;
+var movementLock;
+var aimLabRender;
+var theAimLab;
+var theHUDStats;
 
 function main() {
 
@@ -621,6 +626,8 @@ function main() {
 
   renderArray = {};
 
+  theAimLab = new AimLab();
+
 
   cube = new CubeTexture("../Image/code/santa_bailey-256x256.png",u_Sampler0,0,gl.TEXTURE0);
   cube.matrix.scale(0.5,0.5,0.5);
@@ -649,7 +656,16 @@ function main() {
   dirt = new CubeTexture('../Image/code/dirt.png',u_Sampler4,4,gl.TEXTURE4);
   dirt.initTextures();
 
+  whiteCube = new Target();
+  whiteCube.color = [1,1,1,1];
+
   crosshair = new Crosshair();
+
+  theHUDStats = new HUDStates(theAimLab);
+
+  movementLock = false;
+
+  aimLabRender = false;
 
   // wallArray;
 
@@ -698,6 +714,9 @@ function main() {
 
   forthFloorMapBlock = new DrawMap(firstFloorMap,0.35,brick);
   forthFloorMapBlock.mapUpdate();
+
+  aimLabThing = new DrawMap(aimLabMap,-0.85,brick);
+  aimLabThing.mapUpdate();
 
   // Specify the color for clearing <canvas>
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -848,6 +867,7 @@ function drawMap()
 var projMat = new Matrix4();
 var viewMat = new Matrix4();
 var renderArray = [];
+var currentPointedColor = [];
 function renderAllShapes(){
 
   // Check the time at the start of this function
@@ -874,7 +894,7 @@ function renderAllShapes(){
   // cube.render();
   // sky.render();
   // floor.renderFaster();
-  cube.renderFaster();
+  // cube.renderFaster();
   sky.renderFaster();
   if(tomVisibility) tom.renderFast();
   crosshair.render();
@@ -891,6 +911,14 @@ function renderAllShapes(){
   secondFloorMapBlock.renderTexture(brick);
   thirdFloorMapBlock.renderTexture(brick);
   forthFloorMapBlock.renderTexture(brick);
+  // whiteCube.renderFaster()
+
+  if(aimLabRender)
+  {
+    theHUDStats.render();
+    aimLabThing.renderTexture(brick);
+  }
+
   // floorMapBlock.render();
 
   // let test = new CubeTextureInUse(cube);
@@ -902,6 +930,23 @@ function renderAllShapes(){
     renderArray[key].renderFaster();
   }
 
+  if(!aimLabRender)
+  {
+    theHUDStats.clear();
+    cube.renderFaster();
+  }
+
+  // test();
+  // currentPointedColor = Array.from(getCrosshairColor());
+  // console.log(currentPointedColor);
+  if(aimLabRender)
+  {
+    let location = theAimLab.currentTargetLocation;
+    whiteCube.matrix.setTranslate(location[0],location[1],location[2]);
+    // console.log(location);
+    whiteCube.renderFaster();
+    currentPointedColor = Array.from(getCrosshairColor());
+  }
 
   var duration = performance.now() - startTime;
   sendTextToHTML(" ms: " + Math.floor(duration) + " fps: " + Math.floor(10000/duration),"textBox");
@@ -1019,6 +1064,7 @@ function sendTextureToGLSL(image) {
 // );
 
 function keydown(event){
+  if(movementLock) return;
   switch (event.key) {
     case "w":
       cam.moveForward();
@@ -1091,8 +1137,10 @@ function setUpMouseLock()
 function lockChangeAlert() {
   if(document.pointerLockElement === hud) {
     document.addEventListener("mousemove",getMovement , false);
+    mouseLock = true;
   } else { 
     document.removeEventListener("mousemove", getMovement, false);
+    mouseLock = false;
   }
 }
 
@@ -1134,17 +1182,20 @@ function hideTom()
 // body.matrix.translate(i-this.width/2,0,j-this.length/2);
 
 
+var placeBlockState = false;
+var mouseLock = false;
 function handleFrontPoint()
 {
   let expectedLocation = [];
   expectedLocation[0] = Math.round(cam.g_at[0]*2.5)
   expectedLocation[2] = Math.round(cam.g_at[2]*2.5)
-  console.log(expectedLocation);
+  // console.log(expectedLocation);
   return expectedLocation
 }
 
 function placeBlock()
 {
+  if(!placeBlockState || !mouseLock) return;
   let placementPoint = handleFrontPoint();
   let body;
   if(!(placementPoint in renderArray))
@@ -1163,6 +1214,7 @@ function placeBlock()
 
 function deleteBlock()
 {
+  if(!placeBlockState || !mouseLock) return;
   // console.log("GG");
   let placementPoint = handleFrontPoint();
   if((placementPoint in renderArray))
@@ -1170,4 +1222,83 @@ function deleteBlock()
     // console.log("Working");
     delete renderArray[placementPoint];
   }
+}
+
+function placeBlockOn(){
+  placeBlockState = true;
+}
+
+function placeBlockOff(){
+  placeBlockState = false;
+}
+
+function placeBlockReset(){
+  renderArray = {};
+}
+
+/**
+ * https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/readPixels
+ * https://github.com/davidwparker/programmingtil-webgl/blob/master/0033-reading-pixels/index.js
+ */
+function getCrosshairColor()
+{
+  let canvas = document.getElementById("webgl");
+  let gl = canvas.getContext("webgl", { preserveDrawingBuffer: true });
+  let pixels = new Uint8Array(4);
+  // gl.finish();
+  gl.readPixels(
+    canvas.width / 2,
+    canvas.height / 2,
+    1,
+    1,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    pixels,
+  );
+
+  return pixels;
+}
+
+
+function handleShoot()
+{
+  // console.log(currentPointedColor);
+  for(let i = 0; i < 4; i++)
+  {
+    if(currentPointedColor[i] != 255)
+    {
+      return false;
+    }
+  }
+return true;
+}
+
+function aimLabSetUP()
+{
+  movementLock = true;
+  aimLabRender = true;
+  placeBlockOff();
+  placeBlockReset();
+  flyingOff();
+
+  cam.g_eye = [0,0,-14*0.4];
+  cam.g_at = [0,0,1];
+
+  theAimLab.reset();
+}
+
+function aimLabReset()
+{
+  theAimLab.reset();
+}
+
+function aimLabOff()
+{
+  movementLock = false;
+  aimLabRender = false;
+  placeBlockOff();
+  placeBlockReset();
+  flyingOff();
+
+  theAimLab.reset();
 }
