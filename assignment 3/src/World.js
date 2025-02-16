@@ -398,6 +398,7 @@ function addActionsForHtmlUI()
   // document.getElementById("numSideSelect").addEventListener( "change" ,function() { g_numSide = this.value; });
   // document.getElementById("numPointSelect").addEventListener( "change" ,function() { g_point = this.value; });
   document.addEventListener("click", (event) => {placeBlock();});
+  document.addEventListener("contextmenu", (event) => {deleteBlock();});
 }
 
 
@@ -1043,6 +1044,9 @@ function keydown(event){
     case "2":
       cam.panDown();
       break;
+    case "r":
+      deleteBlock();
+      break;
     
   }
   // renderAllShapes();
@@ -1112,27 +1116,58 @@ function hideTom()
 }
 
 
+// function handleFrontPoint()
+// {
+//   let temp_g_at = [cam.g_at[0]/0.4,cam.g_at[1]/0.4,cam.g_at[2]/0.4];
+//   let temp_g_eye = [cam.g_eye[0]/0.4,cam.g_eye[1]/0.4,cam.g_eye[2]/0.4]
+//   let looking = new Vector3(temp_g_at).sub(new Vector3(temp_g_eye));
+//   // let lookingUnit = looking.normalize();
+//   let expectedPoint = new Vector3(cam.g_eye).add(looking)
+//   let expectedLocation = [];
+//   for(let i = 0; i < 3; i++)
+//   {
+//     expectedLocation[i] = Math.round(expectedPoint.elements[i]) * 0.4;
+//   }
+//   return expectedLocation
+// }
+
+// body.matrix.translate(i-this.width/2,0,j-this.length/2);
+
+
 function handleFrontPoint()
 {
-  let temp_g_at = [cam.g_at[0]/0.4,cam.g_at[1]/0.4,cam.g_at[2]/0.4];
-  let temp_g_eye = [cam.g_eye[0]/0.4,cam.g_eye[1]/0.4,cam.g_eye[2]/0.4]
-  let looking = new Vector3(temp_g_at).sub(new Vector3(temp_g_eye));
-  // let lookingUnit = looking.normalize();
-  let expectedPoint = new Vector3(cam.g_eye).add(looking)
   let expectedLocation = [];
-  for(let i = 0; i < 3; i++)
-  {
-    expectedLocation[i] = Math.round(expectedPoint.elements[i]) * 0.4;
-  }
+  expectedLocation[0] = Math.round(cam.g_at[0]*2.5)
+  expectedLocation[2] = Math.round(cam.g_at[2]*2.5)
+  console.log(expectedLocation);
   return expectedLocation
 }
 
 function placeBlock()
 {
   let placementPoint = handleFrontPoint();
-  let body = new CubeTextureInUse(dirt);
-  body.matrix.translate(0,-0.85,0);
-  body.matrix.scale(0.4,0.4,0.4);
-  body.matrix.translate(placementPoint[0],0,placementPoint[2]);
+  let body;
+  if(!(placementPoint in renderArray))
+  {
+    body = new CubeTextureInUse(dirt);
+    body.matrix.translate(0,-0.85,0);
+    body.matrix.scale(0.4,0.4,0.4);
+    body.matrix.translate(placementPoint[0],0,placementPoint[2]);
+  }
+  else
+  {
+    return;
+  }
   renderArray[placementPoint] = body;
+}
+
+function deleteBlock()
+{
+  // console.log("GG");
+  let placementPoint = handleFrontPoint();
+  if((placementPoint in renderArray))
+  {
+    // console.log("Working");
+    delete renderArray[placementPoint];
+  }
 }
