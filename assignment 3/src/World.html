@@ -30,30 +30,35 @@
     Place Block(Press r to remove block)<br>
     (When trying to remove block since the system is not that acurate. You may want to move the mouse aronud the block you want to remove)<br>
 
-    <button onclick="placeBlockOn()">On</button>
-    <button onclick="placeBlockOff()">Off</button>
-    <button onclick="placeBlockReset()">Reset</button><br>
+    <button onclick="placeBlockOn();mountainOff();">On</button>
+    <button onclick="placeBlockOff();mountainOff();">Off</button>
+    <button onclick="placeBlockReset();mountainOff();">Reset</button><br>
 
     <br>
     Aim Lab<br>
-    <button onclick="aimLabSetUP()">On</button>
-    <button onclick="aimLabOff()">Off</button>
-    <button onclick="aimLabReset()">Reset</button>
+    <button onclick="aimLabSetUP();mountainOff();">On</button>
+    <button onclick="aimLabOff();mountainOff();">Off</button>
+    <button onclick="aimLabReset();mountainOff();">Reset</button><br>
+
+    <br>
+    Mountain<br>
+    <button onclick="mountainOn();placeBlockOff();aimLabOff();hideTom();">On</button>
+    <button onclick="mountainOff();placeBlockOff();aimLabOff();hideTom();">Off</button><br>
 
     <br>
     Tom:
     <br>
-    <button onclick="showTom()">Show</button>
-    <button onclick="hideTom()">Hide</button>
+    <button onclick="showTom();mountainOff();">Show</button>
+    <button onclick="hideTom();mountainOff();">Hide</button>
     <br><br>
     Animation control(When animation is on other control will not work):<br>
     <button onclick="g_animationState(true)">On</button><button onclick="g_specialAnimationState(true)">Special Animation</button><button onclick="g_animationState(false); g_specialAnimationState(false)">Off</button><br>
     Animation Speed <input type="range" min="1.0" max="10.0" value="1.0" class="slider" id="animationSpeedSlide"><br>
 
-    <br><br>
-    Reset button:<br>
-    <button onclick="zeroAllAngle()">Reset Model</button>
-    <button onclick="endClick(null)">Reset Camera</button>
+    <br>
+    Locations:<br>
+    <button onclick="tpOriginal()">Original</button>
+    <button onclick="tpFlatFloor()">FlatFloor</button><br>
 
     <br><br>
     <br>
@@ -125,6 +130,71 @@
     Head  x movement <input type="range" min="-45" max="45" value="0" class="slider" id="headXSlide"><br>
     Head  y movement <input type="range" min="-45" max="45" value="0" class="slider" id="headYSlide">
 
+
+    <br><br><br><br>
+    <h3>Notes for this assignment:</h3>
+    <!-- 
+    <li></li>
+    <dd>- </dd> 
+    -->
+    <p>
+      <ol>
+        <li>Have a ground created with a flattened cube and sky from a big cube.</li>
+        <dd>- Yes, you can clearly see the sky and floor.</dd>
+
+        <li>Texture working on at least one object.</li>
+        <dd>- Yes, you can see the sky texture and the floor texture and the wall texture.</dd>
+
+        <li>Texture on some objects and color on some other objects. All working together.</li>
+        <dd>- Yes, the aim lab game have white color cube in the same space and the world. And Tom is just made out of color cubes and shape.</dd>
+
+        <li>Implement camera movement.</li>
+        <dd>- Yes, WASD work perfectly</dd>
+
+        <li>Key commands for rotation work. Use Q (rotate left) & E (rotate right).</li>
+        <dd>- Yes, Q and E is working fine</dd>
+
+        <li>Perspective camera implemented.</li>
+        <dd>- Yes, I have used the setLookAt to control the perspective camera.</dd>
+
+        <li>World is implemented. There is some interesting world to walk around.</li>
+        <dd>- Yes, you can summon a aim lab or a mountain.</dd>
+
+        <li>Rotate camera with the mouse</li>
+        <dd>- Yes, but you will need to clock on the canvas inorder to control the camera.</dd>
+
+        <li>Multiple textures</li>
+        <dd>- Yes, there is sky texture, flat floor, cube floor and cube wall texture.</dd>
+
+        <li>Add/delete blocks</li>
+        <dd>- Yes, but it need to be toggle on to be able to add/delete blocks.</dd>
+
+        <li>Add simple story or game to world</li>
+        <dd>- Yes, aim lab is the game that I have implemented for this assignment. And when removing block the user need to move their mouse around the block they want to delete and press R to delete it. </dd>
+
+        <li>Performance</li>
+        <dd>- The performance is at least over 60FPS.</dd> 
+        <dd>
+          <video width= "320" height=auto controls>
+            Video on the performance of the model and animation.
+            <source src="../Video/Timeline 1.mp4" type="video/mp4">
+          </video>
+        </dd>
+
+        <li>Wow!</li>
+        <dd>- Camera can pan up and down</dd> 
+        <dd>- Crosshair</dd>
+        <dd>- Hud with the state of the aim lab.</dd>
+      </ol>
+    </p>
+
+
+
+
+
+
+
+
     <script src="../lib/stats.js"></script>
     <script src="../Change a point color_files/webgl-utils.js"></script>
     <script src="../Change a point color_files/webgl-debug.js"></script>
@@ -152,6 +222,7 @@
     <script src="../src/AimLab.js"></script>
     <script src="../src/Target.js"></script>
     <script src="../src/HUDStats.js"></script>
+    <script src="../src/Mountain.js"></script>
     <script src="../src/World.js"></script>
   
 

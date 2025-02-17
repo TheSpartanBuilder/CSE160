@@ -118,6 +118,19 @@ class Camera {
         }
         this.cameraTurnVerticalAdvanceMatrix(finalAnlge,1);
     }
+
+    // Teleportation
+    tpOriginal()
+    {
+        this.g_eye=[0,0,-1];
+        this.g_at=[0,0,0];
+    }
+
+    tpFlatFloor()
+    {
+        this.g_eye=[0,-6,-1];
+        this.g_at=[0,-6,0];
+    }
     
     
     

@@ -593,6 +593,9 @@ var movementLock;
 var aimLabRender;
 var theAimLab;
 var theHUDStats;
+var theMountain;
+var diamondBlock;
+var showMountain;
 
 function main() {
 
@@ -633,13 +636,13 @@ function main() {
   cube.matrix.scale(0.5,0.5,0.5);
   cube.initTextures();
 
-  // floor = new CubeTexture('../Image/code/grey-dots-background_1053-180.jpg',u_Sampler1,1,gl.TEXTURE1);
-  // floor.color = [1,1,1,1];
-  // floor.matrix.translate(0,-.75,0);
-  // floor.matrix.scale(12,0,12);
-  // floor.matrix.translate(-.5,0,-.5);
-  // // floor.matrix.scale(0.6,0.6,0.6);
-  // floor.initTextures();
+  floor = new CubeTexture('../Image/code/grey-dots-background_1053-180.jpg',u_Sampler6,6,gl.TEXTURE6);
+  floor.color = [1,1,1,1];
+  floor.matrix.translate(0,-6.85,0);
+  floor.matrix.scale(32,0,32);
+  floor.matrix.translate(-.5,0,-.5);
+  // floor.matrix.scale(0.6,0.6,0.6);
+  floor.initTextures();
 
   stoneBrick = new CubeTexture("../Image/code/stone_bricks.png",u_Sampler1,1,gl.TEXTURE1);
   stoneBrick.initTextures();
@@ -656,8 +659,13 @@ function main() {
   dirt = new CubeTexture('../Image/code/dirt.png',u_Sampler4,4,gl.TEXTURE4);
   dirt.initTextures();
 
+  diamondBlock = new CubeTexture('../Image/code/diamond_block.png',u_Sampler5,5,gl.TEXTURE5);
+  diamondBlock.initTextures();
+
   whiteCube = new Target();
   whiteCube.color = [1,1,1,1];
+
+  theMountain = new Mountain();
 
   crosshair = new Crosshair();
 
@@ -666,6 +674,8 @@ function main() {
   movementLock = false;
 
   aimLabRender = false;
+  
+  showMountain = false;
 
   // wallArray;
 
@@ -893,7 +903,7 @@ function renderAllShapes(){
   // floor.render();
   // cube.render();
   // sky.render();
-  // floor.renderFaster();
+  floor.renderFaster();
   // cube.renderFaster();
   sky.renderFaster();
   if(tomVisibility) tom.renderFast();
@@ -912,6 +922,11 @@ function renderAllShapes(){
   thirdFloorMapBlock.renderTexture(brick);
   forthFloorMapBlock.renderTexture(brick);
   // whiteCube.renderFaster()
+
+  if(showMountain)
+  {
+    theMountain.render(diamondBlock);
+  }
 
   if(aimLabRender)
   {
@@ -1303,4 +1318,26 @@ function aimLabOff()
   flyingOff();
 
   theAimLab.reset();
+}
+
+function mountainOn()
+{
+  showMountain = true;
+  cam.g_eye = [0,0,-14*0.4];
+  cam.g_at = [0,0,1];
+}
+
+function mountainOff()
+{
+  showMountain = false;
+}
+
+function tpOriginal()
+{
+  cam.tpOriginal();
+}
+
+function tpFlatFloor()
+{
+  cam.tpFlatFloor();
 }
