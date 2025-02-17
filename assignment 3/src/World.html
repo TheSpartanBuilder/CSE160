@@ -23,8 +23,8 @@
     <br>
     Flying<br>
     <button onclick="flyingOn()">On</button>
-    <button onclick="flyingOff()">Off</button>
-    <button onclick="flyingReset()">Reset</button><br>
+    <button onclick="flyingOff();location.reload();">Off</button>
+    <button onclick="flyingReset();location.reload();">Reset</button><br>
 
     <br>
     Place Block(Press r to remove block)<br>
@@ -174,11 +174,12 @@
 
         <li>Performance</li>
         <dd>- The performance is at least over 60FPS.</dd> 
-        <dd>
+        <dd>- 
           <video width= "320" height=auto controls>
             Video on the performance of the model and animation.
             <source src="../Video/Timeline 1.mp4" type="video/mp4">
           </video>
+          <dd>- As you can see the performance of the canvas is always above 60fps.</dd>
         </dd>
 
         <li>Wow!</li>
