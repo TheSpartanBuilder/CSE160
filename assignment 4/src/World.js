@@ -127,7 +127,7 @@ var FSHADER_SOURCE = `
     if(u_lightOn)
     {
       vec3 lightVector = u_lightPos - vec3(v_VertPos);
-      float r = length(lightVector);
+      // float r = length(lightVector);
 
       // N dot L
       vec3 L = normalize(lightVector);
