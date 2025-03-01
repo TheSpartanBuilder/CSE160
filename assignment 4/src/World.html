@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)https://rodger.global-linguist.com/webgl/ch02/ColoredPoints.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Change a point color</title>
+  </head>
+
+  <body onload="main()" style="background-color:rgb(0, 204, 255);">
+    <canvas id="webgl" width="800" height="600" style="position: absolute; z-index: 0">
+    Please use a browser that supports "canvas"
+    </canvas>
+    <canvas id="HUDStats" width="800" height="600" style="position: absolute; z-index: 3">
+    Please use a browser that supports "canvas"
+    </canvas>
+    <canvas id="HUD" width="800" height="600" style="position: absolute; z-index: 5">
+    Please use a browser that supports "canvas"
+    </canvas>
+
+    <canvas width="800" height="600"></canvas>
+
+    <p id="textBox"> XXX </p>
+
+    <br>
+    Normal<br>
+    <button onclick="normalOn()">On</button>
+    <button onclick="normalOff()">Off</button>
+    <br>
+
+    <br>
+    Light<br>
+    <button onclick="lightOn()">On</button>
+    <button onclick="lightOff()">Off</button>
+    <br>
+
+    <br>
+    Light X <input type="range" min="-250" max="250" value="0" class="slider" id="lightSliderX">
+    Light Y <input type="range" min="-250" max="250" value="0" class="slider" id="lightSliderY">
+    Light Z <input type="range" min="-250" max="250" value="0" class="slider" id="lightSliderZ">
+
+    <br>
+    Flying<br>
+    <button onclick="flyingOn()">On</button>
+    <button onclick="flyingOff();location.reload();">Off</button>
+    <button onclick="flyingReset();location.reload();">Reset</button><br>
+
+    <br>
+    Place Block(Press r to remove block)<br>
+    (When trying to remove block since the system is not that acurate. You may want to move the mouse aronud the block you want to remove)<br>
+
+    <button onclick="placeBlockOn();mountainOff();">On</button>
+    <button onclick="placeBlockOff();mountainOff();">Off</button>
+    <button onclick="placeBlockReset();mountainOff();">Reset</button><br>
+
+    <br>
+    Aim Lab<br>
+    <button onclick="aimLabSetUP();mountainOff();">On</button>
+    <button onclick="aimLabOff();mountainOff();">Off</button>
+    <button onclick="aimLabReset();mountainOff();">Reset</button><br>
+
+    <br>
+    Mountain<br>
+    <button onclick="mountainOn();placeBlockOff();aimLabOff();hideTom();">On</button>
+    <button onclick="mountainOff();placeBlockOff();aimLabOff();hideTom();">Off</button><br>
+
+    <br>
+    Tom:
+    <br>
+    <button onclick="showTom();mountainOff();">Show</button>
+    <button onclick="hideTom();mountainOff();">Hide</button>
+    <br><br>
+    Animation control(When animation is on other control will not work):<br>
+    <button onclick="g_animationState(true)">On</button><button onclick="g_specialAnimationState(true)">Special Animation</button><button onclick="g_animationState(false); g_specialAnimationState(false)">Off</button><br>
+    Animation Speed <input type="range" min="1.0" max="10.0" value="1.0" class="slider" id="animationSpeedSlide"><br>
+
+    <br>
+    Locations:<br>
+    <button onclick="tpOriginal()">Original</button>
+    <button onclick="tpFlatFloor()">FlatFloor</button><br>
+
+    <br><br>
+    <br>
+    Left leg control:
+    <br>
+    Upper leg X   <input type="range" min="0" max="360" value="0" class="slider" id="leftUpperLegSlide">
+    Upper leg Y   <input type="range" min="0" max="360" value="0" class="slider" id="leftUpperLegSlideY">
+    Upper leg Z   <input type="range" min="0" max="360" value="0" class="slider" id="leftUpperLegSlideZ">
+    <br>
+    Lower leg X   <input type="range" min="0" max="360" value="0" class="slider" id="leftLowerLegSlide">
+    Lower leg Y   <input type="range" min="0" max="360" value="0" class="slider" id="leftLowerLegSlideY">
+    Lower leg Z   <input type="range" min="0" max="360" value="0" class="slider" id="leftLowerLegSlideZ">
+    <br>
+    Feet X  <input type="range" min="0" max="360" value="0" class="slider" id="leftFeetSlide">
+    Feet Y  <input type="range" min="0" max="360" value="0" class="slider" id="leftFeetSlideY">
+    Feet Z  <input type="range" min="0" max="360" value="0" class="slider" id="leftFeetSlideZ">
+
+    <br><br>
+    <br>
+    Right leg control:
+    <br>
+    Upper leg X   <input type="range" min="0" max="360" value="0" class="slider" id="rightUpperLegSlide">
+    Upper leg Y   <input type="range" min="0" max="360" value="0" class="slider" id="rightUpperLegSlideY">
+    Upper leg Z   <input type="range" min="0" max="360" value="0" class="slider" id="rightUpperLegSlideZ">
+    <br>
+    Lower leg X <input type="range" min="0" max="360" value="0" class="slider" id="rightLowerLegSlide">
+    Lower leg Y <input type="range" min="0" max="360" value="0" class="slider" id="rightLowerLegSlideY">
+    Lower leg Z <input type="range" min="0" max="360" value="0" class="slider" id="rightLowerLegSlideZ">
+    <br>
+    Feet X  <input type="range" min="0" max="360" value="0" class="slider" id="rightFeetSlide">
+    Feet Y  <input type="range" min="0" max="360" value="0" class="slider" id="rightFeetSlideY">
+    Feet Z  <input type="range" min="0" max="360" value="0" class="slider" id="rightFeetSlideZ">
+
+    <br><br>
+    <br>
+    Left arm control:
+    <br>
+    Upper arm X   <input type="range" min="0" max="360" value="0" class="slider" id="leftUpperArmSlide">
+    Upper arm Y   <input type="range" min="0" max="360" value="0" class="slider" id="leftUpperArmSlideY">
+    Upper arm Z   <input type="range" min="0" max="360" value="0" class="slider" id="leftUpperArmSlideZ">
+    <br>
+    Lower arm X <input type="range" min="0" max="360" value="0" class="slider" id="leftLowerArmSlide">
+    Lower arm Y <input type="range" min="0" max="360" value="0" class="slider" id="leftLowerArmSlideY">
+    Lower arm Z <input type="range" min="0" max="360" value="0" class="slider" id="leftLowerArmSlideZ">
+    <br>
+    Hand X  <input type="range" min="0" max="360" value="0" class="slider" id="leftHandSlide">
+    Hand Y  <input type="range" min="0" max="360" value="0" class="slider" id="leftHandSlideY">
+    Hand Z  <input type="range" min="0" max="360" value="0" class="slider" id="leftHandSlideZ">
+
+    <br><br>
+    <br>
+    Right arm control:
+    <br>
+    Upper arm X   <input type="range" min="0" max="360" value="0" class="slider" id="rightUpperArmSlide">
+    Upper arm Y   <input type="range" min="0" max="360" value="0" class="slider" id="rightUpperArmSlideY">
+    Upper arm Z   <input type="range" min="0" max="360" value="0" class="slider" id="rightUpperArmSlideZ">
+    <br>
+    Lower arm X <input type="range" min="0" max="360" value="0" class="slider" id="rightLowerArmSlide">
+    Lower arm Y <input type="range" min="0" max="360" value="0" class="slider" id="rightLowerArmSlideY">
+    Lower arm Z <input type="range" min="0" max="360" value="0" class="slider" id="rightLowerArmSlideZ">
+    <br>
+    Hand X  <input type="range" min="0" max="360" value="0" class="slider" id="rightHandSlide">
+    Hand Y  <input type="range" min="0" max="360" value="0" class="slider" id="rightHandSlideY">
+    Hand Z  <input type="range" min="0" max="360" value="0" class="slider" id="rightHandSlideZ">
+
+    <br><br>
+    Head movement control:
+    <br>
+    Head  x movement <input type="range" min="-45" max="45" value="0" class="slider" id="headXSlide"><br>
+    Head  y movement <input type="range" min="-45" max="45" value="0" class="slider" id="headYSlide">
+
+
+    <br><br><br><br>
+    <h3>Notes for this assignment:</h3>
+    <!-- 
+    <li></li>
+    <dd>- </dd> 
+    -->
+    <p>
+      <ol>
+        <li>Have a ground created with a flattened cube and sky from a big cube.</li>
+        <dd>- Yes, you can clearly see the sky and floor.</dd>
+
+        <li>Texture working on at least one object.</li>
+        <dd>- Yes, you can see the sky texture and the floor texture and the wall texture.</dd>
+
+        <li>Texture on some objects and color on some other objects. All working together.</li>
+        <dd>- Yes, the aim lab game have white color cube in the same space and the world. And Tom is just made out of color cubes and shape.</dd>
+
+        <li>Implement camera movement.</li>
+        <dd>- Yes, WASD work perfectly</dd>
+
+        <li>Key commands for rotation work. Use Q (rotate left) & E (rotate right).</li>
+        <dd>- Yes, Q and E is working fine</dd>
+
+        <li>Perspective camera implemented.</li>
+        <dd>- Yes, I have used the setLookAt to control the perspective camera.</dd>
+
+        <li>World is implemented. There is some interesting world to walk around.</li>
+        <dd>- Yes, you can summon a aim lab or a mountain.</dd>
+
+        <li>Rotate camera with the mouse</li>
+        <dd>- Yes, but you will need to clock on the canvas inorder to control the camera.</dd>
+
+        <li>Multiple textures</li>
+        <dd>- Yes, there is sky texture, flat floor, cube floor and cube wall texture.</dd>
+
+        <li>Add/delete blocks</li>
+        <dd>- Yes, but it need to be toggle on to be able to add/delete blocks.</dd>
+
+        <li>Add simple story or game to world</li>
+        <dd>- Yes, aim lab is the game that I have implemented for this assignment. And when removing block the user need to move their mouse around the block they want to delete and press R to delete it. </dd>
+
+        <li>Performance</li>
+        <dd>- The performance is at least over 60FPS.</dd> 
+        <dd>- 
+          <video width= "320" height=auto controls>
+            Video on the performance of the model and animation.
+            <source src="../Video/Timeline 1.mp4" type="video/mp4">
+          </video>
+          <dd>- As you can see the performance of the canvas is always above 60fps.</dd>
+        </dd>
+
+        <li>Wow!</li>
+        <dd>- Camera can pan up and down</dd> 
+        <dd>- Crosshair</dd>
+        <dd>- Hud with the state of the aim lab.</dd>
+      </ol>
+    </p>
+
+
+
+
+
+
+
+
+    <script src="../lib/stats.js"></script>
+    <script src="../Change a point color_files/webgl-utils.js"></script>
+    <script src="../Change a point color_files/webgl-debug.js"></script>
+    <script src="../Change a point color_files/cuon-utils.js"></script>
+    <script src="../lib/cuon-matrix-cse160.js"></script>
+    <script src="../src/Rotation.js"></script>
+    <script src="../src/Points.js"></script>
+    <script src="../src/Triangle.js"></script>
+    <script src="../src/Circle.js"></script>
+    <script src="../src/N_tagon.js"></script>
+    <script src="../src/Star.js"></script>
+    <script src="../src/Ractangle.js"></script>
+    <script src="../src/Ractangle3D.js"></script>
+    <script src="../src/Cube.js"></script>
+    <script src="../src/Pyramid.js"></script>
+    <script src="../src/Cylinder.js"></script>
+    <script src="../src/TriangularPrism.js"></script>
+    <script src="../src/Tom.js"></script>
+    <script src="../src/CubeTexture.js"></script>
+    <script src="../src/Camera.js"></script>
+    <script src="../src/CubeTextureInUse.js"></script>
+    <script src="../src/Crosshair.js"></script>
+    <script src="../src/DrawMap.js"></script>
+    <script src="../src/Maps.js"></script>
+    <script src="../src/AimLab.js"></script>
+    <script src="../src/Target.js"></script>
+    <script src="../src/HUDStats.js"></script>
+    <script src="../src/Mountain.js"></script>
+    <script src="../src/CubeNormal.js"></script>
+    <script src="../src/CubeTextureNormal.js"></script>
+    <script src="../src/CubeTextureInUseNormal.js"></script>
+    <script src="../src/Sphere.js"></script>
+    <script src="../src/World.js"></script>
+  
+
+</body></html>
