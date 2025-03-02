@@ -285,6 +285,32 @@ class Mountain{
         this.secondFloorMapBlock.mapUpdate();
         this.firstFloorMapBlock = new DrawMap(this.firstLevel,this.getHeight(7),brick);
         this.firstFloorMapBlock.mapUpdate();
+        this.textureNum = 0;
+    }
+
+    setTextureNum()
+    {
+        this.eighthFloorMapBlock.textureNum = this.textureNum;
+        this.seventhFloorMapBlock.textureNum = this.textureNum;
+        this.sixthFloorMapBlock.textureNum = this.textureNum;
+        this.fithFloorMapBlock.textureNum = this.textureNum;
+        this.fourthFloorMapBlock.textureNum = this.textureNum;
+        this.thirdFloorMapBlock.textureNum = this.textureNum;
+        this.secondFloorMapBlock.textureNum = this.textureNum;
+        this.firstFloorMapBlock.textureNum = this.textureNum;
+    }
+
+    updateNormal()
+    {
+        this.setTextureNum();
+        this.eighthFloorMapBlock.mapUpdate();
+        this.seventhFloorMapBlock.mapUpdate();
+        this.sixthFloorMapBlock.mapUpdate();
+        this.fithFloorMapBlock.mapUpdate();
+        this.fourthFloorMapBlock.mapUpdate();
+        this.thirdFloorMapBlock.mapUpdate();
+        this.secondFloorMapBlock.mapUpdate();
+        this.firstFloorMapBlock.mapUpdate();
     }
 
     getHeight(level)

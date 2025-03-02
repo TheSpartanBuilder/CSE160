@@ -39,6 +39,14 @@ class DrawMap
         }
     }
 
+    updateNormal()
+    {
+        for(let i = 0; i < this.renderQueue.length; i++)
+        {
+            this.renderQueue[i].textureNum = this.textureNum;
+        }
+    }
+
     renderTexture(config)
     {
         for(let i = 0; i < this.renderQueue.length;i++)

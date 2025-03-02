@@ -48,6 +48,11 @@ var FSHADER_SOURCE = `
   uniform vec3 u_lightPos;
   uniform vec3 u_cameraPos;
   uniform bool u_lightOn;
+  uniform bool u_spotLightOn;
+  uniform vec3 u_at;
+  uniform float u_spotLightLimit;
+  uniform float u_spotCosineCutOff;
+  uniform vec3 u_spotDirection;
   void main() {
   //gl_FragColor = u_FragColor;
   //gl_FragColor = vec4(v_UV,1.0,1.0);
@@ -147,7 +152,7 @@ var FSHADER_SOURCE = `
       float specular = pow(max(dot(E,R),0.0),64.0)*0.8;
 
       vec3 diffuse = vec3(1.0,1.0,0.9) * vec3(gl_FragColor) * nDotL * 0.7;
-      vec3 ambient = vec3(gl_FragColor) * 0.2;
+      vec3 ambient = vec3(gl_FragColor) * 0.3;
       if(u_whichTexture == 0)
       {
         gl_FragColor = vec4(specular+diffuse+ambient,1.0);
@@ -155,8 +160,35 @@ var FSHADER_SOURCE = `
       else
       {
         gl_FragColor = vec4(diffuse + ambient,1.0);
+      }   
+
+
+
+      if(u_spotLightOn){
+        // Dealing with spot light
+        // Reference
+        // https://webglfundamentals.org/webgl/lessons/webgl-3d-lighting-spot.html
+        // https://math.hws.edu/graphicsbook/c7/s2.html#webgl3d.2.6
+        // https://math.hws.edu/graphicsbook/source/webgl/spotlights.html
+        vec3 L_at = normalize(u_at-u_cameraPos);
+        float spotFactor = 0.0;
+        float spotExponent = 3.0;
+        vec3 D = -normalize(u_spotDirection);
+        float spotCosine = dot(D,L_at);
+        if (spotCosine >= u_spotCosineCutOff) {
+          spotFactor = pow(spotCosine, spotExponent);
+          // gl_FragColor = gl_FragColor + (gl_FragColor*spotFactor);
+        }
+        else
+        {
+          // gl_FragColor = vec4(vec3(0.0),1.0);
+          spotFactor = 0.0;
+        }
+        gl_FragColor = gl_FragColor + vec4(vec3(gl_FragColor)*spotFactor,1.0);
+        // gl_FragColor = gl_FragColor + (gl_FragColor*spotFactor);
       }
     }
+
   }`;
 
 // Visit when free
@@ -200,6 +232,11 @@ let u_TextureNum;
 let u_lightPos;
 let u_cameraPos;
 let u_lightOn;
+let u_spotLightOn;
+let u_at;
+let u_spotLightLimit;
+let u_spotCosineCutOff;
+let u_spotDirection;
 
 // let g_selectedColor=[1.0,1.0,1.0,1.0];
 // let g_selectedSize= 5.0;
@@ -260,6 +297,8 @@ let g_normal = false;
 let g_lightSliderX = 0;
 let g_lightPos=[0,0,0];
 let g_lightOn = false;
+let g_spotLightOn = false;
+let g_spotCosineCutoff = Math.cos(10/180 * Math.PI);
 
 // let g_animation = false;
 
@@ -663,6 +702,30 @@ function connectVariablesToGLSL()
     return false;
   }
 
+  u_spotLightOn = gl.getUniformLocation(gl.program, 'u_spotLightOn');
+  if (!u_spotLightOn) {
+    console.log('Failed to get the storage location of u_spotLightOn');
+    return false;
+  }
+
+  // u_at = gl.getUniformLocation(gl.program, 'u_at');
+  // if (!u_at) {
+  //   console.log('Failed to get the storage location of u_at');
+  //   return false;
+  // }
+
+  u_spotCosineCutOff = gl.getUniformLocation(gl.program, 'u_spotCosineCutOff');
+  if (!u_spotCosineCutOff) {
+    console.log('Failed to get the storage location of u_spotCosineCutOff');
+    return false;
+  }
+
+  u_spotDirection = gl.getUniformLocation(gl.program, 'u_spotDirection');
+  if (!u_spotDirection) {
+    console.log('Failed to get the storage location of u_spotDirection');
+    return false;
+  }
+
   // Set an initial value for this matrix to indentity
   var identityM = new Matrix4();
   gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
@@ -1026,15 +1089,21 @@ function renderAllShapes(){
     testNormalCube.textureNum = theGoal;
     floor.textureNum = theGoal;
     sky.textureNum = theGoal;
-    // floorMapBlock.textureNum = theGoal;
-    // firstFloorMapBlock.textureNum = theGoal;
-    // secondFloorMapBlock.textureNum = theGoal;
-    // thirdFloorMapBlock.textureNum = theGoal;
-    // forthFloorMapBlock.textureNum = theGoal;
-    // theMountain.textureNum = theGoal;
+    floorMapBlock.textureNum = theGoal;
+    firstFloorMapBlock.textureNum = theGoal;
+    secondFloorMapBlock.textureNum = theGoal;
+    thirdFloorMapBlock.textureNum = theGoal;
+    forthFloorMapBlock.textureNum = theGoal;
+    theMountain.textureNum = theGoal;
     whiteCube.textureNum = theGoal;
     cube.textureNum = theGoal;
     testSphere.textureNum = theGoal;
+    floorMapBlock.updateNormal();
+    firstFloorMapBlock.updateNormal();
+    secondFloorMapBlock.updateNormal();
+    thirdFloorMapBlock.updateNormal();
+    forthFloorMapBlock.updateNormal();
+    // theMountain.updateNormal();
   }
   else
   {
@@ -1042,18 +1111,27 @@ function renderAllShapes(){
     testNormalCube.textureNum = -2;
     floor.textureNum = theGoal;
     sky.textureNum = theGoal;
-    // floorMapBlock.textureNum = theGoal;
-    // firstFloorMapBlock.textureNum = theGoal;
-    // secondFloorMapBlock.textureNum = theGoal;
-    // thirdFloorMapBlock.textureNum = theGoal;
-    // forthFloorMapBlock.textureNum = theGoal;
-    // theMountain.textureNum = theGoal;
-    whiteCube.textureNum = theGoal;
+    floorMapBlock.textureNum = theGoal;
+    firstFloorMapBlock.textureNum = theGoal;
+    secondFloorMapBlock.textureNum = theGoal;
+    thirdFloorMapBlock.textureNum = theGoal;
+    forthFloorMapBlock.textureNum = theGoal;
+    theMountain.textureNum = theGoal;
+    whiteCube.textureNum = -2;
     cube.textureNum = theGoal;
     testSphere.textureNum = -2;
+    floorMapBlock.updateNormal();
+    firstFloorMapBlock.updateNormal();
+    secondFloorMapBlock.updateNormal();
+    thirdFloorMapBlock.updateNormal();
+    forthFloorMapBlock.updateNormal();
+    // theMountain.updateNormal();
   }
 
   lightUpdate();
+  spotLightUpdate();
+  updateSpotCosineCutOff();
+  updateSpotDirection();
 
   
   // floor.render();
@@ -1081,7 +1159,7 @@ function renderAllShapes(){
 
   // Test normal
   // testNormalCube.renderOld();
-  testSphere.renderFast();
+  // testSphere.renderFast();
   lightCube.matrix.setTranslate(g_lightPos[0],g_lightPos[1],g_lightPos[2],);
   lightCube.matrix.scale(.1,.1,.1);
   lightCube.matrix.translate(-.5,-.5,-.5);
@@ -1113,6 +1191,7 @@ function renderAllShapes(){
   {
     theHUDStats.clear();
     cube.renderFaster();
+    testSphere.renderFast();
   }
 
   // test();
@@ -1464,7 +1543,7 @@ function aimLabSetUP()
   flyingOff();
 
   cam.g_eye = [0,0,-14*0.4];
-  cam.g_at = [0,0,1];
+  cam.g_at = [0,0,0];
 
   theAimLab.reset();
 }
@@ -1489,7 +1568,7 @@ function mountainOn()
 {
   showMountain = true;
   cam.g_eye = [0,0,-14*0.4];
-  cam.g_at = [0,0,1];
+  cam.g_at = [0,0,0];
 }
 
 function mountainOff()
@@ -1523,6 +1602,7 @@ function updateLightPos()
 {
   gl.uniform3f(u_lightPos,g_lightPos[0],g_lightPos[1],g_lightPos[2]);
   gl.uniform3f(u_cameraPos,cam.g_eye[0],cam.g_eye[1],cam.g_eye[2]);
+  gl.uniform3f(u_at,cam.g_at[0],cam.g_at[1],cam.g_at[2],);
 }
 
 function lightUpdate()
@@ -1538,4 +1618,31 @@ function lightOn()
 function lightOff()
 {
   g_lightOn = false;
+}
+
+function spotLightUpdate()
+{
+  gl.uniform1i(u_spotLightOn,g_spotLightOn);
+}
+
+function spotLightOn()
+{
+  g_spotLightOn = true;
+}
+
+function spotLightOff()
+{
+  g_spotLightOn = false;
+}
+
+function updateSpotCosineCutOff()
+{
+  gl.uniform1f(u_spotCosineCutOff,g_spotCosineCutoff);
+}
+
+function updateSpotDirection(lightDirection,normalMatrix)
+{
+  // let transformedDirection = normalMatrix.multiplyVector3(lightDirection);
+  let direction = [cam.g_at[0]-cam.g_eye[0],cam.g_at[1]-cam.g_eye[1],cam.g_at[2]-cam.g_eye[2],];
+  gl.uniform3f(u_spotDirection,direction[0],direction[1],direction[2]);
 }
