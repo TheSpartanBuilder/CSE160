@@ -52,6 +52,7 @@ var FSHADER_SOURCE = `
   uniform vec3 u_lightPos;
   uniform vec3 u_cameraPos;
   uniform vec3 u_lightColor;
+  uniform vec3 u_spotLightColor;
   uniform bool u_lightOn;
   uniform bool u_spotLightOn;
   uniform vec3 u_at;
@@ -164,7 +165,8 @@ var FSHADER_SOURCE = `
       // Specular
       float specular = pow(max(dot(E,R),0.0),64.0)*0.8;
 
-      vec3 diffuse = vec3(1.0,1.0,0.9) * vec3(gl_FragColor) * nDotL * 0.7;
+      // vec3 diffuse = vec3(1.0,1.0,0.9) * vec3(gl_FragColor) * nDotL * 0.7;
+      vec3 diffuse = u_lightColor * vec3(gl_FragColor) * nDotL * 0.7;
       vec3 ambient = vec3(gl_FragColor) * 0.3;
       if(u_whichTexture == 0)
       {
@@ -199,8 +201,9 @@ var FSHADER_SOURCE = `
           // gl_FragColor = vec4(vec3(0.0),1.0);
           spotFactor = 0.0;
         }
-        gl_FragColor = gl_FragColor + vec4(vec3(gl_FragColor)*spotFactor,1.0);
+        // gl_FragColor = gl_FragColor + vec4(vec3(gl_FragColor)*spotFactor,1.0);
         // gl_FragColor = gl_FragColor + (gl_FragColor*spotFactor);
+        gl_FragColor = gl_FragColor + vec4((vec3(gl_FragColor)*u_spotLightColor)*spotFactor,1.0);
       }
     }
 
@@ -255,6 +258,8 @@ let u_spotLightLimit;
 let u_spotCosineCutOff;
 let u_spotDirection;
 let u_NormalMatrix;
+let u_lightColor;
+let u_spotLightColor;
 
 // let g_selectedColor=[1.0,1.0,1.0,1.0];
 // let g_selectedSize= 5.0;
@@ -318,6 +323,8 @@ let g_lightOn = false;
 let g_spotLightOn = false;
 let g_spotCosineCutoff = 10;
 let g_funnyOn = false;
+let g_lightColor = [1,1,1];
+let g_spotLightColor = [1,1,1];
 
 // let g_animation = false;
 
@@ -531,6 +538,12 @@ function addActionsForHtmlUI()
   document.getElementById('lightSliderY').addEventListener("mousemove", function() {  if(g_animationOn || g_specialAnimation) return; g_lightPos[1] = this.value/100;  updateLightPos(); });
   document.getElementById('lightSliderZ').addEventListener("mousemove", function() {  if(g_animationOn || g_specialAnimation) return; g_lightPos[2] = this.value/100;  updateLightPos(); });
   document.getElementById('spotLightSizeSlider').addEventListener("mousemove", function() { g_spotCosineCutoff = this.value;});
+  document.getElementById('lightSliderR').addEventListener("mousemove", function() {  g_lightColor[0] = this.value/255;  lightColorUpdate(); });
+  document.getElementById('lightSliderG').addEventListener("mousemove", function() {  g_lightColor[1] = this.value/255;  lightColorUpdate(); });
+  document.getElementById('lightSliderB').addEventListener("mousemove", function() {  g_lightColor[2] = this.value/255;  lightColorUpdate(); });
+  document.getElementById('spotLightSliderR').addEventListener("mousemove", function() {  g_spotLightColor[0] = this.value/255;  spotLightColorUpdate(); });
+  document.getElementById('spotLightSliderG').addEventListener("mousemove", function() {  g_spotLightColor[1] = this.value/255;  spotLightColorUpdate(); });
+  document.getElementById('spotLightSliderB').addEventListener("mousemove", function() {  g_spotLightColor[2] = this.value/255;  spotLightColorUpdate(); });
 }
 
 
@@ -764,6 +777,18 @@ function connectVariablesToGLSL()
     return false;
   }
 
+  u_lightColor = gl.getUniformLocation(gl.program, 'u_lightColor');
+  if (!u_lightColor) {
+    console.log('Failed to get the storage location of u_lightColor');
+    return false;
+  }
+
+  u_spotLightColor = gl.getUniformLocation(gl.program, 'u_spotLightColor');
+  if (!u_spotLightColor) {
+    console.log('Failed to get the storage location of u_spotLightColor');
+    return false;
+  }
+
   // Set an initial value for this matrix to indentity
   var identityM = new Matrix4();
   gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
@@ -832,7 +857,8 @@ function main() {
   tom = new TomNormal();
   tom.setLocationMatrix(locationMatrix);
 
-
+  lightColorUpdate();
+  spotLightColorUpdate();
 
   renderArray = {};
 
@@ -1714,4 +1740,14 @@ function funnyOn()
 function funnyOff()
 {
   g_funnyOn = false;
+}
+
+function lightColorUpdate()
+{
+  gl.uniform3f(u_lightColor,g_lightColor[0],g_lightColor[1],g_lightColor[2]);
+}
+
+function spotLightColorUpdate()
+{
+  gl.uniform3f(u_spotLightColor,g_spotLightColor[0],g_spotLightColor[1],g_spotLightColor[2]);
 }
