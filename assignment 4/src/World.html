@@ -31,9 +31,9 @@
     <button onclick="lightOn()">On</button>
     <button onclick="lightOff()">Off</button>
     <br>
-    Light X <input type="range" min="-250" max="250" value="0" class="slider" id="lightSliderX">
-    Light Y <input type="range" min="-250" max="250" value="0" class="slider" id="lightSliderY">
-    Light Z <input type="range" min="-250" max="250" value="0" class="slider" id="lightSliderZ">
+    Light X <input type="range" min="-500" max="500" value="0" class="slider" id="lightSliderX">
+    Light Y <input type="range" min="-500" max="500" value="200" class="slider" id="lightSliderY">
+    Light Z <input type="range" min="-500" max="500" value="0" class="slider" id="lightSliderZ">
 
     <br>
     Light Source Color<br>
@@ -181,55 +181,39 @@
     -->
     <p>
       <ol>
-        <li>Have a ground created with a flattened cube and sky from a big cube.</li>
-        <dd>- Yes, you can clearly see the sky and floor.</dd>
-
-        <li>Texture working on at least one object.</li>
-        <dd>- Yes, you can see the sky texture and the floor texture and the wall texture.</dd>
-
-        <li>Texture on some objects and color on some other objects. All working together.</li>
-        <dd>- Yes, the aim lab game have white color cube in the same space and the world. And Tom is just made out of color cubes and shape.</dd>
-
-        <li>Implement camera movement.</li>
-        <dd>- Yes, WASD work perfectly</dd>
-
-        <li>Key commands for rotation work. Use Q (rotate left) & E (rotate right).</li>
-        <dd>- Yes, Q and E is working fine</dd>
-
-        <li>Perspective camera implemented.</li>
-        <dd>- Yes, I have used the setLookAt to control the perspective camera.</dd>
-
-        <li>World is implemented. There is some interesting world to walk around.</li>
-        <dd>- Yes, you can summon a aim lab or a mountain.</dd>
-
-        <li>Rotate camera with the mouse</li>
-        <dd>- Yes, but you will need to clock on the canvas inorder to control the camera.</dd>
-
-        <li>Multiple textures</li>
-        <dd>- Yes, there is sky texture, flat floor, cube floor and cube wall texture.</dd>
-
-        <li>Add/delete blocks</li>
-        <dd>- Yes, but it need to be toggle on to be able to add/delete blocks.</dd>
-
-        <li>Add simple story or game to world</li>
-        <dd>- Yes, aim lab is the game that I have implemented for this assignment. And when removing block the user need to move their mouse around the block they want to delete and press R to delete it. </dd>
-
-        <li>Performance</li>
-        <dd>- The performance is at least over 60FPS.</dd> 
-        <dd>- 
-          <video width= "320" height=auto controls>
-            Video on the performance of the model and animation.
-            <source src="../Video/Timeline 1.mp4" type="video/mp4">
-          </video>
-          <dd>- As you can see the performance of the canvas is always above 60fps.</dd>
-        </dd>
-
-        <li>Wow!</li>
-        <dd>- Camera can pan up and down</dd> 
-        <dd>- Crosshair</dd>
-        <dd>- Hud with the state of the aim lab.</dd>
+        <li>Have at least one cube</li>
+        <dd>- Yes, since this world is based on a blocky style, there are many cubes in this world.</dd>
+    
+        <li>Created a sphere.</li>
+        <dd>- Yes, I have three spheres: one uses a solid color, while the other two use textures. Maybe you can find the hidden sphere.</dd>
+    
+        <li>Lighting (ambient + diffuse + specular) works correctly, and the lighting color changes correctly with the slider.</li>
+        <dd>- Yes, ambient, diffuse, and specular lighting work correctly.</dd>
+        <dd>- Yes, the lighting color changes correctly with the slider.</dd>
+    
+        <li>A visual marker of the light's location exists.</li>
+        <dd>- Yes, you can see a yellow box emitting light.</dd>
+    
+        <li>A user interface button to turn lighting on and off</li>
+        <dd>- Yes, but the light is off by default. You need to click on it in the light section to switch the world to light mode.</dd>
+    
+        <li>The point light moves around the world over time and can also be controlled using the slider.</li>
+        <dd>- Yes, but you need to switch the world to light mode and click on the "Animation" section to see the light moving.</dd>
+        <dd>- Alternatively, you can use the X, Y, and Z sliders to control the position of the light. (However, these sliders only work when animation is off.)</dd>
+    
+        <li>Your blocky animal or world exists and is illuminated.</li>
+        <dd>- Yes, the world is illuminated. However, the aim lab does not work since it requires accurate colors to function properly.</dd>
+    
+        <li>A spotlight is added.</li>
+        <dd>- Yes, the spotlight is located at the camera and points in the camera’s direction.</dd>
+        <dd>- You can change the color of the spotlight, but you need to use the spotlight color sliders.</dd>
+    
+        <li>A button to visualize normals with color</li>
+        <dd>- Yes, when you click the "Normal On" button, you can see the normal colors instead of the usual colors.</dd>
       </ol>
     </p>
+    
+    
 
 
 

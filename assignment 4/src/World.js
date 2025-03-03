@@ -318,7 +318,7 @@ let g_rightHandSlideAngleZ = 0;
 
 let g_normal = false;
 let g_lightSliderX = 0;
-let g_lightPos=[0,0,0];
+let g_lightPos=[0,2,0];
 let g_lightOn = false;
 let g_spotLightOn = false;
 let g_spotCosineCutoff = 10;
@@ -421,8 +421,10 @@ function zeroAllAngle()
   document.getElementById('rightHandSlideZ').value = 0;
 
   document.getElementById('lightSliderX').value = 0;
-  document.getElementById('lightSliderY').value = 0;
+  document.getElementById('lightSliderY').value = 200;
   document.getElementById('lightSliderZ').value = 0;
+  g_lightPos = [0,2,0];
+  updateLightPos();
 }
 
 function g_animationState(input)
@@ -902,7 +904,7 @@ function main() {
   lightCube.color = [2,2,0,1];
   lightCube.matrix.translate(g_lightPos[0],g_lightPos[1],g_lightPos[2],);
   lightCube.matrix.scale(.1,.1,.1);
-  lightCube.matrix.translate(-.5,-.5,-.5);
+  lightCube.matrix.translate(-.5,-5,-.5);
 
   floor = new CubeTextureNormal('../Image/code/grey-dots-background_1053-180.jpg',u_Sampler6,6,gl.TEXTURE6);
   floor.color = [1,1,1,1];
