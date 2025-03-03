@@ -12,6 +12,7 @@ var VSHADER_SOURCE = `
   varying vec4 v_VertPos;
   uniform float u_Size;
   uniform mat4 u_ModelMatrix;
+  uniform mat4 u_NormalMatrix;
   uniform mat4 u_GlobalRotateMatrix;
   uniform mat4 u_ViewMatrix;
   uniform mat4 u_ProjectionMatrix;
@@ -22,7 +23,8 @@ var VSHADER_SOURCE = `
     //gl_PointSize = u_Size;
     v_UV = a_UV;
     v_Color = a_Color;
-    v_Normal = a_Normal;
+    // v_Normal = a_Normal;
+    v_Normal = normalize(vec3(u_NormalMatrix * vec4(a_Normal,1.0)));
     v_VertPos = u_ModelMatrix * a_Position;
   }`;
 
@@ -49,6 +51,7 @@ var FSHADER_SOURCE = `
   uniform int u_TextureNum;
   uniform vec3 u_lightPos;
   uniform vec3 u_cameraPos;
+  uniform vec3 u_lightColor;
   uniform bool u_lightOn;
   uniform bool u_spotLightOn;
   uniform vec3 u_at;
@@ -251,6 +254,7 @@ let u_at;
 let u_spotLightLimit;
 let u_spotCosineCutOff;
 let u_spotDirection;
+let u_NormalMatrix;
 
 // let g_selectedColor=[1.0,1.0,1.0,1.0];
 // let g_selectedSize= 5.0;
@@ -754,6 +758,12 @@ function connectVariablesToGLSL()
     return false;
   }
 
+  u_NormalMatrix = gl.getUniformLocation(gl.program, 'u_NormalMatrix');
+  if (!u_NormalMatrix) {
+    console.log('Failed to get the storage location of u_NormalMatrix');
+    return false;
+  }
+
   // Set an initial value for this matrix to indentity
   var identityM = new Matrix4();
   gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
@@ -818,8 +828,8 @@ function main() {
 
 
   // Location matrix
-  let locationMatrix = new Matrix4().translate(-0.5,0.15,0);
-  tom = new Tom();
+  let locationMatrix = new Matrix4().translate(4,0,4);
+  tom = new TomNormal();
   tom.setLocationMatrix(locationMatrix);
 
 
@@ -879,9 +889,9 @@ function main() {
   stoneBrick = new CubeTextureNormal("../Image/code/stone_bricks.png",u_Sampler1,1,gl.TEXTURE1);
   stoneBrick.initTextures();
 
-  sky = new CubeTextureNormal('../Image/code/why-sky-blue-2db86ae-ezgif.com-resize.jpg',u_Sampler2,2,gl.TEXTURE2);
+  sky = new CubeTextureNormal('../Image/code/why-sky-blue-2db86ae-ezgif.com-resize copy.jpg',u_Sampler2,2,gl.TEXTURE2);
   sky.color = [1.0,0.0,0.0,1.0];
-  sky.matrix.scale(50,50,50);
+  sky.matrix.scale(-50,-50,-50);
   sky.matrix.translate(-.5,-.5,-.5);
   sky.initTextures();
 
@@ -908,38 +918,6 @@ function main() {
   aimLabRender = false;
   
   showMountain = false;
-
-  // wallArray;
-
-  // for (let x = 0; x<32; x++)
-  //   {
-  //     for(let y = 0; y<32; y++)
-  //     {
-  //       if(x < 1 || x==31 || y== 0 || y==31)
-  //       {
-  //         let body = new CubeTextureInUse(brick);
-  //         body.matrix.translate(0,-.75,0);
-  //         body.matrix.scale(.4,.4,.4);
-  //         body.matrix.translate(x-16,0,y-16);
-  //         wallArray.push(body);
-  //       }
-  //     }
-  //   }
-
-  // for (let x = 0; x<32; x++)
-  //   {
-  //     for(let y = 0; y<32; y++)
-  //     {
-  //       if(x < 1 || x==31 || y== 0 || y==31)
-  //       {
-  //         let body = new CubeTextureInUse(brick);
-  //         body.matrix.translate(0,-.75,0);
-  //         body.matrix.scale(.4,.4,.4);
-  //         body.matrix.translate(x-16,0,y-16);
-  //         wallArray.push(body);
-  //       }
-  //     }
-  //   }
 
   
   floorMapBlock = new DrawMap(floorMap,-1.25,brick);
@@ -1155,6 +1133,10 @@ function renderAllShapes(){
     whiteCube.textureNum = theGoal;
     cube.textureNum = theGoal;
     testSphere.textureNum = theGoal;
+    textureSphere.textureNum = theGoal;
+    textureSphere2.textureNum = theGoal;
+    textureSphere3.textureNum = theGoal;
+    textureSphere4.textureNum = theGoal;
     floorMapBlock.updateNormal();
     firstFloorMapBlock.updateNormal();
     secondFloorMapBlock.updateNormal();
@@ -1178,6 +1160,10 @@ function renderAllShapes(){
     whiteCube.textureNum = -2;
     cube.textureNum = theGoal;
     testSphere.textureNum = -2;
+    textureSphere.textureNum = theGoal;
+    textureSphere2.textureNum = theGoal;
+    textureSphere3.textureNum = theGoal;
+    textureSphere4.textureNum = theGoal;
     floorMapBlock.updateNormal();
     firstFloorMapBlock.updateNormal();
     secondFloorMapBlock.updateNormal();
@@ -1242,6 +1228,14 @@ function renderAllShapes(){
 
   for(let key in renderArray)
   {
+    if(g_normal) 
+    {
+      renderArray[key].textureNum = -3;
+    }
+    else
+    {
+      renderArray[key].textureNum = 0;
+    }
     renderArray[key].renderFaster();
   }
 
@@ -1523,7 +1517,7 @@ function placeBlock()
   let body;
   if(!(placementPoint in renderArray))
   {
-    body = new CubeTextureInUse(dirt);
+    body = new CubeTextureInUseNormal(dirt);
     body.matrix.translate(0,-0.85,0);
     body.matrix.scale(0.4,0.4,0.4);
     body.matrix.translate(placementPoint[0],0,placementPoint[2]);

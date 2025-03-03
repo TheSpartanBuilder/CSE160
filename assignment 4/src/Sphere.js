@@ -79,6 +79,9 @@ class Sphere{
         // Pass the matrix to u_ModelMatrix attribute
         gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
 
+        // Pass the matrix to u_ModelMatrix attribute
+        gl.uniformMatrix4fv(u_NormalMatrix,false, new Matrix4().setInverseOf(this.matrix).transpose().elements);
+
         // drawTriangle3DBatchColorNormal(this.v,this.color,this.v);
         drawTriangle3DBatchColorNormalUV(this.v,this.colorArray,this.v,this.uv);
         // drawTriangle3DBatchUVNormal(this.v,this.uv,this.v);

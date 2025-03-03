@@ -35,13 +35,23 @@
     Light Y <input type="range" min="-250" max="250" value="0" class="slider" id="lightSliderY">
     Light Z <input type="range" min="-250" max="250" value="0" class="slider" id="lightSliderZ">
 
+    <br>
+    Light Source Color<br>
+    Light Red <input type="range" min="0" max="255" value="255" class="slider" id="lightSliderR">
+    Light Green <input type="range" min="0" max="255" value="255" class="slider" id="lightSliderG">
+    Light Blue <input type="range" min="0" max="255" value="255" class="slider" id="lightSliderB">
+    <br>
+
     <br><br>
     Spot Light(Only work when light is on!)<br>
     <button onclick="spotLightOn()">On</button>
     <button onclick="spotLightOff()">Off</button><br>
     Spot Light Size <input type="range" min="0" max="100" value="10" class="slider" id="spotLightSizeSlider"><br>
+    Spot Light Color<br>
+    Spot Light Red <input type="range" min="0" max="255" value="255" class="slider" id="spotLightSliderR">
+    Spot Light Green <input type="range" min="0" max="255" value="255" class="slider" id="spotLightSliderG">
+    Spot Light Blue <input type="range" min="0" max="255" value="255" class="slider" id="spotLightSliderB">
     <br>
-
 
     <br>
     Flying<br>
@@ -261,6 +271,7 @@
     <script src="../src/CubeTextureInUseNormal.js"></script>
     <script src="../src/Sphere.js"></script>
     <script src="../src/SphereTexture.js"></script>
+    <script src="../src/TomNormal.js"></script>
     <script src="../src/World.js"></script>
   
 

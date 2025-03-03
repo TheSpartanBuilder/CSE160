@@ -29,6 +29,9 @@ class CubeTextureInUseNormal extends CubeTextureInUse {
         
         // Pass the matrix to u_ModelMatrix attribute
         gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
+
+        // Pass the matrix to u_ModelMatrix attribute
+        gl.uniformMatrix4fv(u_NormalMatrix,false, new Matrix4().setInverseOf(this.matrix).transpose().elements);
   
         // Pass the color of a point to u_FragColor variable
         gl.uniform4f(u_FragColor, this.color[0], this.color[1], this.color[2], this.color[3]);
