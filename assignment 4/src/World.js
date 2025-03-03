@@ -170,11 +170,13 @@ var FSHADER_SOURCE = `
         // https://webglfundamentals.org/webgl/lessons/webgl-3d-lighting-spot.html
         // https://math.hws.edu/graphicsbook/c7/s2.html#webgl3d.2.6
         // https://math.hws.edu/graphicsbook/source/webgl/spotlights.html
-        vec3 L_at = normalize(u_at-u_cameraPos);
+        // vec3 L_at = normalize(u_at-u_cameraPos);
+        vec3 L_spot = normalize(u_cameraPos - vec3(v_VertPos));
         float spotFactor = 0.0;
         float spotExponent = 3.0;
         vec3 D = -normalize(u_spotDirection);
-        float spotCosine = dot(D,L_at);
+        float spotCosine = dot(D,L_spot);
+        float nDotL = max(dot(N,L_spot),0.0);
         if (spotCosine >= u_spotCosineCutOff) {
           spotFactor = pow(spotCosine, spotExponent);
           // gl_FragColor = gl_FragColor + (gl_FragColor*spotFactor);
@@ -298,7 +300,7 @@ let g_lightSliderX = 0;
 let g_lightPos=[0,0,0];
 let g_lightOn = false;
 let g_spotLightOn = false;
-let g_spotCosineCutoff = Math.cos(10/180 * Math.PI);
+let g_spotCosineCutoff = 10;
 
 // let g_animation = false;
 
@@ -511,6 +513,7 @@ function addActionsForHtmlUI()
   document.getElementById('lightSliderX').addEventListener("mousemove", function() {  if(g_animationOn || g_specialAnimation) return; g_lightPos[0] = this.value/100;  updateLightPos(); });
   document.getElementById('lightSliderY').addEventListener("mousemove", function() {  if(g_animationOn || g_specialAnimation) return; g_lightPos[1] = this.value/100;  updateLightPos(); });
   document.getElementById('lightSliderZ').addEventListener("mousemove", function() {  if(g_animationOn || g_specialAnimation) return; g_lightPos[2] = this.value/100;  updateLightPos(); });
+  document.getElementById('spotLightSizeSlider').addEventListener("mousemove", function() { g_spotCosineCutoff = this.value;});
 }
 
 
@@ -806,10 +809,10 @@ function main() {
   testSphere = new Sphere();
   testSphere.update();
 
-  lightCube = new Cube();
+  lightCube = new CubeNormal();
   lightCube.color = [2,2,0,1];
   lightCube.matrix.translate(g_lightPos[0],g_lightPos[1],g_lightPos[2],);
-  lightCube.matrix.scale(-.1,-.1,-.1);
+  lightCube.matrix.scale(.1,.1,.1);
   lightCube.matrix.translate(-.5,-.5,-.5);
 
   floor = new CubeTextureNormal('../Image/code/grey-dots-background_1053-180.jpg',u_Sampler6,6,gl.TEXTURE6);
@@ -1086,6 +1089,7 @@ function renderAllShapes(){
   if(g_normal)
   {
     let theGoal = -3;
+    lightCube.textureNum = theGoal;
     testNormalCube.textureNum = theGoal;
     floor.textureNum = theGoal;
     sky.textureNum = theGoal;
@@ -1108,6 +1112,7 @@ function renderAllShapes(){
   else
   {
     let theGoal = 0;
+    lightCube.textureNum = -2;
     testNormalCube.textureNum = -2;
     floor.textureNum = theGoal;
     sky.textureNum = theGoal;
@@ -1637,7 +1642,8 @@ function spotLightOff()
 
 function updateSpotCosineCutOff()
 {
-  gl.uniform1f(u_spotCosineCutOff,g_spotCosineCutoff);
+  gl.uniform1f(u_spotCosineCutOff,Math.cos(g_spotCosineCutoff/180 * Math.PI));
+  // gl.uniform1f(u_spotCosineCutOff,g_spotCosineCutoff);
 }
 
 function updateSpotDirection(lightDirection,normalMatrix)
