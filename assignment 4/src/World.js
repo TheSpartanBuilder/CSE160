@@ -43,6 +43,8 @@ var FSHADER_SOURCE = `
   uniform sampler2D u_Sampler6;
   uniform sampler2D u_Sampler7;
   uniform sampler2D u_Sampler8;
+  uniform sampler2D u_Sampler9;
+  uniform sampler2D u_Sampler10;
   uniform int u_whichTexture;
   uniform int u_TextureNum;
   uniform vec3 u_lightPos;
@@ -105,6 +107,14 @@ var FSHADER_SOURCE = `
       else if(u_TextureNum == 8)
       {
         gl_FragColor = texture2D(u_Sampler8, v_UV);
+      }
+      else if(u_TextureNum == 9)
+      {
+        gl_FragColor = texture2D(u_Sampler9, v_UV);
+      }
+        else if(u_TextureNum == 10)
+      {
+        gl_FragColor = texture2D(u_Sampler10, v_UV);
       }
     }
     else if (u_whichTexture == 1)
@@ -228,6 +238,8 @@ let u_Sampler5;
 let u_Sampler6;
 let u_Sampler7;
 let u_Sampler8;
+let u_Sampler9;
+let u_Sampler10;
 let u_GlobalRotateMatrix;
 let u_whichTexture;
 let u_TextureNum;
@@ -301,6 +313,7 @@ let g_lightPos=[0,0,0];
 let g_lightOn = false;
 let g_spotLightOn = false;
 let g_spotCosineCutoff = 10;
+let g_funnyOn = false;
 
 // let g_animation = false;
 
@@ -693,6 +706,18 @@ function connectVariablesToGLSL()
     return false;
   }
 
+  u_Sampler9 = gl.getUniformLocation(gl.program, 'u_Sampler9');
+  if (!u_Sampler9) {
+    console.log('Failed to get the storage location of u_Sampler9');
+    return false;
+  }
+
+  u_Sampler10 = gl.getUniformLocation(gl.program, 'u_Sampler10');
+  if (!u_Sampler10) {
+    console.log('Failed to get the storage location of u_Sampler10');
+    return false;
+  }
+
   u_cameraPos = gl.getUniformLocation(gl.program, 'u_cameraPos');
   if (!u_cameraPos) {
     console.log('Failed to get the storage location of u_cameraPos');
@@ -764,6 +789,10 @@ var showMountain;
 var testNormalCube;
 var testSphere;
 var lightCube;
+let textureSphere;
+let textureSphere2;
+let textureSphere3;
+let textureSphere4;
 
 function main() {
 
@@ -803,6 +832,30 @@ function main() {
   cube = new CubeTextureNormal("../Image/code/santa_bailey-256x256.png",u_Sampler0,0,gl.TEXTURE0);
   cube.matrix.scale(0.5,0.5,0.5);
   cube.initTextures();
+
+  textureSphere = new SphereTexture("../Image/code/santa_bailey-256x256.png",u_Sampler7,7,gl.TEXTURE7);
+  textureSphere.update();
+  textureSphere.matrix.scale(1,-1,1,);
+  textureSphere.matrix.translate(3,0,0);
+  textureSphere.initTextures();
+
+  textureSphere2 = new SphereTexture("../Image/code/9k-ezgif.com-resize.png",u_Sampler8,8,gl.TEXTURE8);
+  textureSphere2.update();
+  textureSphere2.matrix.scale(1,-1,-1,);
+  textureSphere2.matrix.translate(-3,0,0);
+  textureSphere2.initTextures();
+
+  textureSphere3 = new SphereTexture("../Image/code/diamond_block.png",u_Sampler9,9,gl.TEXTURE9);
+  textureSphere3.update();
+  textureSphere3.matrix.scale(1,-1,-1,);
+  textureSphere3.matrix.translate(0,0,3);
+  textureSphere3.initTextures();
+
+  textureSphere4 = new SphereTexture("../Image/code/bricks.png",u_Sampler10,10,gl.TEXTURE10);
+  textureSphere4.update();
+  textureSphere4.matrix.scale(1,-1,-1,);
+  textureSphere4.matrix.translate(0,0,-3);
+  textureSphere4.initTextures();
 
   testNormalCube = new CubeNormal();
 
@@ -1197,6 +1250,12 @@ function renderAllShapes(){
     theHUDStats.clear();
     cube.renderFaster();
     testSphere.renderFast();
+    textureSphere3.renderFast();
+    textureSphere4.renderFast();
+    if(g_funnyOn){
+      textureSphere.renderFast();
+      textureSphere2.renderFast();
+    }
   }
 
   // test();
@@ -1651,4 +1710,14 @@ function updateSpotDirection(lightDirection,normalMatrix)
   // let transformedDirection = normalMatrix.multiplyVector3(lightDirection);
   let direction = [cam.g_at[0]-cam.g_eye[0],cam.g_at[1]-cam.g_eye[1],cam.g_at[2]-cam.g_eye[2],];
   gl.uniform3f(u_spotDirection,direction[0],direction[1],direction[2]);
+}
+
+function funnyOn()
+{
+  g_funnyOn = true;
+}
+
+function funnyOff()
+{
+  g_funnyOn = false;
 }

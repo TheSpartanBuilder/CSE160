@@ -31,18 +31,17 @@
     <button onclick="lightOn()">On</button>
     <button onclick="lightOff()">Off</button>
     <br>
-
-    <br>
-    Spot Light<br>
-    <button onclick="spotLightOn()">On</button>
-    <button onclick="spotLightOff()">Off</button><br>
-    Spot Light Size <input type="range" min="0" max="100" value="10" class="slider" id="spotLightSizeSlider">
-    <br>
-
-    <br>
     Light X <input type="range" min="-250" max="250" value="0" class="slider" id="lightSliderX">
     Light Y <input type="range" min="-250" max="250" value="0" class="slider" id="lightSliderY">
     Light Z <input type="range" min="-250" max="250" value="0" class="slider" id="lightSliderZ">
+
+    <br><br>
+    Spot Light(Only work when light is on!)<br>
+    <button onclick="spotLightOn()">On</button>
+    <button onclick="spotLightOff()">Off</button><br>
+    Spot Light Size <input type="range" min="0" max="100" value="10" class="slider" id="spotLightSizeSlider"><br>
+    <br>
+
 
     <br>
     Flying<br>
@@ -70,13 +69,22 @@
     <button onclick="mountainOff();placeBlockOff();aimLabOff();hideTom();">Off</button><br>
 
     <br>
+    Funny<br>
+    <button onclick="funnyOn();placeBlockOff();aimLabOff();hideTom();">On</button>
+    <button onclick="funnyOff();placeBlockOff();aimLabOff();hideTom();">Off</button><br>
+
+    <br>
     Tom:
     <br>
     <button onclick="showTom();mountainOff();">Show</button>
     <button onclick="hideTom();mountainOff();">Hide</button>
     <br><br>
+    Light movement is bounded to the animation control.
+    <br>
     Animation control(When animation is on other control will not work):<br>
-    <button onclick="g_animationState(true)">On</button><button onclick="g_specialAnimationState(true)">Special Animation</button><button onclick="g_animationState(false); g_specialAnimationState(false)">Off</button><br>
+    <button onclick="g_animationState(true)">On</button>
+    <button onclick="g_specialAnimationState(true)">Special Animation</button>
+    <button onclick="g_animationState(false); g_specialAnimationState(false)">Off</button><br>
     Animation Speed <input type="range" min="1.0" max="10.0" value="1.0" class="slider" id="animationSpeedSlide"><br>
 
     <br>
@@ -252,6 +260,7 @@
     <script src="../src/CubeTextureNormal.js"></script>
     <script src="../src/CubeTextureInUseNormal.js"></script>
     <script src="../src/Sphere.js"></script>
+    <script src="../src/SphereTexture.js"></script>
     <script src="../src/World.js"></script>
   
 
