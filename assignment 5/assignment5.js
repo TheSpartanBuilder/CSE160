@@ -5,6 +5,7 @@ import {MTLLoader} from 'three/addons/loaders/MTLLoader.js';
 import MinMaxGUIHelper from './MinMaxGUIHelper.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import ColorGUIHelper from './ColorGUIHelper.js';
+// import FogGUIHelper from './FogGUIHelper.js';
 // import GUI from 'lil-gui';
 
 
@@ -51,7 +52,7 @@ function main() {
     const fov = 45;
     const aspect = 2;
     const near = 0.1;
-    const far = 100;
+    const far = 1000;
     camera = new THREE.PerspectiveCamera(fov, window.innerWidth/ window.innerHeight,near, far);
 
     /**
@@ -237,6 +238,39 @@ function main() {
         scene.add(object);
       });
     });
+
+    /**
+     * Loading in the city
+     */
+    // const objLoader2 = new OBJLoader();
+    // const mtlLoader2 = new MTLLoader();
+    // mtlLoader2.setResourcePath('./models/crq376zqdkao-Castelia-City/OBJ/');
+    // mtlLoader2.setPath('./models/crq376zqdkao-Castelia-City/OBJ/');
+    // mtlLoader2.load('Castelia%20City.mtl', function(materials) {
+    //   materials.preload();
+    //   for(const material of Object.values(materials.materials)) {
+    //     material.side = THREE.DoubleSide;
+    //   }
+
+    //   objLoader2.setMaterials(materials);
+    //   objLoader2.setPath('./models/crq376zqdkao-Castelia-City/OBJ/');
+    //   objLoader2.load('Castelia%20City.obj', function(object) {
+    //     object.position.y -= 1;
+    //     object.position.x -= 2;
+    //     object.scale.set(0.001,0.001,0.001);
+    //     /**
+    //      * Casting shadow for obj model
+    //      * https://stackoverflow.com/questions/15906248/three-js-objloader-obj-model-not-casting-shadows
+    //      */
+    //     object.traverse( function ( child ) {
+    //       if ( child instanceof THREE.Mesh ) {
+    //         child.receiveShadow = true;
+    //         child.castShadow = true;
+    //       }
+    //     });
+    //     scene.add(object);
+    //   });
+    // });
     
     /**
      * Adding light from the video so I can see the model
@@ -365,8 +399,8 @@ function main() {
     /**
      * Debug shadow
      */
-    const helper = new THREE.CameraHelper(directionalLight.shadow.camera);
-    scene.add(helper);
+    // const helper = new THREE.CameraHelper(directionalLight.shadow.camera);
+    // scene.add(helper);
 
     /**
      * Render the scene
