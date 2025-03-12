@@ -3,6 +3,7 @@ import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import {MTLLoader} from 'three/addons/loaders/MTLLoader.js';
 // import { GUI } from 'dat.gui.js';
 import MinMaxGUIHelper from './MinMaxGUIHelper.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 // import GUI from 'lil-gui';
 
 
@@ -14,6 +15,7 @@ let scene;
 let camera;
 let cubes;
 let loader;
+let controls;
 
 const loadingElem = document.querySelector('#loading');
 const progressBarElem = loadingElem.querySelector('.progressbar');
@@ -64,6 +66,12 @@ function main() {
     const minMaxGUIHelper = new MinMaxGUIHelper(camera, 'near', 'far', 0.1);
     gui.add(minMaxGUIHelper, 'min', 0.1, 50, 0.1).name('near').onChange(updateCamera);
     gui.add(minMaxGUIHelper, 'max', 0.1, 50, 0.1).name('far').onChange(updateCamera);
+
+    /**
+     * Getting obit controls
+     * https://www.youtube.com/watch?v=4ZgkMS5rH3E&ab_channel=SyntaxByte
+     */
+    controls = new OrbitControls(camera, renderer.domElement);
 
     /**
      * Setting up the scene
