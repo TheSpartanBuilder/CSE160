@@ -1,0 +1,30 @@
+<html>
+    <body>
+        <div>
+            <canvas id="A5canvas" width="800" height="600"></canvas>
+            <div id="loading">
+                <div class="progress"><div class="progressbar"></div></div>
+            </div>
+        </div>
+
+        <canvas id="c">
+          <div class="split">
+            <div id="view1" tabindex="1"></div>
+            <div id="view2" tabindex="2"></div>
+          </div>
+        </canvas>
+
+        <script type="importmap">
+            {
+              "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@latest/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/"
+              }
+            }
+          </script>
+
+          <script src="https://cdn.jsdelivr.net/npm/lil-gui@0.20"></script>
+
+        <script type="module" src="assignment5.js"></script>
+    </body>
+</html>

@@ -30,6 +30,8 @@ function main() {
      */
     canvas = document.querySelector('#A5canvas');
     renderer = new THREE.WebGLRenderer({antialias: true, canvas});
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
 
     /**
      * Setting up the camera
@@ -83,7 +85,7 @@ function main() {
     const planeSize = 40;
 
     const planeLoader = new THREE.TextureLoader();
-    const planeTexture = planeLoader.load("../image/grey-dots-background_1053-180.jpg");
+    const planeTexture = planeLoader.load("./image/grey-dots-background_1053-180.jpg");
     planeTexture.warpS = THREE.RepeatWrapping;
     planeTexture.warpT = THREE.RepeatWrapping;
     planeTexture.magFilter = THREE.NearestFilter;
@@ -92,13 +94,17 @@ function main() {
     planeTexture.repeat.set(repeats,repeats)
 
     const planeGeo = new THREE.PlaneGeometry(planeSize,planeSize);
-    const planeMat = new THREE.MeshPhongMaterial(
-      {
-        map: planeTexture,
-        side: THREE.DoubleSide,
-      }
-    );
+    // const planeMat = new THREE.MeshPhongMaterial(
+    //   {
+    //     map: planeTexture,
+    //     side: THREE.DoubleSide,
+    //   }
+    // );
+    const planeMat = new THREE.MeshPhongMaterial({color: 0xaaaaaa, side: THREE.DoubleSide});
+    // making plane have shadow 
     const mesh = new THREE.Mesh(planeGeo, planeMat);
+    mesh.castShadow = false;
+    mesh.receiveShadow = true;
     mesh.rotation.x = Math.PI * -.5;
     mesh.position.y -= 1.1;
 
@@ -129,17 +135,19 @@ function main() {
     loader = new THREE.TextureLoader(loadManager);
 
     const materials = [
-      new THREE.MeshBasicMaterial({map: loadColorTexture('../image/9k-ezgif.com-resize.png')}),
-      new THREE.MeshBasicMaterial({map: loadColorTexture('../image/bf8f1b26cb46d0657330039dab47a7d7-ezgif.com-resize.jpg')}),
-      new THREE.MeshBasicMaterial({map: loadColorTexture('../image/bricks.png')}),
-      new THREE.MeshBasicMaterial({map: loadColorTexture('../image/diamond_block.png')}),
-      new THREE.MeshBasicMaterial({map: loadColorTexture('../image/santa_bailey-256x256.png')}),
-      new THREE.MeshBasicMaterial({map: loadColorTexture('../image/why-sky-blue-2db86ae-ezgif.com-resize.jpg')}),
+      new THREE.MeshBasicMaterial({map: loadColorTexture('./image/9k-ezgif.com-resize.png')}),
+      new THREE.MeshBasicMaterial({map: loadColorTexture('./image/bf8f1b26cb46d0657330039dab47a7d7-ezgif.com-resize.jpg')}),
+      new THREE.MeshBasicMaterial({map: loadColorTexture('./image/bricks.png')}),
+      new THREE.MeshBasicMaterial({map: loadColorTexture('./image/diamond_block.png')}),
+      new THREE.MeshBasicMaterial({map: loadColorTexture('./image/santa_bailey-256x256.png')}),
+      new THREE.MeshBasicMaterial({map: loadColorTexture('./image/why-sky-blue-2db86ae-ezgif.com-resize.jpg')}),
     ];
 
     loadManager.onLoad = () => {
       loadingElem.style.display = 'none';
       const cube = new THREE.Mesh(geometry, materials);
+      cube.castShadow = true;
+      cube.receiveShadow = true;
       scene.add(cube);
       // cubes.push(cube);
     }
@@ -153,12 +161,12 @@ function main() {
      */
     const skyBoxLoader = new THREE.CubeTextureLoader();
     const skyBoxTexture = skyBoxLoader.load([
-      '../image/penguins-skybox-pack/penguins (7)/cocoa_ft.jpg',
-      '../image/penguins-skybox-pack/penguins (7)/cocoa_bk.jpg',
-      '../image/penguins-skybox-pack/penguins (7)/cocoa_up.jpg',
-      '../image/penguins-skybox-pack/penguins (7)/cocoa_dn.jpg',
-      '../image/penguins-skybox-pack/penguins (7)/cocoa_rt.jpg',
-      '../image/penguins-skybox-pack/penguins (7)/cocoa_lf.jpg',
+      './image/penguins-skybox-pack/penguins (7)/cocoa_ft.jpg',
+      './image/penguins-skybox-pack/penguins (7)/cocoa_bk.jpg',
+      './image/penguins-skybox-pack/penguins (7)/cocoa_up.jpg',
+      './image/penguins-skybox-pack/penguins (7)/cocoa_dn.jpg',
+      './image/penguins-skybox-pack/penguins (7)/cocoa_rt.jpg',
+      './image/penguins-skybox-pack/penguins (7)/cocoa_lf.jpg',
     ]);
     scene.background = skyBoxTexture;
 
@@ -192,8 +200,8 @@ function main() {
     //     scene.add(root);
     //   });
     // });
-    mtlLoader.setResourcePath('../models/IronMan/');
-    mtlLoader.setPath('../models/IronMan/');
+    mtlLoader.setResourcePath('./models/IronMan/');
+    mtlLoader.setPath('./models/IronMan/');
     mtlLoader.load('IronMan.mtl', function(materials) {
       materials.preload();
       for(const material of Object.values(materials.materials)) {
@@ -201,11 +209,13 @@ function main() {
       }
 
       objLoader.setMaterials(materials);
-      objLoader.setPath('../models/IronMan/');
+      objLoader.setPath('./models/IronMan/');
       objLoader.load('IronMan.obj', function(object) {
         object.position.y -= 1;
         object.position.x -= 2;
         object.scale.set(0.01,0.01,0.01);
+        object.castShadow = true;
+        object.receiveShadow = true;
         scene.add(object);
       });
     });
@@ -244,6 +254,8 @@ function main() {
     directionalLight.target.position.set(-5,0,0);
     scene.add(directionalLight);
     scene.add(directionalLight.target);
+    // Making directional Light cast shadow
+    directionalLight.castShadow = true;
 
     /**
      * Adding point light
@@ -253,6 +265,8 @@ function main() {
     const pointLight = new THREE.PointLight(pointColor, pointIntensity);
     pointLight.position.set(0,10,0);
     scene.add(pointLight);
+    // Making point Light cast shadow
+    pointLight.castShadow = true;
 
     /**
      * Adding GUI control to ambient light color
@@ -295,6 +309,8 @@ function main() {
       const cubeMat = new THREE.MeshPhongMaterial({color: '#8AC'});
       const mesh = new THREE.Mesh(cubeGeo, cubeMat);
       mesh.position.set(cubeSize + 1, cubeSize / 2, 0);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
       scene.add(mesh);
     }
     {
@@ -304,6 +320,8 @@ function main() {
       const sphereGeo = new THREE.SphereGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
       const sphereMat = new THREE.MeshPhongMaterial({color: '#CA8'});
       const mesh = new THREE.Mesh(sphereGeo, sphereMat);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
       mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
       scene.add(mesh);
     }
@@ -315,11 +333,19 @@ function main() {
      */
     // cube = new THREE.Mesh(geometry, material);
     cube = new THREE.Mesh(geometry, materials);
+    cube.castShadow = true;
+    cube.receiveShadow = true;
 
     /**
      * Adding the cube to the scene
      */
     // scene.add(cube);
+
+    /**
+     * Debug shadow
+     */
+    const helper = new THREE.CameraHelper(directionalLight.shadow.camera);
+    scene.add(helper);
 
     /**
      * Render the scene
@@ -396,6 +422,9 @@ function loadColorTexture(path)
   return texture;
 }
 
+/**
+ * IDK why is this not working
+ */
 function updateLight()
 {
   for(let i = 0; i < lightList.length; i++)
