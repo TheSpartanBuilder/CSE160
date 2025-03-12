@@ -18,13 +18,23 @@ let cubes;
 let loader;
 let controls;
 let lightList;
+let skyBoxTexture;
 
 const loadingElem = document.querySelector('#loading');
 const progressBarElem = loadingElem.querySelector('.progressbar');
 const objLoader = new OBJLoader();
 const mtlLoader = new MTLLoader();
 
+const fogControl = {
+  fogStatusBool : false,
+}
+
 function main() {
+    /**
+     * Setting up checkbox for the fog system.
+     */
+    fogControl.fogStatusBool = false;
+
     /**
      * Setting up the canvas 
      */
@@ -160,7 +170,7 @@ function main() {
      * https://opengameart.org/content/skiingpenguins-skybox-pack?page=3
      */
     const skyBoxLoader = new THREE.CubeTextureLoader();
-    const skyBoxTexture = skyBoxLoader.load([
+    skyBoxTexture = skyBoxLoader.load([
       './image/penguins-skybox-pack/penguins (7)/cocoa_ft.jpg',
       './image/penguins-skybox-pack/penguins (7)/cocoa_bk.jpg',
       './image/penguins-skybox-pack/penguins (7)/cocoa_up.jpg',
@@ -214,8 +224,16 @@ function main() {
         object.position.y -= 1;
         object.position.x -= 2;
         object.scale.set(0.01,0.01,0.01);
-        object.castShadow = true;
-        object.receiveShadow = true;
+        /**
+         * Casting shadow for obj model
+         * https://stackoverflow.com/questions/15906248/three-js-objloader-obj-model-not-casting-shadows
+         */
+        object.traverse( function ( child ) {
+          if ( child instanceof THREE.Mesh ) {
+            child.receiveShadow = true;
+            child.castShadow = true;
+          }
+        });
         scene.add(object);
       });
     });
@@ -326,7 +344,10 @@ function main() {
       scene.add(mesh);
     }
 
-
+    /**
+     * Fog Button
+     */
+    gui.add( fogControl, 'fogStatusBool' ).name('fog toggle');
 
     /**
      * Creating the cube
@@ -396,6 +417,8 @@ function tick(time) {
     //     cube.rotation.x = rot;
     //     cube.rotation.y = rot;
     //   });
+
+    fogStatus();
     
 
     // updateLight();
@@ -435,6 +458,23 @@ function updateLight()
 
 function updateCamera() {
   camera.updateProjectionMatrix();
+}
+
+function fogStatus()
+{
+  if(fogControl.fogStatusBool)
+  {
+    const near = 6;
+    const far = 20;
+    const color = 'white';
+    scene.fog = new THREE.Fog(color, near, far);
+    scene.background = new THREE.Color(color);
+  }
+  else
+  {
+    scene.fog = null;
+    scene.background = skyBoxTexture;
+  }
 }
 
 /**
