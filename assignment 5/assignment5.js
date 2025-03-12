@@ -21,6 +21,16 @@ let controls;
 let lightList;
 let skyBoxTexture;
 
+let renderTarget;
+let rtCamera;
+let rtScene;
+let iPhoneObj;
+
+let presidentCube;
+
+let originalRender;
+let torus;
+
 const loadingElem = document.querySelector('#loading');
 const progressBarElem = loadingElem.querySelector('.progressbar');
 const objLoader = new OBJLoader();
@@ -80,7 +90,7 @@ function main() {
     gui.add(camera, 'fov', 1, 180).onChange(updateCamera);
     const minMaxGUIHelper = new MinMaxGUIHelper(camera, 'near', 'far', 0.1);
     gui.add(minMaxGUIHelper, 'min', 0.1, 50, 0.1).name('near').onChange(updateCamera);
-    gui.add(minMaxGUIHelper, 'max', 0.1, 50, 0.1).name('far').onChange(updateCamera);
+    gui.add(minMaxGUIHelper, 'max', 0.1, 1000, 0.1).name('far').onChange(updateCamera);
 
     /**
      * Getting obit controls
@@ -146,12 +156,18 @@ function main() {
     loader = new THREE.TextureLoader(loadManager);
 
     const materials = [
-      new THREE.MeshBasicMaterial({map: loadColorTexture('./image/9k-ezgif.com-resize.png')}),
-      new THREE.MeshBasicMaterial({map: loadColorTexture('./image/bf8f1b26cb46d0657330039dab47a7d7-ezgif.com-resize.jpg')}),
-      new THREE.MeshBasicMaterial({map: loadColorTexture('./image/bricks.png')}),
-      new THREE.MeshBasicMaterial({map: loadColorTexture('./image/diamond_block.png')}),
-      new THREE.MeshBasicMaterial({map: loadColorTexture('./image/santa_bailey-256x256.png')}),
-      new THREE.MeshBasicMaterial({map: loadColorTexture('./image/why-sky-blue-2db86ae-ezgif.com-resize.jpg')}),
+      // new THREE.MeshBasicMaterial({map: loadColorTexture('./image/9k-ezgif.com-resize.png')}),
+      // new THREE.MeshBasicMaterial({map: loadColorTexture('./image/bf8f1b26cb46d0657330039dab47a7d7-ezgif.com-resize.jpg')}),
+      // new THREE.MeshBasicMaterial({map: loadColorTexture('./image/bricks.png')}),
+      // new THREE.MeshBasicMaterial({map: loadColorTexture('./image/diamond_block.png')}),
+      // new THREE.MeshBasicMaterial({map: loadColorTexture('./image/santa_bailey-256x256.png')}),
+      // new THREE.MeshBasicMaterial({map: loadColorTexture('./image/why-sky-blue-2db86ae-ezgif.com-resize.jpg')}),
+      new THREE.MeshPhongMaterial({map: loadColorTexture('./image/president/918px-George_H._W._Bush_presidential_portrait_cropped_2-ezgif.com-resize.jpg')}),
+      new THREE.MeshPhongMaterial({map: loadColorTexture('./image/president/Bill_Clinton-ezgif.com-resize.jpg')}),
+      new THREE.MeshPhongMaterial({map: loadColorTexture('./image/president/George-W-Bush-ezgif.com-resize.jpg')}),
+      new THREE.MeshPhongMaterial({map: loadColorTexture('./image/president/President_Barack_Obama_2012_portrait_crop-ezgif.com-resize.jpg')}),
+      new THREE.MeshPhongMaterial({map: loadColorTexture('./image/president/Joe_Biden_presidential_portrait_cropped-ezgif.com-resize.jpg')}),
+      new THREE.MeshPhongMaterial({map: loadColorTexture('./image/president/TrumpPortrait_3x4a-ezgif.com-resize.jpg')}),
     ];
 
     loadManager.onLoad = () => {
@@ -341,11 +357,6 @@ function main() {
     gui.addColor(new ColorGUIHelper(pointLight, 'color'), 'value').name('point color');
     gui.add(pointLight, 'intensity', 0, 250, 1).name('point intensity');
     gui.add(pointLight, "distance", 0, 40).name('point distance');
-
-    /**
-     * Adding GUI control to point light color
-     */
-    gui.add
   
     /**
      * Adding the plane to the scene
@@ -403,6 +414,88 @@ function main() {
     // scene.add(helper);
 
     /**
+     * Doing render targets
+     */
+    let renderTargetsReturns = renderTargets(boxWidth*512,boxHeight*512);
+    renderTarget = renderTargetsReturns[0];
+    rtCamera = renderTargetsReturns[1];
+    rtScene = renderTargetsReturns[2];
+    iPhoneObj = renderTargetsReturns[3];
+
+    /**
+     * Cube for render targets
+     */
+    const material = new THREE.MeshPhongMaterial({
+      map: renderTarget.texture,
+    });
+    const rtCube = new THREE.Mesh(geometry,material);
+    rtCube.position.y += 1
+    scene.add(rtCube);
+
+    /**
+     * Making a cylinder
+     */
+    const cylinderGeometry = new THREE.CylinderGeometry(5,5,20,32);
+    const cylinderMaterial = new THREE.MeshPhongMaterial( {color: 0xffff00} );
+    const cylinder = new THREE.Mesh( cylinderGeometry, cylinderMaterial);
+    cylinder.position.set(-4, 0, 0);
+    cylinder.scale.set(0.1,0.1,0.1);
+    cylinder.castShadow = true;
+    cylinder.receiveShadow = true;
+    scene.add(cylinder);
+
+    /**
+     * Making a TorusGeometry
+     */
+    const torusGeometry = new THREE.TorusGeometry(10,3,16,100);
+    const torusMaterial = new THREE.MeshPhongMaterial({color: 0x00FF00} );
+    torus = new THREE.Mesh(torusGeometry, torusMaterial);
+    torus.position.set(0, 1, 8);
+    torus.scale.set(0.1,0.1,0.1);
+    torus.castShadow = true;
+    torus.receiveShadow = true;
+    scene.add(torus);
+
+    /**
+     * Testing Iphone
+     */
+  //   const objLoader3 = new OBJLoader();
+  // const mtlLoader3 = new MTLLoader();
+  // mtlLoader3.setResourcePath('./models/obj/');
+  // mtlLoader3.setPath('./models/obj/');
+  // mtlLoader3.load('iphone.mtl', function(materials) {
+  //   materials.preload();
+  //   for(const material of Object.values(materials.materials)) {
+  //     material.side = THREE.DoubleSide;
+  //   }
+
+  //   objLoader3.setMaterials(materials);
+  //   objLoader3.setPath('./models/obj/');
+  //   objLoader3.load('iphone.obj', function(object) {
+  //     // object.position.y -= 1;
+  //     // object.position.x -= 2;
+  //     // object.scale.set(0.01,0.01,0.01);
+  //     // let theSize = 60;
+  //     // object.visible = true;
+  //     // object.position.set(0, 0, -750/(2*theSize));
+  //     // object.scale.set(1/theSize, 1/theSize, 1/theSize);
+  //     object.scale.set(2, 2, 2);
+  //     /**
+  //      * Casting shadow for obj model
+  //      * https://stackoverflow.com/questions/15906248/three-js-objloader-obj-model-not-casting-shadows
+  //      */
+  //     object.traverse( function ( child ) {
+  //       if ( child instanceof THREE.Mesh ) {
+  //         child.receiveShadow = true;
+  //         child.castShadow = true;
+  //       }
+  //     });
+  //     scene.add(object);
+  //     iPhoneObj = object;
+  //   });
+  // });
+
+    /**
      * Render the scene
      */
     renderer.render(scene, camera);
@@ -419,11 +512,57 @@ function main() {
     /**
      * Adding three cube at the same time to the scene
      */
-    // cubes = [
-    //     makeInstance(geometry, 0x44aa88,  0),
-    //     makeInstance(geometry, 0x8844aa, -2),
-    //     makeInstance(geometry, 0xaa8844,  2),
-    // ];
+    cubes = [
+        makeInstance2(geometry, material, -20,0,0),
+        makeInstance2(geometry, material, -20,0,1),
+        makeInstance2(geometry, material, -20,0,-1),
+        makeInstance2(geometry, material, -20,0,2),
+        makeInstance2(geometry, material, -20,0,-2),
+
+        makeInstance2(geometry, material, -20,1,0),
+        makeInstance2(geometry, material, -20,1,1),
+        makeInstance2(geometry, material, -20,1,-1),
+        makeInstance2(geometry, material, -20,1,2),
+        makeInstance2(geometry, material, -20,1,-2),
+
+        makeInstance2(geometry, material, -20,2,0),
+        makeInstance2(geometry, material, -20,2,1),
+        makeInstance2(geometry, material, -20,2,-1),
+        makeInstance2(geometry, material, -20,2,2),
+        makeInstance2(geometry, material, -20,2,-2),
+
+        makeInstance2(geometry, material, -20,3,0),
+        makeInstance2(geometry, material, -20,3,1),
+        makeInstance2(geometry, material, -20,3,-1),
+        makeInstance2(geometry, material, -20,3,2),
+        makeInstance2(geometry, material, -20,3,-2),
+
+        makeInstance2(geometry, material, -20,4,0),
+        makeInstance2(geometry, material, -20,4,1),
+        makeInstance2(geometry, material, -20,4,-1),
+        makeInstance2(geometry, material, -20,4,2),
+        makeInstance2(geometry, material, -20,4,-2),
+    ];
+
+    presidentCube = [
+      makeInstance2(geometry, materials, 0,0,-20),
+      makeInstance2(geometry, materials, 2,0,-20),
+      makeInstance2(geometry, materials, -2,0,-20),
+      makeInstance2(geometry, materials, 4,0,-20),
+      makeInstance2(geometry, materials, -4,0,-20),
+
+      makeInstance2(geometry, materials, 0,2,-20),
+      makeInstance2(geometry, materials, 2,2,-20),
+      makeInstance2(geometry, materials, -2,2,-20),
+      makeInstance2(geometry, materials, 4,2,-20),
+      makeInstance2(geometry, materials, -4,2,-20),
+
+      makeInstance2(geometry, materials, 0,4,-20),
+      makeInstance2(geometry, materials, 2,4,-20),
+      makeInstance2(geometry, materials, -2,4,-20),
+      makeInstance2(geometry, materials, 4,4,-20),
+      makeInstance2(geometry, materials, -4,4,-20),
+    ];
 
     /**
      * Putting light into an array
@@ -440,37 +579,67 @@ function main() {
 
 function tick(time) {
 
-    time *= 0.001;
+  renderer.setRenderTarget(renderTarget);
+  renderer.render(rtScene, rtCamera);
+  renderer.setRenderTarget(null);
+  
+  time *= 0.001;
+  
+  cube.rotation.x = time;
+  cube.rotation.y = time;
+  // console.log(iPhoneObj);
+  if (iPhoneObj) {
+    iPhoneObj.rotation.y = time * 0.5;
+  }
+  
+  presidentCube.forEach((cube, ndx) => {
+      const speed = 1 + ndx * .1;
+      const rot = time * speed;
+      cube.rotation.x = rot;
+      cube.rotation.y = rot;
+    });
 
-    cube.rotation.x = time;
-    cube.rotation.y = time;
+    torus.rotation.x = time;
+    torus.rotation.y = time;
 
-    // cubes.forEach((cube, ndx) => {
-    //     const speed = 1 + ndx * .1;
-    //     const rot = time * speed;
-    //     cube.rotation.x = rot;
-    //     cube.rotation.y = rot;
-    //   });
+  fogStatus();
+  
 
-    fogStatus();
-    
+  // updateLight();
+  renderer.render(scene,camera);
 
-    // updateLight();
-    renderer.render(scene,camera);
 
-    requestAnimationFrame(tick);
+  requestAnimationFrame(tick);
 }
 
-function makeInstance(geometry, color, x) {
+function makeInstance(geometry, color, x, y=0, z=0) {
     const material = new THREE.MeshPhongMaterial({color});
    
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
+    cube.castShadow = true;
+    cube.receiveShadow = true;
    
     cube.position.x = x;
+    cube.position.y = y;
+    cube.position.z = z;
    
     return cube;
   }
+
+function makeInstance2(geometry, material, x, y=0, z=0) {
+  
+  const cube = new THREE.Mesh(geometry, material);
+  scene.add(cube);
+  cube.castShadow = true;
+  cube.receiveShadow = true;
+  
+  cube.position.x = x;
+  cube.position.y = y;
+  cube.position.z = z;
+  
+  return cube;
+}
 
 function loadColorTexture(path)
 {
@@ -509,6 +678,128 @@ function fogStatus()
     scene.fog = null;
     scene.background = skyBoxTexture;
   }
+}
+
+/**
+ * 
+ * @param {*} Width 
+ * @param {*} Height 
+ * @returns 
+ */
+function renderTargets(Width, Height)
+{
+  /**
+   * Setting up a variable to sotre the obj 
+   */
+  // let iPhoneObj = null;
+
+  /**
+   * Setting up the render targets
+   */
+  const renderTarget = new THREE.WebGLRenderTarget(Width, Height, {
+    format: THREE.RGBAFormat,
+    minFilter: THREE.LinearFilter,
+    magFilter: THREE.LinearFilter,
+    depthBuffer: true
+  });
+
+  /**
+   * Setting up the camera
+   */
+  const fov = 45;
+  const aspect = 2;
+  const near = 0.1;
+  const far = 1000;
+  let camera = new THREE.PerspectiveCamera(fov, Width/ Height,near, far);
+  camera.position.z = 2;
+
+  /**
+     * Setting up the scene
+     */
+  const scene = new THREE.Scene();
+
+  /**
+   * Adding a skyblock
+   */
+  const skyBoxLoader = new THREE.CubeTextureLoader();
+  let rtSkyBoxTexture = skyBoxLoader.load([
+      './image/penguins-skybox-pack/penguins (33)/sun_ft.jpg',
+      './image/penguins-skybox-pack/penguins (33)/sun_bk.jpg',
+      './image/penguins-skybox-pack/penguins (33)/sun_up.jpg',
+      './image/penguins-skybox-pack/penguins (33)/sun_dn.jpg',
+      './image/penguins-skybox-pack/penguins (33)/sun_rt.jpg',
+      './image/penguins-skybox-pack/penguins (33)/sun_lf.jpg',
+    ]);
+  scene.background = rtSkyBoxTexture;
+  // scene.background = new THREE.Color(0xD61C4E);
+
+  /**
+   * Adding a directional light
+   * From:
+   * https://threejs.org/manual/#en/rendertargets
+   */
+  // const color = 0xFFFFFF;
+  // const intensity = 1;
+  // const light = new THREE.DirectionalLight(color, intensity);
+  // light.position.set(-1, 2, 4);
+  // scene.add(light);
+  const color = 0xFFFFFF;
+    const intensity = 1;
+    const light = new THREE.AmbientLight(color, intensity);
+    scene.add(light)
+
+  /**
+   * Using the cube for testing
+   */
+  // const geometry = new THREE.BoxGeometry(1, 1, 1);
+  // const material = new THREE.MeshBasicMaterial({ color: 0x44aa88 });
+  // const cube = new THREE.Mesh(geometry, material);
+
+// Add the cube to the scene
+// scene.add(cube);
+
+  /**
+   * Adding a model
+   */
+    const objLoader3 = new OBJLoader();
+  const mtlLoader3 = new MTLLoader();
+  mtlLoader3.setResourcePath('./models/obj/');
+  mtlLoader3.setPath('./models/obj/');
+  mtlLoader3.load('iphone.mtl', function(materials) {
+    materials.preload();
+    for(const material of Object.values(materials.materials)) {
+      material.side = THREE.DoubleSide;
+    }
+
+    objLoader3.setMaterials(materials);
+    objLoader3.setPath('./models/obj/');
+    objLoader3.load('iphone.obj', function(object) {
+      // object.position.y -= 1;
+      // object.position.x -= 2;
+      // object.scale.set(0.01,0.01,0.01);
+      // let theSize = 60;
+      // object.visible = true;
+      // object.position.set(0, 0, -750/(2*theSize));
+      // object.scale.set(1/theSize, 1/theSize, 1/theSize);
+      // object.scale.set(2, 2, 2);
+      object.rotation.z = Math.PI/2+Math.PI;
+      object.scale.set(1/4, 1/4, 1/4);
+      /**
+       * Casting shadow for obj model
+       * https://stackoverflow.com/questions/15906248/three-js-objloader-obj-model-not-casting-shadows
+       */
+      object.traverse( function ( child ) {
+        if ( child instanceof THREE.Mesh ) {
+          child.receiveShadow = true;
+          child.castShadow = true;
+        }
+      });
+      scene.add(object);
+      iPhoneObj = object;
+    });
+  });
+
+  return [renderTarget, camera, scene, iPhoneObj]
 }
 
 /**
